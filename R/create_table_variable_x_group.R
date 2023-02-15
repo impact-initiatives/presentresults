@@ -18,7 +18,10 @@
 #' @export
 #'
 #' @examples
-#' try_results <- data.frame(analysis_index = c("mean @/@ value1 ~/~ NA @/@ NA ~/~ NA", "mean @/@ value1 ~/~ NA @/@ group ~/~ A", "mean @/@ value1 ~/~ NA @/@ group ~/~ B"), stat = c(1:3))
+#' try_results <- data.frame(analysis_index = c("mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
+#'                                             "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
+#'                                             "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"),
+#'                                               stat = c(1:3))
 #' create_table_variable_x_group(try_results, "analysis_index", "stat")
 create_table_variable_x_group <-
   function(results,
