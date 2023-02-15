@@ -18,10 +18,14 @@
 #' @export
 #'
 #' @examples
-#' try_results <- data.frame(analysis_index = c("mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
-#'                                             "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
-#'                                             "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"),
-#'                                               stat = c(1:3))
+#' try_results <- data.frame(
+#'   analysis_index = c(
+#'     "mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
+#'     "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
+#'     "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"
+#'   ),
+#'   stat = c(1:3)
+#' )
 #' create_table_variable_x_group(try_results, "analysis_index", "stat")
 create_table_variable_x_group <-
   function(results,
@@ -29,10 +33,10 @@ create_table_variable_x_group <-
            value_columns = c("stat", "stat_low", "stat_upp"),
            list_for_excel = FALSE) {
     if (results %>%
-        dplyr::pull(!!rlang::sym(analysis_key)) %>%
-        stringr::str_split(" @/@ ", simplify = TRUE) %>%
-        dim() %>%
-        `[[`(2) != 3) {
+      dplyr::pull(!!rlang::sym(analysis_key)) %>%
+      stringr::str_split(" @/@ ", simplify = TRUE) %>%
+      dim() %>%
+      `[[`(2) != 3) {
       stop("Analysis keys does not seem to follow the correct format")
     }
 
@@ -66,29 +70,34 @@ create_table_variable_x_group <-
 
     results <- results %>%
       tidyr::separate(analysis_var,
-                      analysis_var_split,
-                      sep = " ~/~ ") %>%
+        analysis_var_split,
+        sep = " ~/~ "
+      ) %>%
       tidyr::separate(group_var,
-                      group_var_split,
-                      sep = " ~/~ ")
+        group_var_split,
+        sep = " ~/~ "
+      )
 
     results <- results %>%
       tidyr::unite(analysis_var,
-                   c(
-                     dplyr::starts_with("analysis_var") &
-                       !dplyr::contains("value")
-                   ),
-                   sep = " ~/~ ") %>%
+        c(
+          dplyr::starts_with("analysis_var") &
+            !dplyr::contains("value")
+        ),
+        sep = " ~/~ "
+      ) %>%
       tidyr::unite(analysis_var_value,
-                   c(dplyr::starts_with("analysis_var_value_")),
-                   sep = " ~/~ ") %>%
+        c(dplyr::starts_with("analysis_var_value_")),
+        sep = " ~/~ "
+      ) %>%
       tidyr::unite(group_var, c(
         dplyr::starts_with("group_var_") &
           !dplyr::contains("value")
       ), sep = " ~/~ ") %>%
       tidyr::unite(group_var_value,
-                   c(dplyr::starts_with("group_var_value_")),
-                   sep = " ~/~ ") %>%
+        c(dplyr::starts_with("group_var_value_")),
+        sep = " ~/~ "
+      ) %>%
       dplyr::mutate(dplyr::across(
         c(
           analysis_var,
@@ -133,5 +142,4 @@ create_table_variable_x_group <-
           names_vary = "slowest"
         )
     }
-
   }
