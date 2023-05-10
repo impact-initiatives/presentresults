@@ -20,12 +20,12 @@
 #' @examples
 #' create_analysis_key_table(presentresults_resultstable)
 create_analysis_key_table <- function(.results, analysis_key = "analysis_key") {
-  #check for @/@ format for the different types
+  # check for @/@ format for the different types
   if (.results %>%
-      dplyr::pull(!!rlang::sym(analysis_key)) %>%
-      stringr::str_split(" @/@ ", simplify = TRUE) %>%
-      dim() %>%
-      `[[`(2) != 3) {
+    dplyr::pull(!!rlang::sym(analysis_key)) %>%
+    stringr::str_split(" @/@ ", simplify = TRUE) %>%
+    dim() %>%
+    `[[`(2) != 3) {
     stop("Analysis keys does not seem to follow the correct format")
   }
 
@@ -59,15 +59,13 @@ create_analysis_key_table <- function(.results, analysis_key = "analysis_key") {
 
   key_table <- key_table %>%
     tidyr::separate(analysis_var,
-                    analysis_var_split,
-                    sep = " ~/~ "
+      analysis_var_split,
+      sep = " ~/~ "
     ) %>%
     tidyr::separate(group_var,
-                    group_var_split,
-                    sep = " ~/~ "
+      group_var_split,
+      sep = " ~/~ "
     )
 
   return(key_table)
-
 }
-
