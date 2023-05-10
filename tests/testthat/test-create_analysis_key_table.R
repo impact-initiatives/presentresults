@@ -9,8 +9,8 @@ test_that("returns correct results", {
                   analysis_var_value_1 = c("low", "NA"),
                   group_var_1 = c("location", "location"),
                   group_var_value_1 = c("locationA", "locationB"),
-                  group_var_2 = c("population", "NA"),
-                  group_var_value_2 = c("displaced", "NA"),
+                  group_var_2 = c("population", NA),
+                  group_var_value_2 = c("displaced", NA),
       nb_analysis_var = c(1,1),
       nb_group_var = c(2,1))
 
