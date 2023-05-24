@@ -1,5 +1,5 @@
 Package: presentresults
-Title: Helpers to present results into table or graphs.
+Title: Helpers to present results into table or graphs
 Version: 0.0.0.9000
 Authors@R: c(
   person("Mehedi", "Khan", email= "mh.khan@reach-initiative.org", role = "aut",
@@ -22,12 +22,13 @@ Suggests:
   testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
-  dplyr,
-  magrittr,
-  purrr,
-  rlang,
-  stringr,
-  tidyr
+    dplyr,
+    glue,
+    magrittr,
+    purrr,
+    rlang,
+    stringr,
+    tidyr
 Depends: 
     R (>= 2.10)
 LazyData: true

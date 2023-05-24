@@ -69,3 +69,51 @@ create_analysis_key_table <- function(.results, analysis_key = "analysis_key") {
 
   return(key_table)
 }
+
+#' Unite variable from the key_table
+#'
+#' Function will unite all analysis_var, analysis_var_value, group_var, and group_var_value from
+#' an key table resulting from create_analysis_key_table.
+#'
+#' @param key_table a key table built with create_analysis_key_table
+#'
+#' @return a table with analysis_var, analysis_var_value, group_var, and group_var_value united and
+#' with a ~/~ as separator
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' unite_variables(key_table)
+#' }
+
+unite_variables <- function(key_table) {
+  key_table %>%
+    tidyr::unite(analysis_var,
+                 c(
+                   dplyr::starts_with("analysis_var") &
+                     !dplyr::contains("value")
+                 ),
+                 sep = " ~/~ "
+    ) %>%
+    tidyr::unite(analysis_var_value,
+                 c(dplyr::starts_with("analysis_var_value_")),
+                 sep = " ~/~ "
+    ) %>%
+    tidyr::unite(group_var, c(
+      dplyr::starts_with("group_var_") &
+        !dplyr::contains("value")
+    ), sep = " ~/~ ") %>%
+    tidyr::unite(group_var_value,
+                 c(dplyr::starts_with("group_var_value_")),
+                 sep = " ~/~ "
+    ) %>%
+    dplyr::mutate(dplyr::across(
+      c(
+        analysis_var,
+        analysis_var_value,
+        group_var,
+        group_var_value
+      ),
+      ~ stringr::str_remove_all(.x, "( ~/~ NA)*$")
+    ))
+}

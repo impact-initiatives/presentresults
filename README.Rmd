@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/impact-initiatives/presentresults/branch/main/graph/badge.svg)](https://app.codecov.io/gh/impact-initiatives/presentresults?branch=main)
 <!-- badges: end -->
 
-The goal of presentresults is to outputs from a results table (long format with 
+The goal of presentresults is to present the results from a results table (long format with 
 analysis key).
 
 ## Installation
@@ -32,9 +32,9 @@ You can install the development version of presentresults from [GitHub](https://
 devtools::install_github("impact-initiatives/presentresults")
 ```
 
-## Example
+## Large table variables (lines) per groups (columns)
 
-This is a basic example which shows you how to solve a common problem:
+This is how to turn a results table into a wide variable per group.
 
 ```{r example}
 library(presentresults)
@@ -43,5 +43,66 @@ try_results <- data.frame(analysis_index = c("mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
                                              "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"),
                           stat = c(1:3))
 create_table_variable_x_group(try_results, "analysis_index", "stat")
+```
+
+## Large table groups (lines) per variables (columns)
+
+This is how to turn a results table into a wide group per variable.
+
+```{r}
+example_group_x_variable <- create_table_group_x_variable(presentresults_resultstable, value_columns = "stat")
+
+head(example_group_x_variable)
+```
+
+## Create an IPC TWG table
+
+```{r}
+example_ipc <- create_ipctwg_table(.results = presentresults_resultstable,
+                   fclc_matrix_var = "fcls_cat",
+                   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
+                   fc_matrix_var = "fcm_cat",
+                   fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
+                   with_fclc = TRUE,
+                   fcs_cat_values = c("low", "medium", "high"),
+                   rcsi_cat_values = c("low", "medium", "high"),
+                   lcsi_cat_var = "lcs_cat",
+                   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+                   hhs_cat_var = "hhs_cat",
+                   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+                   lcsi_set = c("liv_stress_lcsi_1",
+                                "liv_stress_lcsi_2",
+                                "liv_stress_lcsi_3",
+                                "liv_stress_lcsi_4",
+                                "liv_crisis_lcsi_1",
+                                "liv_crisis_lcsi_2",
+                                "liv_crisis_lcsi_3",
+                                "liv_emerg_lcsi_1",
+                                "liv_emerg_lcsi_2",
+                                "liv_emerg_lcsi_3"),
+                   other_variables = c("income_v2_sum","expenditure_food"))
+head(example_ipc)
+```
+
+
+## Converting the analysis index into a table
+
+This is is how to turn the analysis index into a table
+
+```{r create_analysis_key_table}
+
+resultstable <- data.frame(analysis_index = c("mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
+                                              "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
+                                              "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"))
+
+key_table <- create_analysis_key_table(resultstable, "analysis_index")
+key_table
+
+```
+
+You can then unite the analysis and grouping variables if needed.
+
+```{r}
+unite_variables(key_table)
 ```
 

@@ -30,5 +30,23 @@ test_that("if index not in the correct format, stops", {
                "Analysis keys does not seem to follow the correct format")
 })
 
+test_that("unite_variables returns correct results", {
+  results_test <- data.frame(analysis_key = c("prop_select_one @/@ fcs_cat ~/~ low @/@ location ~/~ locationA ~/~ population ~/~ displaced",
+                                              "mean @/@ expenditure_food ~/~ NA @/@ location ~/~ locationB"))
+  key_table_test <- create_analysis_key_table(results_test) %>%
+    suppressWarnings()
+
+  expected_output <- results_test %>%
+    dplyr::mutate(analysis_type = c("prop_select_one", "mean"),
+                  analysis_var = c("fcs_cat", "expenditure_food"),
+                  analysis_var_value = c("low", "NA"),
+                  group_var = c("location ~/~ population", "location"),
+                  group_var_value = c("locationA ~/~ displaced", "locationB"),
+                  nb_analysis_var = c(1,1),
+                  nb_group_var = c(2,1))
+
+  expect_equal(unite_variables(key_table_test), expected_output)
+})
+
 
 
