@@ -31,3 +31,70 @@
 #             expected_outputs)
 #
 # }
+
+test_that("If the cluster variable name cannot be found, the function stops", {
+  test_dataset <- presentresults_MSNA_template_data
+  test_results <- presentresults_resultstable
+
+  expect_error(create_sf_from_results(df = test_dataset,
+                                      cluster_var = "cluster_test_t",
+                                      results = test_results,
+                                      analysis_key = "analysis_key"))
+
+})
+
+test_that("Calculates correctly the number of clusters", {
+
+  test_dataset <- presentresults_MSNA_template_data
+  test_results <- presentresults_resultstable
+
+  result <- create_sf_from_results(test_dataset,
+                                   cluster_var = "cluster_test",
+                                   results = test_results,
+                                   analysis_key = "analysis_key")
+
+  set.seed(1223)
+  test_dataset <- test_dataset %>%
+    dplyr::mutate(cluster_test = sample(letters[1:6], size = 100, replace = T)) %>%
+    dplyr::mutate(cluster_test = paste(location, population, cluster_test))
+
+  n_clusters <- test_dataset %>%
+    group_by(location) %>%
+    summarise(n_cluster = length(unique(cluster_test))) %>%
+    mutate(population = NA)
+
+  expected_outputs <- test_dataset %>%
+    group_by(location, population) %>%
+    summarise(n_cluster = length(unique(cluster_test))) %>%
+    rbind(n_clusters)
+
+  testthat::expect_equal(result, expected_outputs)
+})
+
+test_that("Calculates correctly the number of observations", {
+  test_dataset <- presentresults_MSNA_template_data
+  test_results <- presentresults_resultstable
+
+  result <- create_sf_from_results(test_dataset,
+                                   cluster_var = "cluster_test",
+                                   results = test_results,
+                                   analysis_key = "analysis_key")
+  set.seed(1223)
+  test_dataset <- test_dataset %>%
+    dplyr::mutate(cluster_test = sample(letters[1:6], size = 100, replace = T)) %>%
+    dplyr::mutate(cluster_test = paste(location, population, cluster_test))
+
+  n_observations <- test_dataset %>%
+    group_by(location) %>%
+    summarise(n_households = n()) %>%
+    mutate(population = NA)
+
+  expected_outputs <- test_dataset %>%
+    group_by(location, population) %>%
+    summarise(n_households = n()) %>%
+    rbind(n_observations)
+
+  testthat::expect_equal(result, expected_outputs)
+})
+
+
