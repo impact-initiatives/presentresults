@@ -52,10 +52,11 @@ verify_grep_AinB <- function(.A, .B) {
 verify_numbers_values <- function(var_name, values_set, expected_number) {
   unique_values <- unique(values_set)
 
-  if(length(unique_values[!is.na(unique_values)]) != expected_number) {
-    msg <- glue::glue("Expecting ", expected_number, " of values in ", var_name, " but got ",
-                      length(unique_values[!is.na(unique_values)]), " unique values.")
+  if (length(unique_values[!is.na(unique_values)]) != expected_number) {
+    msg <- glue::glue(
+      "Expecting ", expected_number, " of values in ", var_name, " but got ",
+      length(unique_values[!is.na(unique_values)]), " unique values."
+    )
     warning(msg)
   }
-
 }
