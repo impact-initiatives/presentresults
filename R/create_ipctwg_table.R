@@ -112,6 +112,15 @@ check_ipctwg_results <- function(.results,
                                  stat_col = "stat",
                                  proportion_name = "prop_select_one",
                                  mean_name = "mean") {
+  # verify number of values.
+  verify_numbers_values("fcs_cat_values", fcs_cat_values, 3)
+  verify_numbers_values("rcsi_cat_values", rcsi_cat_values, 3)
+  verify_numbers_values("lcsi_cat_values", lcsi_cat_values, 4)
+  verify_numbers_values("hhs_cat_values", hhs_cat_values, 5)
+  verify_numbers_values("lcsi_set", lcsi_set, 10)
+  verify_numbers_values("lcsi_value_set", lcsi_value_set, 4)
+
+
   # create a dictionary for each set
   dictionary <- list(
     fcs = list(var_name = fcs_cat_var, values_set = fcs_cat_values, analysis_type = proportion_name),
@@ -120,10 +129,13 @@ check_ipctwg_results <- function(.results,
     hhs = list(var_name = hhs_cat_var, values_set = hhs_cat_values, analysis_type = proportion_name),
     fcs_set_mean = list(var_name = fcs_set, values_set = NA, analysis_type = mean_name),
     rcsi_set_mean = list(var_name = rcsi_set, values_set = NA, analysis_type = mean_name),
-    rcsi_set_prop = list(var_name = rcsi_set, values_set = 0:7, analysis_type = proportion_name),
+    rcsi_set_prop = list(var_name = rcsi_set, values_set = c(0:7), analysis_type = proportion_name),
     lcsi_set_prop = list(var_name = lcsi_set, values_set = lcsi_value_set, analysis_type = proportion_name)
   )
   if (with_fclc) {
+    verify_numbers_values("fclc_matrix_values", fclc_matrix_values, 5)
+    verify_numbers_values("fc_matrix_values", fc_matrix_values, 5)
+
     fclc_dictionary <- list(
       fclc_matrix = list(var_name = fclc_matrix_var, values_set = fclc_matrix_values, analysis_type = proportion_name),
       fc_matrix = list(var_name = fc_matrix_var, values_set = fc_matrix_values, analysis_type = proportion_name)
@@ -436,7 +448,7 @@ create_ipctwg_table <- function(.results,
 
   # adding the proportion and mean again
   orderered_ipctw_table <- orderered_ipctw_table %>%
-    dplyr::left_join(dplyr::select(.results, analysis_key, stat_col))
+    dplyr::left_join(dplyr::select(.results, dplyr::all_of(c(analysis_key, stat_col))))
 
   # create group x variable
   create_table_group_x_variable(orderered_ipctw_table,

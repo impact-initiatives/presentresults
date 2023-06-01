@@ -152,7 +152,8 @@ test_that("If at least one variable is not present, there should be an error", {
     check_ipctwg_results(
       .results = presentresults_resultstable,
       lcsi_set = "xx"
-    ),
+    ) %>%
+      suppressWarnings(),
     "Following variables: lcsi_cat, hhs_cat_ipc, xx cannot be found in the results table"
   )
 
@@ -161,7 +162,8 @@ test_that("If at least one variable is not present, there should be an error", {
       .results = presentresults_resultstable,
       lcsi_set = c("liv_stress_lcsi_1", "liv_stress_lcsi_2"),
       with_fclc = T
-    ),
+    ) %>%
+      suppressWarnings(),
     "Following variables: fclc_phase, fc_phase, lcsi_cat, hhs_cat_ipc cannot be found in the results table"
   )
 
@@ -170,7 +172,8 @@ test_that("If at least one variable is not present, there should be an error", {
       .results = presentresults_resultstable,
       lcsi_set = c("liv_stress_lcsi_1", "liv_stress_lcsi_2"),
       other_variables = c("number_lunch", "expenses")
-    ),
+    ) %>%
+      suppressWarnings(),
     "Following variables: lcsi_cat, hhs_cat_ipc, number_lunch, expenses cannot be found in the results table"
   )
 })
@@ -214,4 +217,87 @@ test_that("If one options present in the dataset is not part of the one in the t
     ) %>% suppressWarnings(),
     "fcls_cat:phase_1, phase_2, phase_3, phase_4, phase_5 are in the results table as options but are not defined in the function arguments"
   )
+})
+
+test_that("if number of expected values is different it will show a warning", {
+
+  #Adding None to fclc_matrix_values
+  check_ipctwg_results(
+    .results = presentresults_resultstable,
+    fclc_matrix_var = "fcls_cat",
+    fclc_matrix_values = c("None", "phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
+    fc_matrix_var = "fcm_cat",
+    fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5" ),
+    with_fclc = TRUE,
+    fcs_cat_values = c("low", "medium", "high"),
+    rcsi_cat_values = c("low", "medium", "high"),
+    lcsi_cat_var = "lcs_cat",
+    lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    lcsi_set = c(
+      "liv_stress_lcsi_1",
+      "liv_stress_lcsi_2",
+      "liv_stress_lcsi_3",
+      "liv_stress_lcsi_4",
+      "liv_crisis_lcsi_1",
+      "liv_crisis_lcsi_2",
+      "liv_crisis_lcsi_3",
+      "liv_emerg_lcsi_1",
+      "liv_emerg_lcsi_2",
+      "liv_emerg_lcsi_3"
+    )
+  ) %>%
+    expect_warning("Expecting 5 of values in fclc_matrix_values but got 6 unique values.") %>%
+    expect_warning()
+
+  #removing high in fcs.
+  no_high_results <- presentresults_resultstable %>%
+    dplyr::filter(!(analysis_var_value == "high" & analysis_var == "fcs_cat"))
+  check_ipctwg_results(
+    .results = no_high_results,
+    fcs_cat_values = c("low", "medium"),
+    rcsi_cat_values = c("low", "medium", "high"),
+    lcsi_cat_var = "lcs_cat",
+    lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    lcsi_set = c(
+      "liv_stress_lcsi_1",
+      "liv_stress_lcsi_2",
+      "liv_stress_lcsi_3",
+      "liv_stress_lcsi_4",
+      "liv_crisis_lcsi_1",
+      "liv_crisis_lcsi_2",
+      "liv_crisis_lcsi_3",
+      "liv_emerg_lcsi_1",
+      "liv_emerg_lcsi_2",
+      "liv_emerg_lcsi_3"
+    )
+  )  %>%
+    expect_warning("Expecting 3 of values in fcs_cat_values but got 2 unique values.") %>%
+    expect_warning()
+
+  # removing some LCSI variables
+  check_ipctwg_results(
+    .results = presentresults_resultstable,
+    fcs_cat_values = c("low", "medium", "high"),
+    rcsi_cat_values = c("low", "medium", "high"),
+    lcsi_cat_var = "lcs_cat",
+    lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    lcsi_set = c(
+      "liv_stress_lcsi_1",
+      "liv_stress_lcsi_2",
+      "liv_stress_lcsi_3",
+      "liv_stress_lcsi_4",
+      "liv_crisis_lcsi_1",
+      "liv_crisis_lcsi_2",
+      "liv_crisis_lcsi_3",
+      "liv_emerg_lcsi_1"
+    )
+  )  %>%
+    expect_warning("Expecting 10 of values in lcsi_set but got 8 unique values.") %>%
+    expect_warning()
 })

@@ -21,13 +21,7 @@
 #' create_analysis_key_table(presentresults_resultstable)
 create_analysis_key_table <- function(.results, analysis_key = "analysis_key") {
   # check for @/@ format for the different types
-  if (.results %>%
-    dplyr::pull(!!rlang::sym(analysis_key)) %>%
-    stringr::str_split(" @/@ ", simplify = TRUE) %>%
-    dim() %>%
-    `[[`(2) != 3) {
-    stop("Analysis keys does not seem to follow the correct format")
-  }
+  verify_analysis_key(.results[[analysis_key]])
 
   key_table <- .results %>%
     dplyr::select(dplyr::all_of(c(analysis_key))) %>%

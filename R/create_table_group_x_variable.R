@@ -15,8 +15,6 @@
 create_table_group_x_variable <- function(.results,
                                           analysis_key = "analysis_key",
                                           value_columns = c("stat", "stat_low", "stat_upp")) {
-  verify_analysis_key(.results[[analysis_key]])
-
   if (!all(value_columns %in% names(.results))) {
     stop("Cannot find at least one of the value_columns element")
   }
