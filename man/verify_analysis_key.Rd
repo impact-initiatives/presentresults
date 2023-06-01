@@ -17,4 +17,5 @@ Helper to check the format of the analysis key
 }
 \examples{
 verify_analysis_key(presentresults_resultstable$analysis_key)
+
 }

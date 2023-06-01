@@ -10,9 +10,9 @@
 #'
 verify_analysis_key <- function(analysis_key) {
   if (analysis_key %>%
-      stringr::str_split(" @/@ ", simplify = TRUE) %>%
-      dim() %>%
-      `[[`(2) != 3) {
+    stringr::str_split(" @/@ ", simplify = TRUE) %>%
+    dim() %>%
+    `[[`(2) != 3) {
     stop("Analysis keys does not seem to follow the correct format")
   }
 }
@@ -34,4 +34,3 @@ verify_grep_AinB <- function(.A, .B) {
   .A %>%
     sapply(FUN = function(xx) sum(stringr::str_detect(.B, pattern = xx)) > 0)
 }
-

@@ -21,20 +21,20 @@ create_table_group_x_variable <- function(.results,
     stop("Cannot find at least one of the value_columns element")
   }
 
-  #create the information from the key index
+  # create the information from the key index
   index_table <-
     create_analysis_key_table(.results, analysis_key = analysis_key)
 
-  #add the stats needed
+  # add the stats needed
   indexed_results <- index_table %>%
-    dplyr::left_join(by = analysis_key, .results %>% dplyr::select(all_of(c(
+    dplyr::left_join(by = analysis_key, .results %>% dplyr::select(dplyr::all_of(c(
       analysis_key, value_columns
     ))))
 
-  #unite the analysis and grouping variables.
+  # unite the analysis and grouping variables.
   indexed_results <- unite_variables(indexed_results)
 
-  #get the main information into a wide format
+  # get the main information into a wide format
   step1 <- indexed_results %>%
     tidyr::pivot_wider(
       id_cols = c(group_var_value),
@@ -44,7 +44,7 @@ create_table_group_x_variable <- function(.results,
       names_vary = "slowest"
     )
 
-  #get the headers from the names: name of the variable, value of the variable, type of analysis
+  # get the headers from the names: name of the variable, value of the variable, type of analysis
   new_headers <- names(step1) %>%
     stringr::str_split(pattern = " ~/~ ") %>%
     do.call(cbind, .) %>%
@@ -52,7 +52,24 @@ create_table_group_x_variable <- function(.results,
     `names<-`(names(step1)) %>%
     dplyr::mutate(dplyr::across(dplyr::where(is.character), ~ dplyr::na_if(., "NA")))
 
-  #return the result
+  # Reodering the row of headers
+  if (length(value_columns) > 1) {
+    new_headers <- new_headers[c(2:4, 1), ]
+    rownames(new_headers) <- c(
+      "header_analysis_var",
+      "header_analysis_var_value",
+      "header_analysis_type",
+      "header_stat_type"
+    )
+  } else {
+    rownames(new_headers) <- c(
+      "header_analysis_var",
+      "header_analysis_var_value",
+      "header_analysis_type"
+    )
+  }
+
+  # return the result
   new_headers %>%
     rbind(step1)
 }

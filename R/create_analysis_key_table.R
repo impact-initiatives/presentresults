@@ -85,27 +85,26 @@ create_analysis_key_table <- function(.results, analysis_key = "analysis_key") {
 #' \dontrun{
 #' unite_variables(key_table)
 #' }
-
 unite_variables <- function(key_table) {
   key_table %>%
     tidyr::unite(analysis_var,
-                 c(
-                   dplyr::starts_with("analysis_var") &
-                     !dplyr::contains("value")
-                 ),
-                 sep = " ~/~ "
+      c(
+        dplyr::starts_with("analysis_var") &
+          !dplyr::contains("value")
+      ),
+      sep = " ~/~ "
     ) %>%
     tidyr::unite(analysis_var_value,
-                 c(dplyr::starts_with("analysis_var_value_")),
-                 sep = " ~/~ "
+      c(dplyr::starts_with("analysis_var_value_")),
+      sep = " ~/~ "
     ) %>%
     tidyr::unite(group_var, c(
       dplyr::starts_with("group_var_") &
         !dplyr::contains("value")
     ), sep = " ~/~ ") %>%
     tidyr::unite(group_var_value,
-                 c(dplyr::starts_with("group_var_value_")),
-                 sep = " ~/~ "
+      c(dplyr::starts_with("group_var_value_")),
+      sep = " ~/~ "
     ) %>%
     dplyr::mutate(dplyr::across(
       c(
