@@ -249,8 +249,6 @@ test_that("if number of expected values is different it will show a warning", {
     )
   ) %>%
     expect_warning("Expecting 5 of values in fclc_matrix_values but got 6 unique values.")
-  # %>%
-    # expect_warning()
 
   #removing high in fcs.
   no_high_results <- presentresults_resultstable %>%
@@ -277,8 +275,6 @@ test_that("if number of expected values is different it will show a warning", {
     )
   )  %>%
     expect_warning("Expecting 3 of values in fcs_cat_values but got 2 unique values.")
-  # %>%
-  #   expect_warning()
 
   # removing some LCSI variables
   check_ipctwg_results(
@@ -301,6 +297,4 @@ test_that("if number of expected values is different it will show a warning", {
     )
   )  %>%
     expect_warning("Expecting 10 of values in lcsi_set but got 8 unique values.")
-  # %>%
-  #   expect_warning()
 })
