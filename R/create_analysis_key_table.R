@@ -59,7 +59,8 @@ create_analysis_key_table <- function(.results, analysis_key = "analysis_key") {
     tidyr::separate(group_var,
       group_var_split,
       sep = " ~/~ "
-    )
+    ) %>%
+    suppressWarnings()
 
   return(key_table)
 }
