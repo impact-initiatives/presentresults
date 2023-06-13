@@ -1,5 +1,11 @@
 testthat::test_that("check messeges", {
 
+  # Cluster-ID not provided. Assuming cluster sampling was not applied.
+  testthat::expect_warning(create_group_clusters(result = presentresults::presentresults_resultstable,
+                                               dataset = presentresults::presentresults_MSNA_template_data),
+                           "cluster_name not provided. Assuming cluster sampling was not applied." )
+
+
   testthat::expect_error(create_group_clusters(result = presentresults::presentresults_resultstable,
                                                analysis_key = "Analsysi_key",
                                                dataset = presentresults::presentresults_MSNA_template_data,
@@ -65,26 +71,26 @@ testthat::test_that("expect equal", {
 
 
 testthat::test_that("With no grouping", {
-results <- data.frame(stat = c(.66,.33,0,12),
-                      analysis_key = c("prop_select_one @/@ fcs_cat ~/~ low @/@ NA ~/~ NA",
-                                       "prop_select_one @/@ fcs_cat ~/~ medium @/@ NA ~/~ NA",
-                                       "prop_select_one @/@ fcs_cat ~/~ high @/@ NA ~/~ NA",
-                                       "prop_select_one @/@ fcs_cat ~/~ low @/@ location ~/~ locationA ~/~ population ~/~ displaced"))
+  results <- data.frame(stat = c(.66,.33,0,12),
+                        analysis_key = c("prop_select_one @/@ fcs_cat ~/~ low @/@ NA ~/~ NA",
+                                         "prop_select_one @/@ fcs_cat ~/~ medium @/@ NA ~/~ NA",
+                                         "prop_select_one @/@ fcs_cat ~/~ high @/@ NA ~/~ NA",
+                                         "prop_select_one @/@ fcs_cat ~/~ low @/@ location ~/~ locationA ~/~ population ~/~ displaced"))
 
-testthat::expect_no_error(create_group_clusters(result =  results,
-                      dataset =  presentresults::presentresults_MSNA_template_data,
-                      cluster_name = "cluster_id"))
+  testthat::expect_no_error(create_group_clusters(result =  results,
+                                                  dataset =  presentresults::presentresults_MSNA_template_data,
+                                                  cluster_name = "cluster_id"))
 
-actual <- create_group_clusters(result =  results,
-                                dataset =  presentresults::presentresults_MSNA_template_data,
-                                cluster_name = "cluster_id")
-expected <- data.frame(number_of_cluster = c(2L, 2L, 2L, 2L, 2L),
-                           number_of_hh = c(100L,  31L, 24L, 27L, 18L),
-                           group_var_value = c("Overall", "locationA ~ displaced",
-                                               "locationA ~ non-displaced", "locationB ~ displaced",
-                                               "locationB ~ non-displaced"  ))
+  actual <- create_group_clusters(result =  results,
+                                  dataset =  presentresults::presentresults_MSNA_template_data,
+                                  cluster_name = "cluster_id")
+  expected <- data.frame(number_of_cluster = c(2L, 2L, 2L, 2L, 2L),
+                         number_of_hh = c(100L,  31L, 24L, 27L, 18L),
+                         group_var_value = c("Overall", "locationA ~ displaced",
+                                             "locationA ~ non-displaced", "locationB ~ displaced",
+                                             "locationB ~ non-displaced"  ))
 
-testthat::expect_equal(actual,expected)
+  testthat::expect_equal(actual,expected)
 
 
 
@@ -92,11 +98,22 @@ testthat::expect_equal(actual,expected)
 
 testthat::test_that("With NULL in cluster_id", {
 
-  testthat::expect_error(create_group_clusters(result =  presentresults_resultstable,
-                      dataset =  presentresults::presentresults_MSNA_template_data))
 
-  testthat::expect_error(create_group_clusters(result =  presentresults_resultstable,
-                      dataset =  presentresults::presentresults_MSNA_template_data, cluster_name = NULL),
-                      "You must provide the column name for cluster.")
+  expected <-data.frame(group_var_value = c("locationA ~ displaced", "locationA ~ non-displaced",
+                                            "locationB ~ displaced", "locationB ~ non-displaced",
+                                            "locationA","locationB"),
+                        number_of_cluster = NA,
+                        number_of_hh = c(31L, 24L, 27L, 18L, 55L, 45L)) |> as.data.frame()
+
+  actual <- create_group_clusters(result =  presentresults::presentresults_resultstable,
+                                  dataset =  presentresults::presentresults_MSNA_template_data) |> as.data.frame()
+
+
+  testthat::expect_equal(actual,expected)
+
+  actual <- create_group_clusters(result =  presentresults::presentresults_resultstable,
+                                  dataset =  presentresults::presentresults_MSNA_template_data,cluster_name = NULL)|> as.data.frame()
+
+  testthat::expect_equal(actual,expected)
 
 })

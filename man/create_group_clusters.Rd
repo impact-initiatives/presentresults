@@ -8,7 +8,7 @@ create_group_clusters(
   result,
   analysis_key = "analysis_key",
   dataset,
-  cluster_name
+  cluster_name = NULL
 )
 }
 \arguments{
