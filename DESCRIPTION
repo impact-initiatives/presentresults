@@ -7,10 +7,9 @@ Authors@R: c(
     person("Yann", "Say", "", email = "yann.say@impact-initiatives.org", role = c("aut", "cre"), 
           comment = c(ORCID = "0000-0002-7390-4209"))
           )
-Description: The package provides wrappers to turn results from a long format
-    into wide or graphics. It is based on tidyverse mainly.
-    For results in a long format, it will work with an analysis key which have 
-    the following format: analysis_type @/@ dependent_variable  ~/~ 
+Description: The package provides wrappers to turn results from a long format into wide or graphics. 
+    It is based on tidyverse mainly. For results in a long format, it will work with an analysis key 
+    which have the following format: analysis_type @/@ dependent_variable  ~/~ 
     dependent_variable_value @/@ independent_variable ~/~ 
     independent_variable_value
 License: MIT + file LICENSE

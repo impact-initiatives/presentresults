@@ -7,6 +7,8 @@
 create_ipctwg_table(
   .results,
   analysis_key = "analysis_key",
+  dataset,
+  cluster_name = NULL,
   fclc_matrix_var = "fclc_phase",
   fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC",
     "Phase 4 - FCLC", "Phase 5 - FCLC"),
@@ -40,6 +42,12 @@ create_ipctwg_table(
 
 \item{analysis_key}{String with the name of the analysis key. Default is "analysis_key"}
 
+\item{dataset}{dataset used to create the analysis results to calculate the number of clusters
+or number of survey.}
+
+\item{cluster_name}{string with the name of column of the cluster in the dataset. Default is NULL,
+it will calculate the number of interviews only.}
+
 \item{fclc_matrix_var}{String with the name of the food consumption livelihood matrix from FEWSNET.
 Default is "fclc_phase"}
 
@@ -49,7 +57,7 @@ Default is c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FC
 \item{fc_matrix_var}{String with the name of the food consumption matrix from FEWSNET.
 Default is "fc_phase"}
 
-\item{fc_matrix_values}{String with the options of the food consumption matrix. Defautl is
+\item{fc_matrix_values}{String with the options of the food consumption matrix. Default is
 c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")}
 
 \item{with_fclc}{TRUE or FALSE, whether to include the FCLC and FC values.
@@ -101,18 +109,27 @@ set. Default is c("yes", "no_had_no_need", "no_exhausted", "not_applicable")}
 \item{mean_name}{String how a mean is called in the analysis key. Default is "mean"}
 }
 \value{
-a wide table with groups of interest in the rows, and the variables in the columns in a
-format that can be shared to the IPC TWG.
+a list with:
+\itemize{
+\item a wide table with groups of interest in the rows, and the variables in the columns in a
+format that can be shared to the IPC TWG. This table should be pass into
+create_xlsx_group_x_variable
+\item the dataset that was provided.
+}
 }
 \description{
 Create a table from a results table with a key analysis in a format to be shared with the
 IPC TWG.
-For arguments that are *_values or *_set, and other_variables, the order of appereance will be
-the order in the table
+}
+\details{
+For arguments that are *_values or *_set, and other_variables, the order of appearance will be
+the order in the table.
 }
 \examples{
 create_ipctwg_table(
   .results = presentresults_resultstable,
+  dataset = presentresults_MSNA_template_data,
+  cluster_name = "cluster_id",
   fclc_matrix_var = "fcls_cat",
   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
   fc_matrix_var = "fcm_cat",

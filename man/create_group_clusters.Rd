@@ -27,8 +27,10 @@ A dataframe with number of HH and cluster in each group
 Create number of cluster and number of hh surveyed per group/strata
 }
 \examples{
-create_group_clusters(result = presentresults_resultstable,
-dataset = presentresults_MSNA_template_data,
-cluster_name = "cluster_id")
+create_group_clusters(
+  result = presentresults_resultstable,
+  dataset = presentresults_MSNA_template_data,
+  cluster_name = "cluster_id"
+)
 
 }

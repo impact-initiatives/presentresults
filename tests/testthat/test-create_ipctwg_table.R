@@ -2,12 +2,15 @@ test_that("that the results are correctly displayed", {
   all_vars_expected_output <- readRDS(testthat::test_path("fixtures", "export_fewsnet.RDS"))
 
   # removing non-core indicators
-  with_fewsnet_matrix_output <- all_vars_expected_output %>%
+  with_fewsnet_matrix_output <- all_vars_expected_output
+  with_fewsnet_matrix_output$ipctwg_table <- all_vars_expected_output$ipctwg_table %>%
     dplyr::select(-dplyr::contains(c("income_v2_sum", "expenditure_food")))
 
   # with fewsnet matrix
   actual_output <- create_ipctwg_table(
     .results = presentresults_resultstable,
+    dataset = presentresults_MSNA_template_data,
+    cluster_name = "cluster_id",
     fclc_matrix_var = "fcls_cat",
     fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
     fc_matrix_var = "fcm_cat",
@@ -40,11 +43,14 @@ test_that("that the results are correctly displayed", {
   )
 
   # without fewsnet matrix phases
-  no_fewsnet_phase_expected_output <- with_fewsnet_matrix_output %>%
+  no_fewsnet_phase_expected_output <- with_fewsnet_matrix_output
+  no_fewsnet_phase_expected_output$ipctwg_table <- with_fewsnet_matrix_output$ipctwg_table %>%
     dplyr::select(-dplyr::contains(c("fcls_cat", "fcm_cat")))
 
   no_fewsnet_phase_actual_output <- create_ipctwg_table(
     .results = presentresults_resultstable,
+    dataset = presentresults_MSNA_template_data,
+    cluster_name = "cluster_id",
     fcs_cat_values = c("low", "medium", "high"),
     rcsi_cat_values = c("low", "medium", "high"),
     lcsi_cat_var = "lcs_cat",
@@ -65,11 +71,16 @@ test_that("that the results are correctly displayed", {
     )
   ) %>%
     suppressWarnings()
-  expect_equal(no_fewsnet_phase_actual_output, no_fewsnet_phase_expected_output)
+  expect_equal(
+    no_fewsnet_phase_actual_output,
+    no_fewsnet_phase_expected_output
+  )
 
   # with adding others variables (one cat, one number, one select multiple)
   all_vars_actual_output <- create_ipctwg_table(
     .results = presentresults_resultstable,
+    dataset = presentresults_MSNA_template_data,
+    cluster_name = "cluster_id",
     fclc_matrix_var = "fcls_cat",
     fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
     fc_matrix_var = "fcm_cat",
@@ -96,7 +107,10 @@ test_that("that the results are correctly displayed", {
     other_variables = c("income_v2_sum", "expenditure_food")
   ) %>%
     suppressWarnings()
-  expect_equal(all_vars_actual_output, all_vars_expected_output)
+  expect_equal(
+    all_vars_actual_output,
+    all_vars_expected_output
+  )
 })
 
 test_that("that if there is one missiong option, the variable still show in the table,
@@ -104,10 +118,11 @@ test_that("that if there is one missiong option, the variable still show in the 
   all_vars_expected_output <- readRDS(testthat::test_path("fixtures", "export_fewsnet.RDS"))
 
   # removing non-core indicators
-  with_fewsnet_matrix_output <- all_vars_expected_output %>%
+  with_fewsnet_matrix_output <- all_vars_expected_output
+  with_fewsnet_matrix_output$ipctwg_table <- all_vars_expected_output$ipctwg_table %>%
     dplyr::select(-dplyr::contains(c("income_v2_sum", "expenditure_food")))
 
-  with_fewsnet_matrix_output[["fcls_cat ~/~ phase_1 ~/~ prop_select_one"]] <- c("fcls_cat", "phase_1", "prop_select_one", rep(NA, 6))
+  with_fewsnet_matrix_output$ipctwg_table[["fcls_cat ~/~ phase_1 ~/~ prop_select_one"]] <- c("fcls_cat", "phase_1", "prop_select_one", rep(NA, 6))
 
   # removing all phase_1 in fcls_cat
   presentresults_resultstable_trimed <- presentresults_resultstable %>%
@@ -115,6 +130,8 @@ test_that("that if there is one missiong option, the variable still show in the 
   # with fewsnet matrix
   actual_output <- create_ipctwg_table(
     .results = presentresults_resultstable_trimed,
+    dataset = presentresults_MSNA_template_data,
+    cluster_name = "cluster_id",
     fclc_matrix_var = "fcls_cat",
     fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
     fc_matrix_var = "fcm_cat",
@@ -220,14 +237,13 @@ test_that("If one options present in the dataset is not part of the one in the t
 })
 
 test_that("if number of expected values is different it will show a warning", {
-
-  #Adding None to fclc_matrix_values
+  # Adding None to fclc_matrix_values
   check_ipctwg_results(
     .results = presentresults_resultstable,
     fclc_matrix_var = "fcls_cat",
     fclc_matrix_values = c("None", "phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
     fc_matrix_var = "fcm_cat",
-    fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5" ),
+    fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
     with_fclc = TRUE,
     fcs_cat_values = c("low", "medium", "high"),
     rcsi_cat_values = c("low", "medium", "high"),
@@ -250,7 +266,7 @@ test_that("if number of expected values is different it will show a warning", {
   ) %>%
     expect_warning("Expecting 5 of values in fclc_matrix_values but got 6 unique values.")
 
-  #removing high in fcs.
+  # removing high in fcs.
   no_high_results <- presentresults_resultstable %>%
     dplyr::filter(!(analysis_var_value == "high" & analysis_var == "fcs_cat"))
   check_ipctwg_results(
@@ -273,7 +289,7 @@ test_that("if number of expected values is different it will show a warning", {
       "liv_emerg_lcsi_2",
       "liv_emerg_lcsi_3"
     )
-  )  %>%
+  ) %>%
     expect_warning("Expecting 3 of values in fcs_cat_values but got 2 unique values.")
 
   # removing some LCSI variables
@@ -295,6 +311,6 @@ test_that("if number of expected values is different it will show a warning", {
       "liv_crisis_lcsi_3",
       "liv_emerg_lcsi_1"
     )
-  )  %>%
+  ) %>%
     expect_warning("Expecting 10 of values in lcsi_set but got 8 unique values.")
 })
