@@ -10,7 +10,7 @@
 #' Default is c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC")
 #' @param fc_matrix_var String with the name of the food consumption matrix from FEWSNET.
 #' Default is "fc_phase"
-#' @param fc_matrix_values String with the options of the food consumption matrix. Defautl is
+#' @param fc_matrix_values String with the options of the food consumption matrix. Default is
 #'  c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")
 #' @param with_fclc TRUE or FALSE, whether to include the FCLC and FC values.
 #' Default is set to FALSE.
@@ -203,12 +203,7 @@ check_ipctwg_results <- function(.results,
   ))
 }
 
-#' Creates a table for the IPCTWG
-#'
-#' Create a table from a results table with a key analysis in a format to be shared with the
-#' IPC TWG.
-#' For arguments that are *_values or *_set, and other_variables, the order of appereance will be
-#' the order in the table
+#' Helper to order the ipctwg results
 #'
 #' @param .results results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
@@ -218,7 +213,7 @@ check_ipctwg_results <- function(.results,
 #' Default is c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC")
 #' @param fc_matrix_var String with the name of the food consumption matrix from FEWSNET.
 #' Default is "fc_phase"
-#' @param fc_matrix_values String with the options of the food consumption matrix. Defautl is
+#' @param fc_matrix_values String with the options of the food consumption matrix. Default is
 #'  c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")
 #' @param with_fclc TRUE or FALSE, whether to include the FCLC and FC values.
 #' Default is set to FALSE.
@@ -252,12 +247,11 @@ check_ipctwg_results <- function(.results,
 #' "prop_select_one"
 #' @param mean_name String how a mean is called in the analysis key. Default is "mean"
 #'
-#' @return a wide table with groups of interest in the rows, and the variables in the columns in a
-#' format that can be shared to the IPC TWG.
+#' @return one ordered group x variable table
 #' @export
 #'
 #' @examples
-#' create_ipctwg_table(
+#' create_ordered_ipctwg_table(
 #'   .results = presentresults_resultstable,
 #'   fclc_matrix_var = "fcls_cat",
 #'   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
@@ -284,40 +278,39 @@ check_ipctwg_results <- function(.results,
 #'   ),
 #'   other_variables = c("income_v2_sum", "expenditure_food")
 #' )
-#'
-create_ipctwg_table <- function(.results,
-                                analysis_key = "analysis_key",
-                                fclc_matrix_var = "fclc_phase",
-                                fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
-                                fc_matrix_var = "fc_phase",
-                                fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC"),
-                                with_fclc = FALSE,
-                                fcs_cat_var = "fcs_cat",
-                                fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
-                                rcsi_cat_var = "rcsi_cat",
-                                rcsi_cat_values = c("No to Low", "Medium", "High"),
-                                lcsi_cat_var = "lcsi_cat",
-                                lcsi_cat_values = c("None", "Stress", "Crisis", "Emergency"),
-                                hhs_cat_var = "hhs_cat_ipc",
-                                hhs_cat_values = c("None", "Little", "Moderate", "Severe", "Very Severe"),
-                                fcs_set = c(
-                                  "fs_fcs_cereals_grains_roots_tubers",
-                                  "fs_fcs_beans_nuts",
-                                  "fs_fcs_dairy",
-                                  "fs_fcs_meat_fish_eggs",
-                                  "fs_fcs_vegetables_leaves",
-                                  "fs_fcs_fruit",
-                                  "fs_fcs_oil_fat_butter",
-                                  "fs_fcs_sugar",
-                                  "fs_fcs_condiment"
-                                ),
-                                rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
-                                lcsi_set,
-                                lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
-                                other_variables = NULL,
-                                stat_col = "stat",
-                                proportion_name = "prop_select_one",
-                                mean_name = "mean") {
+create_ordered_ipctwg_table <- function(.results,
+                                        analysis_key = "analysis_key",
+                                        fclc_matrix_var = "fclc_phase",
+                                        fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
+                                        fc_matrix_var = "fc_phase",
+                                        fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC"),
+                                        with_fclc = FALSE,
+                                        fcs_cat_var = "fcs_cat",
+                                        fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
+                                        rcsi_cat_var = "rcsi_cat",
+                                        rcsi_cat_values = c("No to Low", "Medium", "High"),
+                                        lcsi_cat_var = "lcsi_cat",
+                                        lcsi_cat_values = c("None", "Stress", "Crisis", "Emergency"),
+                                        hhs_cat_var = "hhs_cat_ipc",
+                                        hhs_cat_values = c("None", "Little", "Moderate", "Severe", "Very Severe"),
+                                        fcs_set = c(
+                                          "fs_fcs_cereals_grains_roots_tubers",
+                                          "fs_fcs_beans_nuts",
+                                          "fs_fcs_dairy",
+                                          "fs_fcs_meat_fish_eggs",
+                                          "fs_fcs_vegetables_leaves",
+                                          "fs_fcs_fruit",
+                                          "fs_fcs_oil_fat_butter",
+                                          "fs_fcs_sugar",
+                                          "fs_fcs_condiment"
+                                        ),
+                                        rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
+                                        lcsi_set,
+                                        lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+                                        other_variables = NULL,
+                                        stat_col = "stat",
+                                        proportion_name = "prop_select_one",
+                                        mean_name = "mean") {
   # Checks the results table
   checks_results <- check_ipctwg_results(
     .results = .results,
@@ -455,4 +448,187 @@ create_ipctwg_table <- function(.results,
     analysis_key = analysis_key,
     value_columns = stat_col
   )
+}
+
+
+#' Creates a table for the IPCTWG
+#'
+#' Create a table from a results table with a key analysis in a format to be shared with the
+#' IPC TWG.
+#'
+#' For arguments that are *_values or *_set, and other_variables, the order of appearance will be
+#' the order in the table.
+#'
+#' @param .results results table with analysis key
+#' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
+#' @param dataset dataset used to create the analysis results to calculate the number of clusters
+#' or number of survey.
+#' @param cluster_name string with the name of column of the cluster in the dataset. Default is NULL,
+#' it will calculate the number of interviews only.
+#' @param fclc_matrix_var String with the name of the food consumption livelihood matrix from FEWSNET.
+#' Default is "fclc_phase"
+#' @param fclc_matrix_values String with the options of the food consumption livelihood matrix
+#' Default is c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC")
+#' @param fc_matrix_var String with the name of the food consumption matrix from FEWSNET.
+#' Default is "fc_phase"
+#' @param fc_matrix_values String with the options of the food consumption matrix. Default is
+#'  c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")
+#' @param with_fclc TRUE or FALSE, whether to include the FCLC and FC values.
+#' Default is set to FALSE.
+#' @param fcs_cat_var The string with the name of the Food Consumption Score. Default is "fcs_cat"
+#' @param fcs_cat_values String with the options of the Food Consumption Score. Default is
+#' c("Poor", "Borderline", "Acceptable")
+#' @param rcsi_cat_var The string with the name of the reduced Coping Strategy Index. Default is "rcsi_cat"
+#' @param rcsi_cat_values String with the options of the reduced Coping Strategy Index. Default is
+#' c("No to Low", "Medium", "High")
+#' @param lcsi_cat_var The string with the name of the Livelihood Coping Strategy Index. Default is
+#' "lcsi_cat"
+#' @param lcsi_cat_values String with the options of the Livelihood Coping Strategy Index. Default
+#' is c("None", "Stress", "Crisis", "Emergency")
+#' @param hhs_cat_var The string with the name of the Household Hunger Scale. Default is "hhs_cat_ipc"
+#' @param hhs_cat_values String with the options of the Household Hunger Scale. Default is
+#' c("None", "Little", "Moderate", "Severe", "Very Severe")
+#' @param fcs_set String for the Food Consumption Score questions set. Default is
+#' c("fs_fcs_cereals_grains_roots_tubers", "fs_fcs_beans_nuts", "fs_fcs_dairy",
+#' "fs_fcs_meat_fish_eggs", "fs_fcs_vegetables_leaves", "fs_fcs_fruit", "fs_fcs_oil_fat_butter",
+#' "fs_fcs_sugar", "fs_fcs_condiment")
+#' @param rcsi_set String for the reduced Coping Strategy Index questions set. Default is
+#' c("No to Low", "Medium", "High")
+#' @param lcsi_set String for the Livelihood Coping Strategy Index questions set. There is
+#' no default
+#' @param lcsi_value_set String for the values of the Livelihood Coping Strategy Index questions
+#' set. Default is c("yes", "no_had_no_need", "no_exhausted", "not_applicable")
+#' @param other_variables String for the names of other variables to include. Default is NULL
+#' @param stat_col String for the name of the column with the mean or the proportion. Default is
+#' "stat"
+#' @param proportion_name String how a proportion is called in the analysis key. Default is
+#' "prop_select_one"
+#' @param mean_name String how a mean is called in the analysis key. Default is "mean"
+#'
+#' @return a list with:
+#' - a wide table with groups of interest in the rows, and the variables in the columns in a
+#' format that can be shared to the IPC TWG. This table should be pass into
+#' create_xlsx_group_x_variable
+#' - the dataset that was provided.
+#'
+#' @export
+#'
+#' @examples
+#' create_ipctwg_table(
+#'   .results = presentresults_resultstable,
+#'   dataset = presentresults_MSNA_template_data,
+#'   cluster_name = "cluster_id",
+#'   fclc_matrix_var = "fcls_cat",
+#'   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
+#'   fc_matrix_var = "fcm_cat",
+#'   fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
+#'   with_fclc = TRUE,
+#'   fcs_cat_values = c("low", "medium", "high"),
+#'   rcsi_cat_values = c("low", "medium", "high"),
+#'   lcsi_cat_var = "lcs_cat",
+#'   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+#'   hhs_cat_var = "hhs_cat",
+#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+#'   lcsi_set = c(
+#'     "liv_stress_lcsi_1",
+#'     "liv_stress_lcsi_2",
+#'     "liv_stress_lcsi_3",
+#'     "liv_stress_lcsi_4",
+#'     "liv_crisis_lcsi_1",
+#'     "liv_crisis_lcsi_2",
+#'     "liv_crisis_lcsi_3",
+#'     "liv_emerg_lcsi_1",
+#'     "liv_emerg_lcsi_2",
+#'     "liv_emerg_lcsi_3"
+#'   ),
+#'   other_variables = c("income_v2_sum", "expenditure_food")
+#' )
+#'
+create_ipctwg_table <- function(.results,
+                                analysis_key = "analysis_key",
+                                dataset,
+                                cluster_name = NULL,
+                                fclc_matrix_var = "fclc_phase",
+                                fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
+                                fc_matrix_var = "fc_phase",
+                                fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC"),
+                                with_fclc = FALSE,
+                                fcs_cat_var = "fcs_cat",
+                                fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
+                                rcsi_cat_var = "rcsi_cat",
+                                rcsi_cat_values = c("No to Low", "Medium", "High"),
+                                lcsi_cat_var = "lcsi_cat",
+                                lcsi_cat_values = c("None", "Stress", "Crisis", "Emergency"),
+                                hhs_cat_var = "hhs_cat_ipc",
+                                hhs_cat_values = c("None", "Little", "Moderate", "Severe", "Very Severe"),
+                                fcs_set = c(
+                                  "fs_fcs_cereals_grains_roots_tubers",
+                                  "fs_fcs_beans_nuts",
+                                  "fs_fcs_dairy",
+                                  "fs_fcs_meat_fish_eggs",
+                                  "fs_fcs_vegetables_leaves",
+                                  "fs_fcs_fruit",
+                                  "fs_fcs_oil_fat_butter",
+                                  "fs_fcs_sugar",
+                                  "fs_fcs_condiment"
+                                ),
+                                rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
+                                lcsi_set,
+                                lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+                                other_variables = NULL,
+                                stat_col = "stat",
+                                proportion_name = "prop_select_one",
+                                mean_name = "mean") {
+  # create group x variable
+  analysis_info <- create_ordered_ipctwg_table(
+    .results = .results,
+    analysis_key = analysis_key,
+    fclc_matrix_var = fclc_matrix_var,
+    fclc_matrix_values = fclc_matrix_values,
+    fc_matrix_var = fc_matrix_var,
+    fc_matrix_values = fc_matrix_values,
+    with_fclc = with_fclc,
+    fcs_cat_var = fcs_cat_var,
+    fcs_cat_values = fcs_cat_values,
+    rcsi_cat_var = rcsi_cat_var,
+    rcsi_cat_values = rcsi_cat_values,
+    lcsi_cat_var = lcsi_cat_var,
+    lcsi_cat_values = lcsi_cat_values,
+    hhs_cat_var = hhs_cat_var,
+    hhs_cat_values = hhs_cat_values,
+    fcs_set = fcs_set,
+    rcsi_set = rcsi_set,
+    lcsi_set = lcsi_set,
+    lcsi_value_set = lcsi_value_set,
+    other_variables = other_variables,
+    stat_col = stat_col,
+    proportion_name = proportion_name,
+    mean_name = mean_name
+  )
+
+  # get the cluster groups info
+  cluster_groups_info <- create_group_clusters(
+    result = .results,
+    analysis_key = analysis_key,
+    dataset = dataset,
+    cluster_name = cluster_name
+  )
+
+  # correction to change ~ into ~/~ . it is included here to not change the cluster_groups_info
+  cluster_groups_info <- cluster_groups_info %>%
+    dplyr::mutate(group_var_value = stringr::str_replace_all(group_var_value, "~", "~/~"))
+
+  # add the cluster numbers to the analysis information
+  ipctwg_table <- analysis_info %>%
+    dplyr::left_join(cluster_groups_info) %>%
+    dplyr::select(group_var_value, names(cluster_groups_info), names(analysis_info)) %>%
+    magrittr::set_rownames(row.names(analysis_info))
+
+  # add the names in the first rows, name of the table will be removed in the xlsx.
+  ipctwg_table[1, names(cluster_groups_info)] <- names(cluster_groups_info)
+
+  return(list(
+    ipctwg_table = ipctwg_table,
+    dataset = dataset
+  ))
 }

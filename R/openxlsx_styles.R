@@ -1,7 +1,9 @@
 # openxlsx style function
 
 ## numbers
-number_style <- openxlsx::createStyle(numFmt = "0.00")
+number_2digits_style <- openxlsx::createStyle(numFmt = "0.00")
+number_style <- openxlsx::createStyle(numFmt = "0")
+
 
 ## borders
 thin_allborder_style <- openxlsx::createStyle(

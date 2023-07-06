@@ -5,19 +5,32 @@
 \title{Write a table group by variable into Excel}
 \usage{
 create_xlsx_group_x_variable(
-  .table_group_x_variable,
+  table_group_x_variable,
+  table_name = "group_x_table",
+  dataset_name = "dataset",
   file_path,
-  sheet_name = "table_group_x_variable",
+  table_sheet = "table_group_x_variable",
+  dataset_sheet = "dataset",
   write_file = TRUE,
   overwrite = FALSE
 )
 }
 \arguments{
-\item{.table_group_x_variable}{a table create by create_table_group_x_variable}
+\item{table_group_x_variable}{a table create by create_table_group_x_variable}
+
+\item{table_name}{string with the name of table to write. It will only be used if it is part of a list.
+Default is "group_x_table".}
+
+\item{dataset_name}{string with the name of dataset to write. It will only be used if it is part of a list.
+Default is "dataset".}
 
 \item{file_path}{File path, it should contains the file name}
 
-\item{sheet_name}{string with the name of the sheet, default is "table_group_x_variable"}
+\item{table_sheet}{string with the name of the sheet to write the table,
+default is "table_group_x_variable"}
+
+\item{dataset_sheet}{string with the name of the sheet to write the dataset,
+default is "dataset"}
 
 \item{write_file}{Default is TRUE, it will write the file. If set to FALSE, it will return
 a workbook object from openxlsx}
