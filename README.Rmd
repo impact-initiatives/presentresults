@@ -51,19 +51,29 @@ create_table_variable_x_group(try_results, "analysis_index", "stat")
 
 ## Large table groups (lines) per variables (columns)
 
-This is how to turn a results table into a wide group per variable.
+This is how to turn a results table into a wide group per variable. This format is made to be read 
+in Excel.
 
 ```{r}
 example_group_x_variable <- create_table_group_x_variable(presentresults_resultstable, value_columns = "stat")
 
-head(example_group_x_variable)
+example_group_x_variable[1:6, 1:10]
+```
+## Export a table group per variable in Excel
+
+```{r, eval=FALSE}
+presentresults_resultstable %>%
+  create_table_group_x_variable() %>%
+  create_xlsx_group_x_variable(file_path = "mytable.xlsx")
 ```
 
-## Create an IPC TWG table
+### Example for the IPC TWG table
 
 ```{r}
 example_ipc <- create_ipctwg_table(
   .results = presentresults_resultstable,
+  dataset = presentresults_MSNA_template_data,
+  cluster_name = "cluster_id",
   fclc_matrix_var = "fcls_cat",
   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
   fc_matrix_var = "fcm_cat",
@@ -89,20 +99,14 @@ example_ipc <- create_ipctwg_table(
   ),
   other_variables = c("income_v2_sum", "expenditure_food")
 )
-head(example_ipc)
-```
 
-## Export a table group per variable in Excel
+example_ipc[["ipctwg_table"]][1:6, 1:10]
+```
 
 ```{r, eval=FALSE}
-presentresults_resultstable %>%
-  create_table_group_x_variable() %>%
-  create_xlsx_group_x_variable("mytable.xlsx")
-
 example_ipc %>%
-  create_xlsx_group_x_variable("ipc_table.xlsx")
+  create_xlsx_group_x_variable(example_ipc, table_name = "ipctwg_table", file_path = "ipc_table.xlsx")
 ```
-
 
 ## Converting the analysis index into a table
 
