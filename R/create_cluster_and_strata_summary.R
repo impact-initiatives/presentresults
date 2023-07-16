@@ -41,11 +41,11 @@ create_group_clusters <- function(result,
     dplyr::select(-dplyr::starts_with("group_var_value_"))
 
   all_group <- df |>
-    tidyr::unite(col = grouping_variable, everything(), na.rm = T, sep = " ~ ") |>
+    tidyr::unite(col = grouping_variable, everything(), na.rm = T, sep = " ~/~ ") |>
     dplyr::pull(grouping_variable) |>
     unique()
 
-  grouping_variables <- stringr::str_split(all_group, " ~ ") |>
+  grouping_variables <- stringr::str_split(all_group, " ~/~ ") |>
     unlist() |>
     unique()
   grouping_variables <- grouping_variables[!grouping_variables %in% "NA"]
@@ -61,7 +61,7 @@ create_group_clusters <- function(result,
   if (!is.null(cluster_name)) {
     for (i in all_group) {
       if (i != "NA") {
-        grouping_variable <- stringr::str_split(i, " ~ ") |> unlist()
+        grouping_variable <- stringr::str_split(i, " ~/~ ") |> unlist()
 
         final_df[[i]] <- dataset |>
           dplyr::group_by(!!!rlang::syms(grouping_variable)) |>
@@ -69,7 +69,7 @@ create_group_clusters <- function(result,
             number_of_cluster = dplyr::n_distinct(!!rlang::sym(cluster_name)),
             number_of_hh = dplyr::n()
           ) |>
-          tidyr::unite(col = "group_var_value", dplyr::all_of(grouping_variable), sep = " ~ ")
+          tidyr::unite(col = "group_var_value", dplyr::all_of(grouping_variable), sep = " ~/~ ")
       }
 
       if (i == "NA") {
@@ -86,7 +86,7 @@ create_group_clusters <- function(result,
   if (is.null(cluster_name)) {
     for (i in all_group) {
       if (i != "NA") {
-        grouping_variable <- stringr::str_split(i, " ~ ") |> unlist()
+        grouping_variable <- stringr::str_split(i, " ~/~ ") |> unlist()
 
         final_df[[i]] <- dataset |>
           dplyr::group_by(!!!rlang::syms(grouping_variable)) |>
@@ -94,7 +94,7 @@ create_group_clusters <- function(result,
             number_of_cluster = NA,
             number_of_hh = dplyr::n()
           ) |>
-          tidyr::unite(col = "group_var_value", dplyr::all_of(grouping_variable), sep = " ~ ")
+          tidyr::unite(col = "group_var_value", dplyr::all_of(grouping_variable), sep = " ~/~ ")
       }
 
       if (i == "NA") {
