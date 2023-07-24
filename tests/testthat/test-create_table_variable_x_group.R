@@ -34,7 +34,8 @@ test_that("returns the correct results with 3 stats", {
 
  actual <-  create_table_variable_x_group(results,
                                 "key_index",
-                                c("stat", "stat_low", "stat_upp"))
+                                c("stat", "stat_low", "stat_upp"))%>%
+   suppressWarnings()
 
 
 
@@ -45,16 +46,18 @@ test_that("returns a list per grouping variables", {
   results <- readRDS(testthat::test_path("fixtures", "results.rds"))
   expected_wide_table <-
     readRDS(testthat::test_path("fixtures", "widetable1_list_excel.rds"))
+
   expect_equal(
     create_table_variable_x_group(results,
                                   "key_index",
                                   c("stat"),
                                   list_for_excel = TRUE),
-    expected_wide_table)
-  # )  %>%
-  #   suppressWarnings()
+    expected_wide_table
+  )  %>%
+    suppressWarnings()
   ###the results of create_table_variable_x_group(results, "key_index",
   ###c("stat"), list_for_excel = TRUE) differs within the expect_equal and when
   ### running it. try with debugonce to see that
 
 })
+
