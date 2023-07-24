@@ -132,14 +132,27 @@ create_table_variable_x_group <-
         dplyr::pull(group_var)
       table_to_return <-
         table_to_return %>% purrr::set_names(group_names)
+
+
+      table_to_return[table_to_return=="NA"]=NA
+
+      table_to_return <-  table_to_return %>%
+        dplyr::mutate_if(is.character, ~dplyr::na_if(., "NA"))
+
+
       return(table_to_return)
     } else {
-      results %>%
+      results <- results %>%
         tidyr::pivot_wider(
           id_cols = c(analysis_type, analysis_var, analysis_var_value),
           names_from = group_var_value,
           values_from = dplyr::all_of(value_columns),
           names_vary = "slowest"
         )
+      results <- results %>%
+        dplyr::mutate_if(is.character, ~dplyr::na_if(., "NA"))
+
+      return(results)
+
     }
   }
