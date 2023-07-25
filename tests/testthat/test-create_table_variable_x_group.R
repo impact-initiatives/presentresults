@@ -3,12 +3,6 @@ test_that("returns the correct results", {
 
   expected_wide_table <-readRDS(testthat::test_path("fixtures", "widetable1.rds"))
 
-  expected_wide_table <- expected_wide_table |> dplyr::mutate(
-    analysis_var_value = dplyr::case_when(analysis_var_value == "NA" ~ NA_character_,
-                                          T~analysis_var_value)
-  )
-
-
   expect_equal(
     create_table_variable_x_group(results, "key_index", "stat"),
     expected_wide_table
