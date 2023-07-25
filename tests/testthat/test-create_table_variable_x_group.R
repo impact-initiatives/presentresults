@@ -57,14 +57,11 @@ test_that("returns a list per grouping variables", {
   actual <- create_table_variable_x_group(results,
                                 "key_index",
                                 c("stat"),
-                                list_for_excel = TRUE)
+                                list_for_excel = TRUE) %>%
+    suppressWarnings()
 
   expect_equal( actual,expected_wide_table
-  )  %>%
-    suppressWarnings()
-  ###the results of create_table_variable_x_group(results, "key_index",
-  ###c("stat"), list_for_excel = TRUE) differs within the expect_equal and when
-  ### running it. try with debugonce to see that
+  )
 
 })
 

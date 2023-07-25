@@ -29,19 +29,27 @@ This is how to turn a results table into a wide variable per group.
 
 ``` r
 library(presentresults)
-try_results <- data.frame(
-  analysis_index = c(
-    "mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
-    "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
-    "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"
-  ),
-  stat = c(1:3)
-)
-create_table_variable_x_group(try_results, "analysis_index", "stat")
-#> # A tibble: 1 × 6
-#>   analysis_type analysis_var analysis_var_value  `NA`     A     B
-#>   <chr>         <chr>        <chr>              <int> <int> <int>
-#> 1 mean          v1           NA                     1     2     3
+presentresults_resultstable %>% create_table_variable_x_group("analysis_key", "stat")
+#> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
+#> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
+#> 544, ...].
+#> # A tibble: 154 × 9
+#>    analysis_type   analysis_var analysis_var_value `locationA ~/~ displaced`
+#>    <chr>           <chr>        <chr>                                  <dbl>
+#>  1 prop_select_one fcs_cat      low                                    0.258
+#>  2 prop_select_one fcs_cat      medium                                 0.323
+#>  3 prop_select_one fcs_cat      high                                   0.419
+#>  4 prop_select_one rcsi_cat     low                                    0.290
+#>  5 prop_select_one rcsi_cat     medium                                 0.258
+#>  6 prop_select_one rcsi_cat     high                                   0.452
+#>  7 prop_select_one lcs_cat      none                                   0.194
+#>  8 prop_select_one lcs_cat      stress                                 0.129
+#>  9 prop_select_one lcs_cat      emergency                              0.323
+#> 10 prop_select_one lcs_cat      crisis                                 0.355
+#> # ℹ 144 more rows
+#> # ℹ 5 more variables: `locationA ~/~ non-displaced` <dbl>,
+#> #   `locationB ~/~ displaced` <dbl>, `locationB ~/~ non-displaced` <dbl>,
+#> #   locationA <dbl>, locationB <dbl>
 ```
 
 ## Large table groups (lines) per variables (columns)
