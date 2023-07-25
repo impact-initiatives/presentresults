@@ -18,15 +18,7 @@
 #' @export
 #'
 #' @examples
-#' try_results <- data.frame(
-#'   analysis_index = c(
-#'     "mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
-#'     "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
-#'     "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"
-#'   ),
-#'   stat = c(1:3)
-#' )
-#' create_table_variable_x_group(try_results, "analysis_index", "stat")
+#' presentresults_resultstable %>% create_table_variable_x_group("analysis_key", "stat")
 create_table_variable_x_group <-
   function(results,
            analysis_key = "analysis_index",
@@ -134,12 +126,14 @@ create_table_variable_x_group <-
         table_to_return %>% purrr::set_names(group_names)
       return(table_to_return)
     } else {
-      results %>%
+      table_to_return <- results %>%
         tidyr::pivot_wider(
           id_cols = c(analysis_type, analysis_var, analysis_var_value),
           names_from = group_var_value,
           values_from = dplyr::all_of(value_columns),
           names_vary = "slowest"
         )
+
+      return(table_to_return)
     }
   }
