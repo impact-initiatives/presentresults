@@ -614,10 +614,6 @@ create_ipctwg_table <- function(.results,
     cluster_name = cluster_name
   )
 
-  # correction to change ~ into ~/~ . it is included here to not change the cluster_groups_info
-  # cluster_groups_info <- cluster_groups_info %>%
-  #   dplyr::mutate(group_var_value = stringr::str_replace_all(group_var_value, "~", "~/~"))
-
   # add the cluster numbers to the analysis information
   ipctwg_table <- analysis_info %>%
     dplyr::left_join(cluster_groups_info) %>%
