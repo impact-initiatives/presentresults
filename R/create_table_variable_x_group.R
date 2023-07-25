@@ -135,6 +135,5 @@ create_table_variable_x_group <-
         )
 
       return(table_to_return)
-
     }
   }
