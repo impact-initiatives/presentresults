@@ -54,8 +54,8 @@ testthat::test_that("expect equal", {
 
   expected <- structure(list(
     group_var_value = c(
-      "locationA ~ displaced", "locationA ~ non-displaced",
-      "locationB ~ displaced", "locationB ~ non-displaced", "locationA",
+      "locationA ~/~ displaced", "locationA ~/~ non-displaced",
+      "locationB ~/~ displaced", "locationB ~/~ non-displaced", "locationA",
       "locationB"
     ), number_of_cluster = c(2L, 2L, 2L, 2L, 2L, 2L),
     number_of_hh = c(31L, 24L, 27L, 18L, 55L, 45L)
@@ -77,8 +77,8 @@ testthat::test_that("expect equal", {
   expected <- structure(
     list(
       group_var_value = c(
-        "locationA ~ displaced", "locationA ~ non-displaced",
-        "locationB ~ displaced", "locationB ~ non-displaced", "locationA", "locationB"
+        "locationA ~/~ displaced", "locationA ~/~ non-displaced",
+        "locationB ~/~ displaced", "locationB ~/~ non-displaced", "locationA", "locationB"
       ),
       number_of_cluster = c(1L, 1L, 3L, 3L, 1L, 3L),
       number_of_hh = c(31L, 24L, 27L, 18L, 55L, 45L)
@@ -117,9 +117,9 @@ testthat::test_that("With no grouping", {
     number_of_cluster = c(2L, 2L, 2L, 2L, 2L),
     number_of_hh = c(100L, 31L, 24L, 27L, 18L),
     group_var_value = c(
-      "Overall", "locationA ~ displaced",
-      "locationA ~ non-displaced", "locationB ~ displaced",
-      "locationB ~ non-displaced"
+      "Overall", "locationA ~/~ displaced",
+      "locationA ~/~ non-displaced", "locationB ~/~ displaced",
+      "locationB ~/~ non-displaced"
     )
   )
 
@@ -129,8 +129,8 @@ testthat::test_that("With no grouping", {
 testthat::test_that("With NULL in cluster_id", {
   expected <- data.frame(
     group_var_value = c(
-      "locationA ~ displaced", "locationA ~ non-displaced",
-      "locationB ~ displaced", "locationB ~ non-displaced",
+      "locationA ~/~ displaced", "locationA ~/~ non-displaced",
+      "locationB ~/~ displaced", "locationB ~/~ non-displaced",
       "locationA", "locationB"
     ),
     number_of_cluster = NA,
