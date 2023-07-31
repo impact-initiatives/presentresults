@@ -121,3 +121,29 @@ You can then unite the analysis and grouping variables if needed.
 unite_variables(key_table)
 ```
 
+
+
+## `create_group_clusters()`
+
+The function `create_group_clusters()` creates number of cluster and number of hh surveyed per group/strata
+```{r}
+ create_group_clusters(
+   result = presentresults_resultstable,
+   dataset = presentresults_MSNA_template_data,
+   cluster_name = "cluster_id"
+ ) |> head()
+```
+
+
+
+## `create_xlsx_group_x_variable()`
+
+The function `create_xlsx_group_x_variable()` writes table group by variable into Excel
+
+```{r}
+#' presentresults_resultstable %>%
+#'   create_table_group_x_variable() %>%
+#'   create_xlsx_group_x_variable("mytable.xlsx")
+#' }
+
+```

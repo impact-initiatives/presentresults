@@ -181,16 +181,16 @@ example_ipc[["ipctwg_table"]][1:6, 1:10]
 #> header_analysis_var                   group_var_value number_of_cluster
 #> header_analysis_var_value             group_var_value              <NA>
 #> header_analysis_type                  group_var_value              <NA>
-#> 1                             locationA ~/~ displaced                 2
-#> 2                         locationA ~/~ non-displaced                 2
-#> 3                             locationB ~/~ displaced                 2
+#> 1                             locationA ~/~ displaced              <NA>
+#> 2                         locationA ~/~ non-displaced              <NA>
+#> 3                             locationB ~/~ displaced              <NA>
 #>                           number_of_hh fcls_cat ~/~ phase_1 ~/~ prop_select_one
 #> header_analysis_var       number_of_hh                                 fcls_cat
 #> header_analysis_var_value         <NA>                                  phase_1
 #> header_analysis_type              <NA>                          prop_select_one
-#> 1                                   31                        0.161290322580645
-#> 2                                   24                       0.0833333333333333
-#> 3                                   27                        0.111111111111111
+#> 1                                 <NA>                        0.161290322580645
+#> 2                                 <NA>                       0.0833333333333333
+#> 3                                 <NA>                        0.111111111111111
 #>                           fcls_cat ~/~ phase_2 ~/~ prop_select_one
 #> header_analysis_var                                       fcls_cat
 #> header_analysis_var_value                                  phase_2
@@ -279,4 +279,38 @@ unite_variables(key_table)
 #> 1                 NA        NA              NA               1            1
 #> 2                 NA       gro               A               1            1
 #> 3                 NA       gro               B               1            1
+```
+
+## `create_group_clusters()`
+
+The function `create_group_clusters()` creates number of cluster and
+number of hh surveyed per group/strata
+
+``` r
+ create_group_clusters(
+   result = presentresults_resultstable,
+   dataset = presentresults_MSNA_template_data,
+   cluster_name = "cluster_id"
+ ) |> head()
+#> # A tibble: 6 × 3
+#>   group_var_value             number_of_cluster number_of_hh
+#>   <chr>                                   <int>        <int>
+#> 1 locationA ~/~ displaced                     2           31
+#> 2 locationA ~/~ non-displaced                 2           24
+#> 3 locationB ~/~ displaced                     2           27
+#> 4 locationB ~/~ non-displaced                 2           18
+#> 5 locationA                                   2           55
+#> 6 locationB                                   2           45
+```
+
+## `create_xlsx_group_x_variable()`
+
+The function `create_xlsx_group_x_variable()` writes table group by
+variable into Excel
+
+``` r
+#' presentresults_resultstable %>%
+#'   create_table_group_x_variable() %>%
+#'   create_xlsx_group_x_variable("mytable.xlsx")
+#' }
 ```
