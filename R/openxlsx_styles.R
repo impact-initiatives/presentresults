@@ -39,41 +39,45 @@ thin_allborder_style <- openxlsx::createStyle(
   border = "TopBottomLeftRight"
 )
 
-#font and colors
+# font and colors
 
-header_style <- openxlsx::createStyle(fontSize = 12,
-                                      fontColour = "#FFFFFF",
-                                      halign = "center",
-                                      valign = "center",
-                                      fontName = "Arial Narrow",
-                                      textDecoration = "bold",
-                                      fgFill = "#ee5859",
-                                      border = "TopBottomLeftRight ",
-                                      borderColour = "#fafafa",
-                                      wrapText = T)
+header_style <- openxlsx::createStyle(
+  fontSize = 12,
+  fontColour = "#FFFFFF",
+  halign = "center",
+  valign = "center",
+  fontName = "Arial Narrow",
+  textDecoration = "bold",
+  fgFill = "#ee5859",
+  border = "TopBottomLeftRight ",
+  borderColour = "#fafafa",
+  wrapText = T
+)
 
-secondary_grey_cell_style <- openxlsx::createStyle(fontSize = 12,
-                                                   fontColour = "#58585A",
-                                                   fontName = "Arial Narrow",
-                                                   fgFill = "#c7c8ca",
-                                                   border = "TopBottomLeftRight ",
-                                                   wrapText = FALSE)
+secondary_grey_cell_style <- openxlsx::createStyle(
+  fontSize = 12,
+  fontColour = "#58585A",
+  fontName = "Arial Narrow",
+  fgFill = "#c7c8ca",
+  border = "TopBottomLeftRight ",
+  wrapText = FALSE
+)
 
-secondary_beige_cell_style <- openxlsx::createStyle(fontSize = 12,
-                                                    fontColour = "#58585A",
-                                                    fontName = "Arial Narrow",
-                                                    fgFill = "#D2CBB8",
-                                                    border = "TopBottomLeftRight",
-                                                    wrapText = FALSE)
-
-
-secondary_white_cell_style <- openxlsx::createStyle(fontSize = 12,
-                                                    fontColour = "#58585A",
-                                                    fontName = "Arial Narrow",
-                                                    fgFill = NULL,
-                                                    border = "TopBottomLeftRight",
-                                                    wrapText = FALSE)
+secondary_beige_cell_style <- openxlsx::createStyle(
+  fontSize = 12,
+  fontColour = "#58585A",
+  fontName = "Arial Narrow",
+  fgFill = "#D2CBB8",
+  border = "TopBottomLeftRight",
+  wrapText = FALSE
+)
 
 
-
-
+secondary_white_cell_style <- openxlsx::createStyle(
+  fontSize = 12,
+  fontColour = "#58585A",
+  fontName = "Arial Narrow",
+  fgFill = NULL,
+  border = "TopBottomLeftRight",
+  wrapText = FALSE
+)
