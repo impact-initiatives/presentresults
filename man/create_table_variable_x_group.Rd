@@ -6,7 +6,7 @@
 \usage{
 create_table_variable_x_group(
   results,
-  analysis_key = "analysis_index",
+  analysis_key = "analysis_key",
   value_columns = c("stat", "stat_low", "stat_upp"),
   list_for_excel = FALSE
 )
@@ -18,7 +18,7 @@ create_table_variable_x_group(
 "analysis_type @/@ dependent_variable  ~/~ dependent_variable_value @/@
 independent_variable ~/~ independent_variable_value "}
 
-\item{value_columns}{string contening the names of the variables with the
+\item{value_columns}{string containing the names of the columns with the
 stats to export}
 
 \item{list_for_excel}{Default is FALSE, the function will return a dataframe.

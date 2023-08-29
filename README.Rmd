@@ -32,13 +32,41 @@ You can install the development version of presentresults from [GitHub](https://
 devtools::install_github("impact-initiatives/presentresults")
 ```
 
+```{r load library}
+library(presentresults)
+```
+
 ## Large table variables (lines) per groups (columns)
 
-This is how to turn a results table into a wide variable per group.
+This is how to turn a results table into a wide table variable per group.
 
-```{r example}
-library(presentresults)
-presentresults_resultstable %>% create_table_variable_x_group("analysis_key", "stat")
+```{r variable_x_group3stats}
+example_variable_x_group <- presentresults_resultstable %>% 
+  create_table_variable_x_group()
+
+example_variable_x_group[1:6, 1:9]
+```
+
+```{r, eval=FALSE}
+example_variable_x_group %>%
+  create_xlsx_variable_x_group(file_path = "mytable.xlsx")
+
+```
+The table without the higher and lower confidence bound.
+```{r variable_x_group}
+example_variable_x_group <- presentresults_resultstable %>% 
+  create_table_variable_x_group(value_columns = "stat")
+
+example_variable_x_group[1:6, 1:9]
+```
+
+
+```{r, eval=FALSE}
+presentresults_resultstable %>%
+  create_table_variable_x_group() %>%
+  create_xlsx_variable_x_group(file_path = "mytable.xlsx", 
+                               value_columns = "stat")
+
 ```
 
 ## Large table groups (lines) per variables (columns)

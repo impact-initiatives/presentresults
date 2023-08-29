@@ -4,7 +4,7 @@
 #' @param analysis_key analysis key following this description
 #' "analysis_type @/@ dependent_variable  ~/~ dependent_variable_value @/@
 #' independent_variable ~/~ independent_variable_value "
-#' @param value_columns string contening the names of the variables with the
+#' @param value_columns string containing the names of the columns with the
 #' stats to export
 #' @param list_for_excel Default is FALSE, the function will return a dataframe.
 #' If set to TRUE, it will return a list of dataframe with the grouping
@@ -21,7 +21,7 @@
 #' presentresults_resultstable %>% create_table_variable_x_group("analysis_key", "stat")
 create_table_variable_x_group <-
   function(results,
-           analysis_key = "analysis_index",
+           analysis_key = "analysis_key",
            value_columns = c("stat", "stat_low", "stat_upp"),
            list_for_excel = FALSE) {
     if (results %>%

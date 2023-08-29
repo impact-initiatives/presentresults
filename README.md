@@ -23,33 +23,73 @@ You can install the development version of presentresults from
 devtools::install_github("impact-initiatives/presentresults")
 ```
 
-## Large table variables (lines) per groups (columns)
-
-This is how to turn a results table into a wide variable per group.
-
 ``` r
 library(presentresults)
-presentresults_resultstable %>% create_table_variable_x_group("analysis_key", "stat")
+```
+
+## Large table variables (lines) per groups (columns)
+
+This is how to turn a results table into a wide table variable per
+group.
+
+``` r
+example_variable_x_group <- presentresults_resultstable %>% 
+  create_table_variable_x_group()
 #> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
 #> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
 #> 544, ...].
-#> # A tibble: 154 × 9
-#>    analysis_type   analysis_var analysis_var_value `locationA ~/~ displaced`
-#>    <chr>           <chr>        <chr>                                  <dbl>
-#>  1 prop_select_one fcs_cat      low                                    0.258
-#>  2 prop_select_one fcs_cat      medium                                 0.323
-#>  3 prop_select_one fcs_cat      high                                   0.419
-#>  4 prop_select_one rcsi_cat     low                                    0.290
-#>  5 prop_select_one rcsi_cat     medium                                 0.258
-#>  6 prop_select_one rcsi_cat     high                                   0.452
-#>  7 prop_select_one lcs_cat      none                                   0.194
-#>  8 prop_select_one lcs_cat      stress                                 0.129
-#>  9 prop_select_one lcs_cat      emergency                              0.323
-#> 10 prop_select_one lcs_cat      crisis                                 0.355
-#> # ℹ 144 more rows
+
+example_variable_x_group[1:6, 1:9]
+#> # A tibble: 6 × 9
+#>   analysis_type   analysis_var analysis_var_value `stat_locationA ~/~ displaced`
+#>   <chr>           <chr>        <chr>                                       <dbl>
+#> 1 prop_select_one fcs_cat      low                                         0.258
+#> 2 prop_select_one fcs_cat      medium                                      0.323
+#> 3 prop_select_one fcs_cat      high                                        0.419
+#> 4 prop_select_one rcsi_cat     low                                         0.290
+#> 5 prop_select_one rcsi_cat     medium                                      0.258
+#> 6 prop_select_one rcsi_cat     high                                        0.452
+#> # ℹ 5 more variables: `stat_low_locationA ~/~ displaced` <dbl>,
+#> #   `stat_upp_locationA ~/~ displaced` <dbl>,
+#> #   `stat_locationA ~/~ non-displaced` <dbl>,
+#> #   `stat_low_locationA ~/~ non-displaced` <dbl>,
+#> #   `stat_upp_locationA ~/~ non-displaced` <dbl>
+```
+
+``` r
+example_variable_x_group %>%
+  create_xlsx_variable_x_group(file_path = "mytable.xlsx")
+```
+
+The table without the higher and lower confidence bound.
+
+``` r
+example_variable_x_group <- presentresults_resultstable %>% 
+  create_table_variable_x_group(value_columns = "stat")
+#> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
+#> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
+#> 544, ...].
+
+example_variable_x_group[1:6, 1:9]
+#> # A tibble: 6 × 9
+#>   analysis_type   analysis_var analysis_var_value `locationA ~/~ displaced`
+#>   <chr>           <chr>        <chr>                                  <dbl>
+#> 1 prop_select_one fcs_cat      low                                    0.258
+#> 2 prop_select_one fcs_cat      medium                                 0.323
+#> 3 prop_select_one fcs_cat      high                                   0.419
+#> 4 prop_select_one rcsi_cat     low                                    0.290
+#> 5 prop_select_one rcsi_cat     medium                                 0.258
+#> 6 prop_select_one rcsi_cat     high                                   0.452
 #> # ℹ 5 more variables: `locationA ~/~ non-displaced` <dbl>,
 #> #   `locationB ~/~ displaced` <dbl>, `locationB ~/~ non-displaced` <dbl>,
 #> #   locationA <dbl>, locationB <dbl>
+```
+
+``` r
+presentresults_resultstable %>%
+  create_table_variable_x_group() %>%
+  create_xlsx_variable_x_group(file_path = "mytable.xlsx", 
+                               value_columns = "stat")
 ```
 
 ## Large table groups (lines) per variables (columns)
@@ -181,16 +221,16 @@ example_ipc[["ipctwg_table"]][1:6, 1:10]
 #> header_analysis_var                   group_var_value number_of_cluster
 #> header_analysis_var_value             group_var_value              <NA>
 #> header_analysis_type                  group_var_value              <NA>
-#> 1                             locationA ~/~ displaced              <NA>
-#> 2                         locationA ~/~ non-displaced              <NA>
-#> 3                             locationB ~/~ displaced              <NA>
+#> 1                             locationA ~/~ displaced                 2
+#> 2                         locationA ~/~ non-displaced                 2
+#> 3                             locationB ~/~ displaced                 2
 #>                           number_of_hh fcls_cat ~/~ phase_1 ~/~ prop_select_one
 #> header_analysis_var       number_of_hh                                 fcls_cat
 #> header_analysis_var_value         <NA>                                  phase_1
 #> header_analysis_type              <NA>                          prop_select_one
-#> 1                                 <NA>                        0.161290322580645
-#> 2                                 <NA>                       0.0833333333333333
-#> 3                                 <NA>                        0.111111111111111
+#> 1                                   31                        0.161290322580645
+#> 2                                   24                       0.0833333333333333
+#> 3                                   27                        0.111111111111111
 #>                           fcls_cat ~/~ phase_2 ~/~ prop_select_one
 #> header_analysis_var                                       fcls_cat
 #> header_analysis_var_value                                  phase_2
