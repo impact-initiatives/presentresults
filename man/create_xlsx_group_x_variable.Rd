@@ -47,6 +47,6 @@ Write a table group by variable into Excel
 \dontrun{
 presentresults_resultstable \%>\%
   create_table_group_x_variable() \%>\%
-  create_xlsx_group_x_variable("mytable.xlsx")
+  create_xlsx_group_x_variable(file_path = "mytable.xlsx")
 }
 }
