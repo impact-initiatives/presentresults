@@ -33,7 +33,7 @@ This is how to turn a results table into a wide table variable per
 group.
 
 ``` r
-example_variable_x_group <- presentresults_resultstable %>% 
+example_variable_x_group <- presentresults_resultstable %>%
   create_table_variable_x_group()
 #> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
 #> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
@@ -64,7 +64,7 @@ example_variable_x_group %>%
 The table without the higher and lower confidence bound.
 
 ``` r
-example_variable_x_group <- presentresults_resultstable %>% 
+example_variable_x_group <- presentresults_resultstable %>%
   create_table_variable_x_group(value_columns = "stat")
 #> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
 #> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
@@ -88,8 +88,10 @@ example_variable_x_group[1:6, 1:9]
 ``` r
 presentresults_resultstable %>%
   create_table_variable_x_group() %>%
-  create_xlsx_variable_x_group(file_path = "mytable.xlsx", 
-                               value_columns = "stat")
+  create_xlsx_variable_x_group(
+    file_path = "mytable.xlsx",
+    value_columns = "stat"
+  )
 ```
 
 ## Large table groups (lines) per variables (columns)
@@ -327,11 +329,11 @@ The function `create_group_clusters()` creates number of cluster and
 number of hh surveyed per group/strata
 
 ``` r
- create_group_clusters(
-   result = presentresults_resultstable,
-   dataset = presentresults_MSNA_template_data,
-   cluster_name = "cluster_id"
- ) |> head()
+create_group_clusters(
+  result = presentresults_resultstable,
+  dataset = presentresults_MSNA_template_data,
+  cluster_name = "cluster_id"
+) |> head()
 #> # A tibble: 6 × 3
 #>   group_var_value             number_of_cluster number_of_hh
 #>   <chr>                                   <int>        <int>
@@ -343,14 +345,9 @@ number of hh surveyed per group/strata
 #> 6 locationB                                   2           45
 ```
 
-## `create_xlsx_group_x_variable()`
+## Code of Conduct
 
-The function `create_xlsx_group_x_variable()` writes table group by
-variable into Excel
-
-``` r
-#' presentresults_resultstable %>%
-#'   create_table_group_x_variable() %>%
-#'   create_xlsx_group_x_variable("mytable.xlsx")
-#' }
-```
+Please note that the presentresults project is released with a
+[Contributor Code of
+Conduct](https://impact-initiatives.github.io/presentresults/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.

@@ -1,7 +1,7 @@
 test_that("returns the correct results", {
   results <- readRDS(testthat::test_path("fixtures", "results.rds"))
 
-  expected_wide_table <-readRDS(testthat::test_path("fixtures", "widetable1.rds"))
+  expected_wide_table <- readRDS(testthat::test_path("fixtures", "widetable1.rds"))
 
   expect_equal(
     create_table_variable_x_group(results, "key_index", "stat"),
@@ -15,8 +15,9 @@ test_that("returns correct error message if index column is not correct.", {
   results <- results %>%
     dplyr::mutate(
       key_index = stringr::str_replace(key_index,
-                                       pattern = " *[:alnum:] @/@",
-                                       replacement = "XXXXXXXXXXXXX")
+        pattern = " *[:alnum:] @/@",
+        replacement = "XXXXXXXXXXXXX"
+      )
     )
   expected_wide_table <-
     readRDS(testthat::test_path("fixtures", "widetable1.rds"))
@@ -32,10 +33,12 @@ test_that("returns the correct results with 3 stats", {
     readRDS(testthat::test_path("fixtures", "widetable1_3stats.rds"))
 
 
- actual <-  create_table_variable_x_group(results,
-                                "key_index",
-                                c("stat", "stat_low", "stat_upp"))%>%
-   suppressWarnings()
+  actual <- create_table_variable_x_group(
+    results,
+    "key_index",
+    c("stat", "stat_low", "stat_upp")
+  ) %>%
+    suppressWarnings()
 
 
 
@@ -49,13 +52,11 @@ test_that("returns a list per grouping variables", {
 
 
   actual <- create_table_variable_x_group(results,
-                                "key_index",
-                                c("stat"),
-                                list_for_excel = TRUE) %>%
+    "key_index",
+    c("stat"),
+    list_for_excel = TRUE
+  ) %>%
     suppressWarnings()
 
-  expect_equal( actual,expected_wide_table
-  )
-
+  expect_equal(actual, expected_wide_table)
 })
-
