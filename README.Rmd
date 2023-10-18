@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # presentresults
 
 <!-- badges: start -->
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 [![check-standard](https://github.com/impact-initiatives/presentresults/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/impact-initiatives/presentresults/actions/workflows/check-standard.yaml)
 [![Codecov test coverage](https://codecov.io/gh/impact-initiatives/presentresults/branch/main/graph/badge.svg)](https://app.codecov.io/gh/impact-initiatives/presentresults?branch=main)
 <!-- badges: end -->
