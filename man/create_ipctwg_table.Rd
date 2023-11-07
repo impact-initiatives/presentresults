@@ -5,7 +5,7 @@
 \title{Creates a table for the IPCTWG}
 \usage{
 create_ipctwg_table(
-  .results,
+  results_table,
   analysis_key = "analysis_key",
   dataset,
   cluster_name = NULL,
@@ -38,7 +38,7 @@ create_ipctwg_table(
 )
 }
 \arguments{
-\item{.results}{results table with analysis key}
+\item{results_table}{results table with analysis key}
 
 \item{analysis_key}{String with the name of the analysis key. Default is "analysis_key"}
 
@@ -127,7 +127,7 @@ the order in the table.
 }
 \examples{
 create_ipctwg_table(
-  .results = presentresults_resultstable,
+  results_table = presentresults_resultstable,
   dataset = presentresults_MSNA_template_data,
   cluster_name = "cluster_id",
   fclc_matrix_var = "fcls_cat",

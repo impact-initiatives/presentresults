@@ -5,13 +5,13 @@
 \title{Create a wide table with indicators in the columns}
 \usage{
 create_table_group_x_variable(
-  .results,
+  results_table,
   analysis_key = "analysis_key",
   value_columns = c("stat", "stat_low", "stat_upp")
 )
 }
 \arguments{
-\item{.results}{long table with the stats and analysis key}
+\item{results_table}{result object with an analysis key}
 
 \item{analysis_key}{name of the columns of the analysis key, as character vector. Default is
 "analysis_key"}

@@ -125,6 +125,11 @@ test_that("Test that outputs have not changed", {
 
   ## wb object
   expected_1stat_wb_output <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "wb_variable_x_group_1stat.RDS"))
+
+  expected_table_1stat_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_1stats.xlsx"),
+                                                     sheet = "variable_x_group_table"
+  ) %>%
+    suppressWarnings()
   actual_1stat_wb_output <- expected_table_1stat_output %>%
     create_xlsx_variable_x_group(value_columns = "stat") %>%
     suppressWarnings()

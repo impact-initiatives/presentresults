@@ -2,7 +2,7 @@
 #'
 #' Helper to make sure the results contains all the IPCTWG information
 #'
-#' @param .results results table with analysis key
+#' @param results_table results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
 #' @param fclc_matrix_var String with the name of the food consumption livelihood matrix from FEWSNET.
 #' Default is "fclc_phase"
@@ -53,7 +53,7 @@
 #'
 #' @examples
 #' check_ipctwg_results(
-#'   .results = presentresults_resultstable,
+#'   results_table = presentresults_resultstable,
 #'   fclc_matrix_var = "fcls_cat",
 #'   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
 #'   fc_matrix_var = "fcm_cat",
@@ -79,7 +79,7 @@
 #'   )
 #' )
 #'
-check_ipctwg_results <- function(.results,
+check_ipctwg_results <- function(results_table,
                                  analysis_key = "analysis_key",
                                  fclc_matrix_var = "fclc_phase",
                                  fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
@@ -152,7 +152,7 @@ check_ipctwg_results <- function(.results,
 
   var_names_check <- verify_grep_AinB(
     .A = var_names_to_check,
-    .B = .results[[analysis_key]]
+    .B = results_table[[analysis_key]]
   )
 
   if (any(!var_names_check)) {
@@ -163,7 +163,7 @@ check_ipctwg_results <- function(.results,
   }
 
   # check all the values in the results are in the choices arguments from the function
-  ipctw_key_table <- analysistools::create_analysis_key_table(results_table = .results, analysis_key = analysis_key) %>%
+  ipctw_key_table <- analysistools::create_analysis_key_table(results_table = results_table, analysis_key = analysis_key) %>%
     analysistools::unite_variables()
 
   # check all the values in the results are in the choices arguments from the function
@@ -205,7 +205,7 @@ check_ipctwg_results <- function(.results,
 
 #' Helper to order the ipctwg results
 #'
-#' @param .results results table with analysis key
+#' @param results_table results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
 #' @param fclc_matrix_var String with the name of the food consumption livelihood matrix from FEWSNET.
 #' Default is "fclc_phase"
@@ -252,7 +252,7 @@ check_ipctwg_results <- function(.results,
 #'
 #' @examples
 #' create_ordered_ipctwg_table(
-#'   .results = presentresults_resultstable,
+#'   results_table = presentresults_resultstable,
 #'   fclc_matrix_var = "fcls_cat",
 #'   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
 #'   fc_matrix_var = "fcm_cat",
@@ -278,7 +278,7 @@ check_ipctwg_results <- function(.results,
 #'   ),
 #'   other_variables = c("income_v2_sum", "expenditure_food")
 #' )
-create_ordered_ipctwg_table <- function(.results,
+create_ordered_ipctwg_table <- function(results_table,
                                         analysis_key = "analysis_key",
                                         fclc_matrix_var = "fclc_phase",
                                         fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
@@ -313,7 +313,7 @@ create_ordered_ipctwg_table <- function(.results,
                                         mean_name = "mean") {
   # Checks the results table
   checks_results <- check_ipctwg_results(
-    .results = .results,
+    results_table = results_table,
     analysis_key = analysis_key,
     fclc_matrix_var = fclc_matrix_var,
     fclc_matrix_values = fclc_matrix_values,
@@ -441,7 +441,7 @@ create_ordered_ipctwg_table <- function(.results,
 
   # adding the proportion and mean again
   orderered_ipctw_table <- orderered_ipctw_table %>%
-    dplyr::left_join(dplyr::select(.results, dplyr::all_of(c(analysis_key, stat_col))))
+    dplyr::left_join(dplyr::select(results_table, dplyr::all_of(c(analysis_key, stat_col))))
 
   # create group x variable
   create_table_group_x_variable(orderered_ipctw_table,
@@ -459,7 +459,7 @@ create_ordered_ipctwg_table <- function(.results,
 #' For arguments that are *_values or *_set, and other_variables, the order of appearance will be
 #' the order in the table.
 #'
-#' @param .results results table with analysis key
+#' @param results_table results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
 #' @param dataset dataset used to create the analysis results to calculate the number of clusters
 #' or number of survey.
@@ -515,7 +515,7 @@ create_ordered_ipctwg_table <- function(.results,
 #'
 #' @examples
 #' create_ipctwg_table(
-#'   .results = presentresults_resultstable,
+#'   results_table = presentresults_resultstable,
 #'   dataset = presentresults_MSNA_template_data,
 #'   cluster_name = "cluster_id",
 #'   fclc_matrix_var = "fcls_cat",
@@ -544,7 +544,7 @@ create_ordered_ipctwg_table <- function(.results,
 #'   other_variables = c("income_v2_sum", "expenditure_food")
 #' )
 #'
-create_ipctwg_table <- function(.results,
+create_ipctwg_table <- function(results_table,
                                 analysis_key = "analysis_key",
                                 dataset,
                                 cluster_name = NULL,
@@ -581,7 +581,7 @@ create_ipctwg_table <- function(.results,
                                 mean_name = "mean") {
   # create group x variable
   analysis_info <- create_ordered_ipctwg_table(
-    .results = .results,
+    results_table = results_table,
     analysis_key = analysis_key,
     fclc_matrix_var = fclc_matrix_var,
     fclc_matrix_values = fclc_matrix_values,
@@ -608,7 +608,7 @@ create_ipctwg_table <- function(.results,
 
   # get the cluster groups info
   cluster_groups_info <- create_group_clusters(
-    result = .results,
+    result = results_table,
     analysis_key = analysis_key,
     dataset = dataset,
     cluster_name = cluster_name

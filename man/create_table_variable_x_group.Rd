@@ -5,14 +5,14 @@
 \title{Turns a long format table into a wide format}
 \usage{
 create_table_variable_x_group(
-  results,
+  results_table,
   analysis_key = "analysis_key",
   value_columns = c("stat", "stat_low", "stat_upp"),
   list_for_excel = FALSE
 )
 }
 \arguments{
-\item{results}{dataframe with results in a long format}
+\item{results_table}{results table with analysis key}
 
 \item{analysis_key}{analysis key following this description
 "analysis_type @/@ dependent_variable  ~/~ dependent_variable_value @/@

@@ -1,6 +1,6 @@
 #' Create a wide table with indicators in the columns
 #'
-#' @param .results long table with the stats and analysis key
+#' @param results_table result object with an analysis key
 #' @param analysis_key name of the columns of the analysis key, as character vector. Default is
 #' "analysis_key"
 #' @param value_columns names of the columns with the stats of interest, as character vector.
@@ -12,20 +12,20 @@
 #' @examples
 #' create_table_group_x_variable(presentresults_resultstable, value_columns = "stat")
 #'
-create_table_group_x_variable <- function(.results,
+create_table_group_x_variable <- function(results_table,
                                           analysis_key = "analysis_key",
                                           value_columns = c("stat", "stat_low", "stat_upp")) {
-  if (!all(value_columns %in% names(.results))) {
+  if (!all(value_columns %in% names(results_table))) {
     stop("Cannot find at least one of the value_columns element")
   }
 
   # create the information from the key index
   index_table <-
-    analysistools::create_analysis_key_table(results_table = .results, analysis_key = analysis_key)
+    analysistools::create_analysis_key_table(results_table = results_table, analysis_key = analysis_key)
 
   # add the stats needed
   indexed_results <- index_table %>%
-    dplyr::left_join(by = analysis_key, .results %>% dplyr::select(dplyr::all_of(c(
+    dplyr::left_join(by = analysis_key, results_table %>% dplyr::select(dplyr::all_of(c(
       analysis_key, value_columns
     ))))
 

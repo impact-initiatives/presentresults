@@ -2,7 +2,7 @@ testthat::test_that("check messeges", {
   # Cluster-ID not provided. Assuming cluster sampling was not applied.
   testthat::expect_warning(
     create_group_clusters(
-      result = presentresults::presentresults_resultstable,
+      results_table = presentresults::presentresults_resultstable,
       dataset = presentresults::presentresults_MSNA_template_data
     ),
     "cluster_name not provided. Assuming cluster sampling was not applied."
@@ -10,14 +10,14 @@ testthat::test_that("check messeges", {
 
 
   testthat::expect_error(create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     analysis_key = "Analsysi_key",
     dataset = presentresults::presentresults_MSNA_template_data,
     cluster_name = "cluster_id"
-  ), "Analysis key: Analsysi_key is not found in the result table.")
+  ), "Analysis key: Analsysi_key is not found in the results_table table.")
 
   testthat::expect_error(create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     analysis_key = "analysis_key",
     dataset = presentresults::presentresults_MSNA_template_data,
     cluster_name = "clusterid"
@@ -27,7 +27,7 @@ testthat::test_that("check messeges", {
   df_with_NA <- presentresults::presentresults_MSNA_template_data
   df_with_NA$cluster_id[1] <- NA
   testthat::expect_error(create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     analysis_key = "analysis_key",
     dataset = df_with_NA,
     cluster_name = "cluster_id"
@@ -38,7 +38,7 @@ testthat::test_that("check messeges", {
   result_table$analysis_key <- result_table$analysis_key |> stringr::str_replace_all("population", "pop")
 
   testthat::expect_error(create_group_clusters(
-    result = result_table,
+    results_table = result_table,
     analysis_key = "analysis_key",
     dataset = presentresults::presentresults_MSNA_template_data,
     cluster_name = "cluster_id"
@@ -47,7 +47,7 @@ testthat::test_that("check messeges", {
 
 testthat::test_that("expect equal", {
   actual <- create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     dataset = presentresults::presentresults_MSNA_template_data,
     cluster_name = "cluster_id"
   )
@@ -70,7 +70,7 @@ testthat::test_that("expect equal", {
   df$cluster_id <- dplyr::case_when(df$location == "locationA" ~ "x", T ~ df$cluster_id)
 
   actual <- create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     dataset = df,
     cluster_name = "cluster_id"
   )
@@ -103,13 +103,13 @@ testthat::test_that("With no grouping", {
   )
 
   testthat::expect_no_error(create_group_clusters(
-    result = results,
+    results_table = results,
     dataset = presentresults::presentresults_MSNA_template_data,
     cluster_name = "cluster_id"
   ))
 
   actual <- create_group_clusters(
-    result = results,
+    results_table = results,
     dataset = presentresults::presentresults_MSNA_template_data,
     cluster_name = "cluster_id"
   )
@@ -138,7 +138,7 @@ testthat::test_that("With NULL in cluster_id", {
   ) |> as.data.frame()
 
   actual <- create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     dataset = presentresults::presentresults_MSNA_template_data
   ) |> as.data.frame()
 
@@ -146,7 +146,7 @@ testthat::test_that("With NULL in cluster_id", {
   testthat::expect_equal(actual, expected)
 
   actual <- create_group_clusters(
-    result = presentresults::presentresults_resultstable,
+    results_table = presentresults::presentresults_resultstable,
     dataset = presentresults::presentresults_MSNA_template_data, cluster_name = NULL
   ) |> as.data.frame()
 

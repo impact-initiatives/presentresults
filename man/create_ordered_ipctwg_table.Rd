@@ -5,7 +5,7 @@
 \title{Helper to order the ipctwg results}
 \usage{
 create_ordered_ipctwg_table(
-  .results,
+  results_table,
   analysis_key = "analysis_key",
   fclc_matrix_var = "fclc_phase",
   fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC",
@@ -36,7 +36,7 @@ create_ordered_ipctwg_table(
 )
 }
 \arguments{
-\item{.results}{results table with analysis key}
+\item{results_table}{results table with analysis key}
 
 \item{analysis_key}{String with the name of the analysis key. Default is "analysis_key"}
 
@@ -108,7 +108,7 @@ Helper to order the ipctwg results
 }
 \examples{
 create_ordered_ipctwg_table(
-  .results = presentresults_resultstable,
+  results_table = presentresults_resultstable,
   fclc_matrix_var = "fcls_cat",
   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
   fc_matrix_var = "fcm_cat",

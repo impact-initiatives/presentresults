@@ -1,6 +1,6 @@
 #' Create number of cluster and number of hh surveyed per group/strata
 #'
-#' @param result A result table which must contain `analysis_key` column.
+#' @param results_table results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
 #' @param dataset dataset
 #' @param cluster_name String with the name of the cluster id in the dataset.
@@ -9,20 +9,20 @@
 #'
 #' @examples
 #' create_group_clusters(
-#'   result = presentresults_resultstable,
+#'   results_table = presentresults_resultstable,
 #'   dataset = presentresults_MSNA_template_data,
 #'   cluster_name = "cluster_id"
 #' )
 #'
-create_group_clusters <- function(result,
+create_group_clusters <- function(results_table,
                                   analysis_key = "analysis_key",
                                   dataset,
                                   cluster_name = NULL) {
   if (is.null(cluster_name)) {
     warning("cluster_name not provided. Assuming cluster sampling was not applied.")
   }
-  if (!analysis_key %in% names(result)) {
-    stop(glue::glue("Analysis key: ", {{ analysis_key }}, " is not found in the result table."))
+  if (!analysis_key %in% names(results_table)) {
+    stop(glue::glue("Analysis key: ", {{ analysis_key }}, " is not found in the results_table table."))
   }
   if (!is.null(cluster_name)) {
     if (!cluster_name %in% names(dataset)) {
@@ -36,7 +36,7 @@ create_group_clusters <- function(result,
   }
 
 
-  df <- analysistools::create_analysis_key_table(results_table = result, analysis_key = analysis_key) |>
+  df <- analysistools::create_analysis_key_table(results_table = results_table, analysis_key = analysis_key) |>
     dplyr::select(dplyr::starts_with("group_var_")) |>
     dplyr::select(-dplyr::starts_with("group_var_value_"))
 

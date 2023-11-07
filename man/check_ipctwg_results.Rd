@@ -5,7 +5,7 @@
 \title{Helper to check the results for the IPCTWG table}
 \usage{
 check_ipctwg_results(
-  .results,
+  results_table,
   analysis_key = "analysis_key",
   fclc_matrix_var = "fclc_phase",
   fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC",
@@ -36,7 +36,7 @@ check_ipctwg_results(
 )
 }
 \arguments{
-\item{.results}{results table with analysis key}
+\item{results_table}{results table with analysis key}
 
 \item{analysis_key}{String with the name of the analysis key. Default is "analysis_key"}
 
@@ -114,7 +114,7 @@ Helper to make sure the results contains all the IPCTWG information
 }
 \examples{
 check_ipctwg_results(
-  .results = presentresults_resultstable,
+  results_table = presentresults_resultstable,
   fclc_matrix_var = "fcls_cat",
   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
   fc_matrix_var = "fcm_cat",

@@ -5,14 +5,14 @@
 \title{Create number of cluster and number of hh surveyed per group/strata}
 \usage{
 create_group_clusters(
-  result,
+  results_table,
   analysis_key = "analysis_key",
   dataset,
   cluster_name = NULL
 )
 }
 \arguments{
-\item{result}{A result table which must contain \code{analysis_key} column.}
+\item{results_table}{results table with analysis key}
 
 \item{analysis_key}{String with the name of the analysis key. Default is "analysis_key"}
 
@@ -28,7 +28,7 @@ Create number of cluster and number of hh surveyed per group/strata
 }
 \examples{
 create_group_clusters(
-  result = presentresults_resultstable,
+  results_table = presentresults_resultstable,
   dataset = presentresults_MSNA_template_data,
   cluster_name = "cluster_id"
 )

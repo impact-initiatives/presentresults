@@ -8,7 +8,7 @@ test_that("that the results are correctly displayed", {
 
   # with fewsnet matrix
   actual_output <- create_ipctwg_table(
-    .results = presentresults_resultstable,
+    results_table = presentresults_resultstable,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fclc_matrix_var = "fcls_cat",
@@ -48,7 +48,7 @@ test_that("that the results are correctly displayed", {
     dplyr::select(-dplyr::contains(c("fcls_cat", "fcm_cat")))
 
   no_fewsnet_phase_actual_output <- create_ipctwg_table(
-    .results = presentresults_resultstable,
+    results_table = presentresults_resultstable,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fcs_cat_values = c("low", "medium", "high"),
@@ -78,7 +78,7 @@ test_that("that the results are correctly displayed", {
 
   # with adding others variables (one cat, one number, one select multiple)
   all_vars_actual_output <- create_ipctwg_table(
-    .results = presentresults_resultstable,
+    results_table = presentresults_resultstable,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fclc_matrix_var = "fcls_cat",
@@ -129,7 +129,7 @@ test_that("that if there is one missiong option, the variable still show in the 
     dplyr::filter(!(analysis_var == "fcls_cat" & analysis_var_value == "phase_1"))
   # with fewsnet matrix
   actual_output <- create_ipctwg_table(
-    .results = presentresults_resultstable_trimed,
+    results_table = presentresults_resultstable_trimed,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fclc_matrix_var = "fcls_cat",
@@ -167,7 +167,7 @@ test_that("that if there is one missiong option, the variable still show in the 
 test_that("If at least one variable is not present, there should be an error", {
   expect_error(
     check_ipctwg_results(
-      .results = presentresults_resultstable,
+      results_table = presentresults_resultstable,
       lcsi_set = "xx"
     ) %>%
       suppressWarnings(),
@@ -176,7 +176,7 @@ test_that("If at least one variable is not present, there should be an error", {
 
   expect_error(
     check_ipctwg_results(
-      .results = presentresults_resultstable,
+      results_table = presentresults_resultstable,
       lcsi_set = c("liv_stress_lcsi_1", "liv_stress_lcsi_2"),
       with_fclc = T
     ) %>%
@@ -186,7 +186,7 @@ test_that("If at least one variable is not present, there should be an error", {
 
   expect_error(
     check_ipctwg_results(
-      .results = presentresults_resultstable,
+      results_table = presentresults_resultstable,
       lcsi_set = c("liv_stress_lcsi_1", "liv_stress_lcsi_2"),
       other_variables = c("number_lunch", "expenses")
     ) %>%
@@ -199,7 +199,7 @@ test_that("If one options present in the dataset is not part of the one in the t
           there should be an error.", {
   expect_error(
     check_ipctwg_results(
-      .results = presentresults_resultstable,
+      results_table = presentresults_resultstable,
       lcsi_cat_var = "lcs_cat",
       hhs_cat_var = "hhs_cat",
       lcsi_set = c("liv_stress_lcsi_1", "liv_stress_lcsi_2"),
@@ -210,7 +210,7 @@ test_that("If one options present in the dataset is not part of the one in the t
 
   expect_error(
     check_ipctwg_results(
-      .results = presentresults_resultstable,
+      results_table = presentresults_resultstable,
       lcsi_set = c(
         "liv_stress_lcsi_1",
         "liv_stress_lcsi_2",
@@ -239,7 +239,7 @@ test_that("If one options present in the dataset is not part of the one in the t
 test_that("if number of expected values is different it will show a warning", {
   # Adding None to fclc_matrix_values
   check_ipctwg_results(
-    .results = presentresults_resultstable,
+    results_table = presentresults_resultstable,
     fclc_matrix_var = "fcls_cat",
     fclc_matrix_values = c("None", "phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
     fc_matrix_var = "fcm_cat",
@@ -270,7 +270,7 @@ test_that("if number of expected values is different it will show a warning", {
   no_high_results <- presentresults_resultstable %>%
     dplyr::filter(!(analysis_var_value == "high" & analysis_var == "fcs_cat"))
   check_ipctwg_results(
-    .results = no_high_results,
+    results_table = no_high_results,
     fcs_cat_values = c("low", "medium"),
     rcsi_cat_values = c("low", "medium", "high"),
     lcsi_cat_var = "lcs_cat",
@@ -294,7 +294,7 @@ test_that("if number of expected values is different it will show a warning", {
 
   # removing some LCSI variables
   check_ipctwg_results(
-    .results = presentresults_resultstable,
+    results_table = presentresults_resultstable,
     fcs_cat_values = c("low", "medium", "high"),
     rcsi_cat_values = c("low", "medium", "high"),
     lcsi_cat_var = "lcs_cat",
