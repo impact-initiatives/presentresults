@@ -284,47 +284,6 @@ example_ipc %>%
   create_xlsx_group_x_variable(example_ipc, table_name = "ipctwg_table", file_path = "ipc_table.xlsx")
 ```
 
-## Converting the analysis index into a table
-
-This is is how to turn the analysis index into a table
-
-``` r
-resultstable <- data.frame(analysis_index = c(
-  "mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
-  "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
-  "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"
-))
-
-key_table <- create_analysis_key_table(resultstable, "analysis_index")
-key_table
-#>                     analysis_index analysis_type analysis_var_1
-#> 1 mean @/@ v1 ~/~ NA @/@ NA ~/~ NA          mean             v1
-#> 2 mean @/@ v1 ~/~ NA @/@ gro ~/~ A          mean             v1
-#> 3 mean @/@ v1 ~/~ NA @/@ gro ~/~ B          mean             v1
-#>   analysis_var_value_1 group_var_1 group_var_value_1 nb_analysis_var
-#> 1                   NA          NA                NA               1
-#> 2                   NA         gro                 A               1
-#> 3                   NA         gro                 B               1
-#>   nb_group_var
-#> 1            1
-#> 2            1
-#> 3            1
-```
-
-You can then unite the analysis and grouping variables if needed.
-
-``` r
-unite_variables(key_table)
-#>                     analysis_index analysis_type analysis_var
-#> 1 mean @/@ v1 ~/~ NA @/@ NA ~/~ NA          mean           v1
-#> 2 mean @/@ v1 ~/~ NA @/@ gro ~/~ A          mean           v1
-#> 3 mean @/@ v1 ~/~ NA @/@ gro ~/~ B          mean           v1
-#>   analysis_var_value group_var group_var_value nb_analysis_var nb_group_var
-#> 1                 NA        NA              NA               1            1
-#> 2                 NA       gro               A               1            1
-#> 3                 NA       gro               B               1            1
-```
-
 ## `create_group_clusters()`
 
 The function `create_group_clusters()` creates number of cluster and
