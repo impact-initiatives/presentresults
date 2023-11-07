@@ -317,48 +317,11 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="converting-the-analysis-index-into-a-table">Converting the analysis index into a table<a class="anchor" aria-label="anchor" href="#converting-the-analysis-index-into-a-table"></a>
-</h2>
-<p>This is is how to turn the analysis index into a table</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">resultstable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>analysis_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"mean @/@ v1 ~/~ NA @/@ NA ~/~ NA"</span>,</span>
-<span>  <span class="st">"mean @/@ v1 ~/~ NA @/@ gro ~/~ A"</span>,</span>
-<span>  <span class="st">"mean @/@ v1 ~/~ NA @/@ gro ~/~ B"</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">key_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis_key_table.html">create_analysis_key_table</a></span><span class="op">(</span><span class="va">resultstable</span>, <span class="st">"analysis_index"</span><span class="op">)</span></span>
-<span><span class="va">key_table</span></span>
-<span><span class="co">#&gt;                     analysis_index analysis_type analysis_var_1</span></span>
-<span><span class="co">#&gt; 1 mean @/@ v1 ~/~ NA @/@ NA ~/~ NA          mean             v1</span></span>
-<span><span class="co">#&gt; 2 mean @/@ v1 ~/~ NA @/@ gro ~/~ A          mean             v1</span></span>
-<span><span class="co">#&gt; 3 mean @/@ v1 ~/~ NA @/@ gro ~/~ B          mean             v1</span></span>
-<span><span class="co">#&gt;   analysis_var_value_1 group_var_1 group_var_value_1 nb_analysis_var</span></span>
-<span><span class="co">#&gt; 1                   NA          NA                NA               1</span></span>
-<span><span class="co">#&gt; 2                   NA         gro                 A               1</span></span>
-<span><span class="co">#&gt; 3                   NA         gro                 B               1</span></span>
-<span><span class="co">#&gt;   nb_group_var</span></span>
-<span><span class="co">#&gt; 1            1</span></span>
-<span><span class="co">#&gt; 2            1</span></span>
-<span><span class="co">#&gt; 3            1</span></span></code></pre></div>
-<p>You can then unite the analysis and grouping variables if needed.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/unite_variables.html">unite_variables</a></span><span class="op">(</span><span class="va">key_table</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                     analysis_index analysis_type analysis_var</span></span>
-<span><span class="co">#&gt; 1 mean @/@ v1 ~/~ NA @/@ NA ~/~ NA          mean           v1</span></span>
-<span><span class="co">#&gt; 2 mean @/@ v1 ~/~ NA @/@ gro ~/~ A          mean           v1</span></span>
-<span><span class="co">#&gt; 3 mean @/@ v1 ~/~ NA @/@ gro ~/~ B          mean           v1</span></span>
-<span><span class="co">#&gt;   analysis_var_value group_var group_var_value nb_analysis_var nb_group_var</span></span>
-<span><span class="co">#&gt; 1                 NA        NA              NA               1            1</span></span>
-<span><span class="co">#&gt; 2                 NA       gro               A               1            1</span></span>
-<span><span class="co">#&gt; 3                 NA       gro               B               1            1</span></span></code></pre></div>
-</div>
-<div class="section level2">
 <h2 id="create_group_clusters">
 <code>create_group_clusters()</code><a class="anchor" aria-label="anchor" href="#create_group_clusters"></a>
 </h2>
 <p>The function <code><a href="reference/create_group_clusters.html">create_group_clusters()</a></code> creates number of cluster and number of hh surveyed per group/strata</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/create_group_clusters.html">create_group_clusters</a></span><span class="op">(</span></span>
 <span>  result <span class="op">=</span> <span class="va">presentresults_resultstable</span>,</span>
 <span>  dataset <span class="op">=</span> <span class="va">presentresults_MSNA_template_data</span>,</span>
