@@ -36,7 +36,7 @@ create_group_clusters <- function(result,
   }
 
 
-  df <- create_analysis_key_table(.results = result, analysis_key = analysis_key) |>
+  df <- analysistools::create_analysis_key_table(results_table = result, analysis_key = analysis_key) |>
     dplyr::select(dplyr::starts_with("group_var_")) |>
     dplyr::select(-dplyr::starts_with("group_var_value_"))
 

@@ -129,28 +129,6 @@ example_ipc %>%
   create_xlsx_group_x_variable(example_ipc, table_name = "ipctwg_table", file_path = "ipc_table.xlsx")
 ```
 
-## Converting the analysis index into a table
-
-This is is how to turn the analysis index into a table
-
-```{r create_analysis_key_table}
-resultstable <- data.frame(analysis_index = c(
-  "mean @/@ v1 ~/~ NA @/@ NA ~/~ NA",
-  "mean @/@ v1 ~/~ NA @/@ gro ~/~ A",
-  "mean @/@ v1 ~/~ NA @/@ gro ~/~ B"
-))
-
-key_table <- create_analysis_key_table(resultstable, "analysis_index")
-key_table
-```
-
-You can then unite the analysis and grouping variables if needed.
-
-```{r}
-unite_variables(key_table)
-```
-
-
 
 ## `create_group_clusters()`
 

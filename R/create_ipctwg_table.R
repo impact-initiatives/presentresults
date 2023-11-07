@@ -163,8 +163,8 @@ check_ipctwg_results <- function(.results,
   }
 
   # check all the values in the results are in the choices arguments from the function
-  ipctw_key_table <- create_analysis_key_table(.results = .results, analysis_key = analysis_key) %>%
-    unite_variables()
+  ipctw_key_table <- analysistools::create_analysis_key_table(results_table = .results, analysis_key = analysis_key) %>%
+    analysistools::unite_variables()
 
   # check all the values in the results are in the choices arguments from the function
   value_checked_ipctw_key_table <- dictionary %>%

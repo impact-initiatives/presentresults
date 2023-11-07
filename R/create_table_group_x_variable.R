@@ -21,7 +21,7 @@ create_table_group_x_variable <- function(.results,
 
   # create the information from the key index
   index_table <-
-    create_analysis_key_table(.results, analysis_key = analysis_key)
+    analysistools::create_analysis_key_table(results_table = .results, analysis_key = analysis_key)
 
   # add the stats needed
   indexed_results <- index_table %>%
@@ -30,7 +30,7 @@ create_table_group_x_variable <- function(.results,
     ))))
 
   # unite the analysis and grouping variables.
-  indexed_results <- unite_variables(indexed_results)
+  indexed_results <- analysistools::unite_variables(indexed_results)
 
   # get the main information into a wide format
   step1 <- indexed_results %>%
