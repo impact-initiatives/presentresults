@@ -43,7 +43,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_ordered_ipctwg_table</span><span class="op">(</span></span>
-<span>  <span class="va">.results</span>,</span>
+<span>  <span class="va">results_table</span>,</span>
 <span>  analysis_key <span class="op">=</span> <span class="st">"analysis_key"</span>,</span>
 <span>  fclc_matrix_var <span class="op">=</span> <span class="st">"fclc_phase"</span>,</span>
 <span>  fclc_matrix_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Phase 1 - FCLC"</span>, <span class="st">"Phase 2 - FCLC"</span>, <span class="st">"Phase 3 - FCLC"</span>,</span>
@@ -76,7 +76,7 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>.results</dt>
+    <dl><dt>results_table</dt>
 <dd><p>results table with analysis key</p></dd>
 
 
@@ -196,7 +196,7 @@ set. Default is c("yes", "no_had_no_need", "no_exhausted", "not_applicable")</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">create_ordered_ipctwg_table</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .results <span class="op">=</span> <span class="va">presentresults_resultstable</span>,</span></span>
+<span class="r-in"><span>  results_table <span class="op">=</span> <span class="va">presentresults_resultstable</span>,</span></span>
 <span class="r-in"><span>  fclc_matrix_var <span class="op">=</span> <span class="st">"fcls_cat"</span>,</span></span>
 <span class="r-in"><span>  fclc_matrix_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phase_1"</span>, <span class="st">"phase_2"</span>, <span class="st">"phase_3"</span>, <span class="st">"phase_4"</span>, <span class="st">"phase_5"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  fc_matrix_var <span class="op">=</span> <span class="st">"fcm_cat"</span>,</span></span>
