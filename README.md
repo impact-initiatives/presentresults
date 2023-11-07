@@ -189,7 +189,7 @@ presentresults_resultstable %>%
 
 ``` r
 example_ipc <- create_ipctwg_table(
-  .results = presentresults_resultstable,
+  results_table = presentresults_resultstable,
   dataset = presentresults_MSNA_template_data,
   cluster_name = "cluster_id",
   fclc_matrix_var = "fcls_cat",
@@ -291,7 +291,7 @@ number of hh surveyed per group/strata
 
 ``` r
 create_group_clusters(
-  result = presentresults_resultstable,
+  results_table = presentresults_resultstable,
   dataset = presentresults_MSNA_template_data,
   cluster_name = "cluster_id"
 ) |> head()

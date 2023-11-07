@@ -1,6 +1,6 @@
 #' Turns a long format table into a wide format
 #'
-#' @param results dataframe with results in a long format
+#' @param results_table results table with analysis key
 #' @param analysis_key analysis key following this description
 #' "analysis_type @/@ dependent_variable  ~/~ dependent_variable_value @/@
 #' independent_variable ~/~ independent_variable_value "
@@ -20,11 +20,11 @@
 #' @examples
 #' presentresults_resultstable %>% create_table_variable_x_group("analysis_key", "stat")
 create_table_variable_x_group <-
-  function(results,
+  function(results_table,
            analysis_key = "analysis_key",
            value_columns = c("stat", "stat_low", "stat_upp"),
            list_for_excel = FALSE) {
-    if (results %>%
+    if (results_table %>%
       dplyr::pull(!!rlang::sym(analysis_key)) %>%
       stringr::str_split(" @/@ ", simplify = TRUE) %>%
       dim() %>%
@@ -32,7 +32,7 @@ create_table_variable_x_group <-
       stop("Analysis keys does not seem to follow the correct format")
     }
 
-    results <- results %>%
+    results_table <- results_table %>%
       dplyr::select(dplyr::all_of(c(analysis_key, value_columns))) %>%
       tidyr::separate(
         analysis_key,
@@ -48,19 +48,19 @@ create_table_variable_x_group <-
     analysis_var_split <-
       paste0(rep(
         c("analysis_var_", "analysis_var_value_"),
-        max(results$nb_analysis_var)
+        max(results_table$nb_analysis_var)
       ), rep(c(1:max(
-        results$nb_analysis_var
+        results_table$nb_analysis_var
       )), each = 2))
     group_var_split <-
       paste0(rep(
         c("group_var_", "group_var_value_"),
-        max(results$nb_group_var)
+        max(results_table$nb_group_var)
       ), rep(c(1:max(
-        results$nb_group_var
+        results_table$nb_group_var
       )), each = 2))
 
-    results <- results %>%
+    results_table <- results_table %>%
       tidyr::separate(analysis_var,
         analysis_var_split,
         sep = " ~/~ "
@@ -70,7 +70,7 @@ create_table_variable_x_group <-
         sep = " ~/~ "
       )
 
-    results <- results %>%
+    results_table <- results_table %>%
       tidyr::unite(analysis_var,
         c(
           dplyr::starts_with("analysis_var") &
@@ -102,7 +102,7 @@ create_table_variable_x_group <-
 
 
     if (list_for_excel == TRUE) {
-      table_to_return <- results %>%
+      table_to_return <- results_table %>%
         dplyr::group_by(group_var) %>%
         dplyr::group_split() %>%
         purrr::map(
@@ -114,7 +114,7 @@ create_table_variable_x_group <-
             names_vary = "slowest"
           )
         )
-      group_names <- results %>%
+      group_names <- results_table %>%
         dplyr::group_by(group_var) %>%
         dplyr::group_keys() %>%
         dplyr::mutate(
@@ -126,7 +126,7 @@ create_table_variable_x_group <-
         table_to_return %>% purrr::set_names(group_names)
       return(table_to_return)
     } else {
-      table_to_return <- results %>%
+      table_to_return <- results_table %>%
         tidyr::pivot_wider(
           id_cols = c(analysis_type, analysis_var, analysis_var_value),
           names_from = group_var_value,
