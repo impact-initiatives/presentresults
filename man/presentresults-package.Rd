@@ -6,7 +6,7 @@
 \alias{presentresults-package}
 \title{presentresults: Helpers to present results into table or graphs}
 \description{
-The package provides wrappers to turn results from a long format into wide or graphics. It is based on tidyverse mainly. For results in a long format, it will work with an analysis key which have the following format: analysis_type @/@ dependent_variable ~/~ dependent_variable_value @/@ independent_variable ~/~ independent_variable_value
+The package provides wrappers to turn results from a long format into wide or graphics. For results in a long format, it will work with an analysis key which have the following format analysis_type @/@ dependent_variable %/% dependent_variable_value @/@ independent_variable %/% independent_variable_value.
 }
 \seealso{
 Useful links:

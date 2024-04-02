@@ -101,7 +101,7 @@ test_that("test that value_columns length is one, the warning say it cannot be v
 })
 
 test_that("Test that outputs have not changed", {
-  skip("Skip as workbook object seems to behave differently on github virtual machines")
+  # skip("Skip as workbook object seems to behave differently on github virtual machines")
   # comment the skip and to be run manually with devtools::test()
 
   temp_dir_to_test <- withr::local_tempdir(fileext = "test")

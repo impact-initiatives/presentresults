@@ -1,4 +1,4 @@
-testthat::test_that("check messeges", {
+testthat::test_that("check messages", {
   # Cluster-ID not provided. Assuming cluster sampling was not applied.
   testthat::expect_warning(
     create_group_clusters(
@@ -54,8 +54,8 @@ testthat::test_that("expect equal", {
 
   expected <- structure(list(
     group_var_value = c(
-      "locationA ~/~ displaced", "locationA ~/~ non-displaced",
-      "locationB ~/~ displaced", "locationB ~/~ non-displaced", "locationA",
+      "locationA %/% displaced", "locationA %/% non-displaced",
+      "locationB %/% displaced", "locationB %/% non-displaced", "locationA",
       "locationB"
     ), number_of_cluster = c(2L, 2L, 2L, 2L, 2L, 2L),
     number_of_hh = c(31L, 24L, 27L, 18L, 55L, 45L)
@@ -77,8 +77,8 @@ testthat::test_that("expect equal", {
   expected <- structure(
     list(
       group_var_value = c(
-        "locationA ~/~ displaced", "locationA ~/~ non-displaced",
-        "locationB ~/~ displaced", "locationB ~/~ non-displaced", "locationA", "locationB"
+        "locationA %/% displaced", "locationA %/% non-displaced",
+        "locationB %/% displaced", "locationB %/% non-displaced", "locationA", "locationB"
       ),
       number_of_cluster = c(1L, 1L, 3L, 3L, 1L, 3L),
       number_of_hh = c(31L, 24L, 27L, 18L, 55L, 45L)
@@ -95,10 +95,10 @@ testthat::test_that("With no grouping", {
   results <- data.frame(
     stat = c(.66, .33, 0, 12),
     analysis_key = c(
-      "prop_select_one @/@ fcs_cat ~/~ low @/@ NA ~/~ NA",
-      "prop_select_one @/@ fcs_cat ~/~ medium @/@ NA ~/~ NA",
-      "prop_select_one @/@ fcs_cat ~/~ high @/@ NA ~/~ NA",
-      "prop_select_one @/@ fcs_cat ~/~ low @/@ location ~/~ locationA ~/~ population ~/~ displaced"
+      "prop_select_one @/@ fcs_cat %/% low @/@ NA %/% NA",
+      "prop_select_one @/@ fcs_cat %/% medium @/@ NA %/% NA",
+      "prop_select_one @/@ fcs_cat %/% high @/@ NA %/% NA",
+      "prop_select_one @/@ fcs_cat %/% low @/@ location %/% locationA -/- population %/% displaced"
     )
   )
 
@@ -117,9 +117,9 @@ testthat::test_that("With no grouping", {
     number_of_cluster = c(2L, 2L, 2L, 2L, 2L),
     number_of_hh = c(100L, 31L, 24L, 27L, 18L),
     group_var_value = c(
-      "Overall", "locationA ~/~ displaced",
-      "locationA ~/~ non-displaced", "locationB ~/~ displaced",
-      "locationB ~/~ non-displaced"
+      "Overall", "locationA %/% displaced",
+      "locationA %/% non-displaced", "locationB %/% displaced",
+      "locationB %/% non-displaced"
     )
   )
 
@@ -129,8 +129,8 @@ testthat::test_that("With no grouping", {
 testthat::test_that("With NULL in cluster_id", {
   expected <- data.frame(
     group_var_value = c(
-      "locationA ~/~ displaced", "locationA ~/~ non-displaced",
-      "locationB ~/~ displaced", "locationB ~/~ non-displaced",
+      "locationA %/% displaced", "locationA %/% non-displaced",
+      "locationB %/% displaced", "locationB %/% non-displaced",
       "locationA", "locationB"
     ),
     number_of_cluster = NA,
@@ -140,7 +140,9 @@ testthat::test_that("With NULL in cluster_id", {
   actual <- create_group_clusters(
     results_table = presentresults::presentresults_resultstable,
     dataset = presentresults::presentresults_MSNA_template_data
-  ) |> as.data.frame()
+  ) |>
+    suppressWarnings() |>
+    as.data.frame()
 
 
   testthat::expect_equal(actual, expected)
@@ -148,7 +150,9 @@ testthat::test_that("With NULL in cluster_id", {
   actual <- create_group_clusters(
     results_table = presentresults::presentresults_resultstable,
     dataset = presentresults::presentresults_MSNA_template_data, cluster_name = NULL
-  ) |> as.data.frame()
+  ) |>
+    suppressWarnings() |>
+    as.data.frame()
 
   testthat::expect_equal(actual, expected)
 })

@@ -12,8 +12,43 @@ Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](c
 coverage](https://codecov.io/gh/impact-initiatives/presentresults/branch/main/graph/badge.svg)](https://app.codecov.io/gh/impact-initiatives/presentresults?branch=main)
 <!-- badges: end -->
 
-The goal of presentresults is to present the results from a results
-table (long format with analysis key).
+The goal of presentresults is to create outputs from a results table
+(long format with analysis key).
+
+The analysis key is the unique identifier of the analysis. The format is
+the following:
+
+- analysis type @/@ analysis variable %/% analysis variable value @/@
+  grouping variable %/% grouping variable value
+
+- analysis type @/@ dependent variable %/% dependent variable value @/@
+  independent variable %/% independent variable value
+
+If there are two or more grouping variables it would look like that
+
+- analysis type @/@ analysis variable %/% analysis variable value @/@
+  grouping variable 1 %/% grouping variable value 1 -/- grouping
+  variable 2 %/% grouping variable value 2
+
+There are 3 types of separators:
+
+- @/@ will separate the top level information: analysis type, the
+  analysis (dependent) variable information and the grouping
+  (independent) variable
+
+- %/% will separate the analysis and grouping information: it will
+  separate the variable name and the variable value
+
+- -/- will separate 2 variables in case there are multiple variable in
+  either the analysis or grouping sets.
+
+The current analysis types available are :
+
+- mean
+- median
+- prop_select_one: proportion for select one
+- prop_select_multiple: proportion for select multiple
+- ratio
 
 ## Installation
 
@@ -37,13 +72,10 @@ group.
 ``` r
 example_variable_x_group <- presentresults_resultstable %>%
   create_table_variable_x_group()
-#> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
-#> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
-#> 544, ...].
 
 example_variable_x_group[1:6, 1:9]
 #> # A tibble: 6 × 9
-#>   analysis_type   analysis_var analysis_var_value `stat_locationA ~/~ displaced`
+#>   analysis_type   analysis_var analysis_var_value `stat_locationA %/% displaced`
 #>   <chr>           <chr>        <chr>                                       <dbl>
 #> 1 prop_select_one fcs_cat      low                                         0.258
 #> 2 prop_select_one fcs_cat      medium                                      0.323
@@ -51,11 +83,11 @@ example_variable_x_group[1:6, 1:9]
 #> 4 prop_select_one rcsi_cat     low                                         0.290
 #> 5 prop_select_one rcsi_cat     medium                                      0.258
 #> 6 prop_select_one rcsi_cat     high                                        0.452
-#> # ℹ 5 more variables: `stat_low_locationA ~/~ displaced` <dbl>,
-#> #   `stat_upp_locationA ~/~ displaced` <dbl>,
-#> #   `stat_locationA ~/~ non-displaced` <dbl>,
-#> #   `stat_low_locationA ~/~ non-displaced` <dbl>,
-#> #   `stat_upp_locationA ~/~ non-displaced` <dbl>
+#> # ℹ 5 more variables: `stat_low_locationA %/% displaced` <dbl>,
+#> #   `stat_upp_locationA %/% displaced` <dbl>,
+#> #   `stat_locationA %/% non-displaced` <dbl>,
+#> #   `stat_low_locationA %/% non-displaced` <dbl>,
+#> #   `stat_upp_locationA %/% non-displaced` <dbl>
 ```
 
 ``` r
@@ -68,13 +100,10 @@ The table without the higher and lower confidence bound.
 ``` r
 example_variable_x_group <- presentresults_resultstable %>%
   create_table_variable_x_group(value_columns = "stat")
-#> Warning: Expected 4 pieces. Missing pieces filled with `NA` in 305 rows [525, 526, 527,
-#> 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
-#> 544, ...].
 
 example_variable_x_group[1:6, 1:9]
 #> # A tibble: 6 × 9
-#>   analysis_type   analysis_var analysis_var_value `locationA ~/~ displaced`
+#>   analysis_type   analysis_var analysis_var_value `locationA %/% displaced`
 #>   <chr>           <chr>        <chr>                                  <dbl>
 #> 1 prop_select_one fcs_cat      low                                    0.258
 #> 2 prop_select_one fcs_cat      medium                                 0.323
@@ -82,8 +111,8 @@ example_variable_x_group[1:6, 1:9]
 #> 4 prop_select_one rcsi_cat     low                                    0.290
 #> 5 prop_select_one rcsi_cat     medium                                 0.258
 #> 6 prop_select_one rcsi_cat     high                                   0.452
-#> # ℹ 5 more variables: `locationA ~/~ non-displaced` <dbl>,
-#> #   `locationB ~/~ displaced` <dbl>, `locationB ~/~ non-displaced` <dbl>,
+#> # ℹ 5 more variables: `locationA %/% non-displaced` <dbl>,
+#> #   `locationB %/% displaced` <dbl>, `locationB %/% non-displaced` <dbl>,
 #> #   locationA <dbl>, locationB <dbl>
 ```
 
@@ -109,66 +138,66 @@ example_group_x_variable[1:6, 1:10]
 #> header_analysis_var                   group_var_value
 #> header_analysis_var_value             group_var_value
 #> header_analysis_type                  group_var_value
-#> 1                             locationA ~/~ displaced
-#> 2                         locationA ~/~ non-displaced
-#> 3                             locationB ~/~ displaced
-#>                           fcs_cat ~/~ low ~/~ prop_select_one
+#> 1                             locationA %/% displaced
+#> 2                         locationA %/% non-displaced
+#> 3                             locationB %/% displaced
+#>                           fcs_cat %/% low %/% prop_select_one
 #> header_analysis_var                                   fcs_cat
 #> header_analysis_var_value                                 low
 #> header_analysis_type                          prop_select_one
 #> 1                                           0.258064516129032
 #> 2                                                        0.25
 #> 3                                            0.37037037037037
-#>                           fcs_cat ~/~ medium ~/~ prop_select_one
+#>                           fcs_cat %/% medium %/% prop_select_one
 #> header_analysis_var                                      fcs_cat
 #> header_analysis_var_value                                 medium
 #> header_analysis_type                             prop_select_one
 #> 1                                               0.32258064516129
 #> 2                                                          0.375
 #> 3                                              0.407407407407407
-#>                           fcs_cat ~/~ high ~/~ prop_select_one
+#>                           fcs_cat %/% high %/% prop_select_one
 #> header_analysis_var                                    fcs_cat
 #> header_analysis_var_value                                 high
 #> header_analysis_type                           prop_select_one
 #> 1                                            0.419354838709677
 #> 2                                                        0.375
 #> 3                                            0.222222222222222
-#>                           rcsi_cat ~/~ low ~/~ prop_select_one
+#>                           rcsi_cat %/% low %/% prop_select_one
 #> header_analysis_var                                   rcsi_cat
 #> header_analysis_var_value                                  low
 #> header_analysis_type                           prop_select_one
 #> 1                                            0.290322580645161
 #> 2                                                        0.375
 #> 3                                            0.259259259259259
-#>                           rcsi_cat ~/~ medium ~/~ prop_select_one
+#>                           rcsi_cat %/% medium %/% prop_select_one
 #> header_analysis_var                                      rcsi_cat
 #> header_analysis_var_value                                  medium
 #> header_analysis_type                              prop_select_one
 #> 1                                               0.258064516129032
 #> 2                                               0.458333333333333
 #> 3                                               0.518518518518518
-#>                           rcsi_cat ~/~ high ~/~ prop_select_one
+#>                           rcsi_cat %/% high %/% prop_select_one
 #> header_analysis_var                                    rcsi_cat
 #> header_analysis_var_value                                  high
 #> header_analysis_type                            prop_select_one
 #> 1                                             0.451612903225806
 #> 2                                             0.166666666666667
 #> 3                                             0.222222222222222
-#>                           lcs_cat ~/~ none ~/~ prop_select_one
+#>                           lcs_cat %/% none %/% prop_select_one
 #> header_analysis_var                                    lcs_cat
 #> header_analysis_var_value                                 none
 #> header_analysis_type                           prop_select_one
 #> 1                                            0.193548387096774
 #> 2                                           0.0416666666666667
 #> 3                                            0.296296296296296
-#>                           lcs_cat ~/~ stress ~/~ prop_select_one
+#>                           lcs_cat %/% stress %/% prop_select_one
 #> header_analysis_var                                      lcs_cat
 #> header_analysis_var_value                                 stress
 #> header_analysis_type                             prop_select_one
 #> 1                                              0.129032258064516
 #> 2                                              0.458333333333333
 #> 3                                              0.259259259259259
-#>                           lcs_cat ~/~ emergency ~/~ prop_select_one
+#>                           lcs_cat %/% emergency %/% prop_select_one
 #> header_analysis_var                                         lcs_cat
 #> header_analysis_var_value                                 emergency
 #> header_analysis_type                                prop_select_one
@@ -225,52 +254,52 @@ example_ipc[["ipctwg_table"]][1:6, 1:10]
 #> header_analysis_var                   group_var_value number_of_cluster
 #> header_analysis_var_value             group_var_value              <NA>
 #> header_analysis_type                  group_var_value              <NA>
-#> 1                             locationA ~/~ displaced                 2
-#> 2                         locationA ~/~ non-displaced                 2
-#> 3                             locationB ~/~ displaced                 2
-#>                           number_of_hh fcls_cat ~/~ phase_1 ~/~ prop_select_one
+#> 1                             locationA %/% displaced                 2
+#> 2                         locationA %/% non-displaced                 2
+#> 3                             locationB %/% displaced                 2
+#>                           number_of_hh fcls_cat %/% phase_1 %/% prop_select_one
 #> header_analysis_var       number_of_hh                                 fcls_cat
 #> header_analysis_var_value         <NA>                                  phase_1
 #> header_analysis_type              <NA>                          prop_select_one
 #> 1                                   31                        0.161290322580645
 #> 2                                   24                       0.0833333333333333
 #> 3                                   27                        0.111111111111111
-#>                           fcls_cat ~/~ phase_2 ~/~ prop_select_one
+#>                           fcls_cat %/% phase_2 %/% prop_select_one
 #> header_analysis_var                                       fcls_cat
 #> header_analysis_var_value                                  phase_2
 #> header_analysis_type                               prop_select_one
 #> 1                                                0.225806451612903
 #> 2                                               0.0833333333333333
 #> 3                                                0.333333333333333
-#>                           fcls_cat ~/~ phase_3 ~/~ prop_select_one
+#>                           fcls_cat %/% phase_3 %/% prop_select_one
 #> header_analysis_var                                       fcls_cat
 #> header_analysis_var_value                                  phase_3
 #> header_analysis_type                               prop_select_one
 #> 1                                                0.258064516129032
 #> 2                                                0.291666666666667
 #> 3                                                0.185185185185185
-#>                           fcls_cat ~/~ phase_4 ~/~ prop_select_one
+#>                           fcls_cat %/% phase_4 %/% prop_select_one
 #> header_analysis_var                                       fcls_cat
 #> header_analysis_var_value                                  phase_4
 #> header_analysis_type                               prop_select_one
 #> 1                                                0.193548387096774
 #> 2                                                0.208333333333333
 #> 3                                                0.185185185185185
-#>                           fcls_cat ~/~ phase_5 ~/~ prop_select_one
+#>                           fcls_cat %/% phase_5 %/% prop_select_one
 #> header_analysis_var                                       fcls_cat
 #> header_analysis_var_value                                  phase_5
 #> header_analysis_type                               prop_select_one
 #> 1                                                0.161290322580645
 #> 2                                                0.333333333333333
 #> 3                                                0.185185185185185
-#>                           fcm_cat ~/~ phase_1 ~/~ prop_select_one
+#>                           fcm_cat %/% phase_1 %/% prop_select_one
 #> header_analysis_var                                       fcm_cat
 #> header_analysis_var_value                                 phase_1
 #> header_analysis_type                              prop_select_one
 #> 1                                               0.290322580645161
 #> 2                                                            0.25
 #> 3                                               0.222222222222222
-#>                           fcm_cat ~/~ phase_2 ~/~ prop_select_one
+#>                           fcm_cat %/% phase_2 %/% prop_select_one
 #> header_analysis_var                                       fcm_cat
 #> header_analysis_var_value                                 phase_2
 #> header_analysis_type                              prop_select_one
@@ -298,10 +327,10 @@ create_group_clusters(
 #> # A tibble: 6 × 3
 #>   group_var_value             number_of_cluster number_of_hh
 #>   <chr>                                   <int>        <int>
-#> 1 locationA ~/~ displaced                     2           31
-#> 2 locationA ~/~ non-displaced                 2           24
-#> 3 locationB ~/~ displaced                     2           27
-#> 4 locationB ~/~ non-displaced                 2           18
+#> 1 locationA %/% displaced                     2           31
+#> 2 locationA %/% non-displaced                 2           24
+#> 3 locationB %/% displaced                     2           27
+#> 4 locationB %/% non-displaced                 2           18
 #> 5 locationA                                   2           55
 #> 6 locationB                                   2           45
 ```

@@ -608,7 +608,7 @@ create_ipctwg_table <- function(results_table,
 
   # get the cluster groups info
   cluster_groups_info <- create_group_clusters(
-    result = results_table,
+    results_table = results_table,
     analysis_key = analysis_key,
     dataset = dataset,
     cluster_name = cluster_name
