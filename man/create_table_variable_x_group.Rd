@@ -15,8 +15,8 @@ create_table_variable_x_group(
 \item{results_table}{results table with analysis key}
 
 \item{analysis_key}{analysis key following this description
-"analysis_type @/@ dependent_variable  ~/~ dependent_variable_value @/@
-independent_variable ~/~ independent_variable_value "}
+"analysis_type @/@ dependent_variable  \%/\% dependent_variable_value @/@
+independent_variable \%/\% independent_variable_value "}
 
 \item{value_columns}{string containing the names of the columns with the
 stats to export}

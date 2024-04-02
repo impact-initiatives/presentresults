@@ -38,13 +38,13 @@ create_table_group_x_variable <- function(results_table,
       id_cols = c(group_var_value),
       names_from = c(analysis_var, analysis_var_value, analysis_type),
       values_from = value_columns,
-      names_sep = c(" ~/~ "),
+      names_sep = c(" %/% "),
       names_vary = "slowest"
     )
 
   # get the headers from the names: name of the variable, value of the variable, type of analysis
   new_headers <- names(step1) %>%
-    stringr::str_split(pattern = " ~/~ ") %>%
+    stringr::str_split(pattern = " %/% ") %>%
     do.call(cbind, .) %>%
     data.frame() %>%
     `names<-`(names(step1)) %>%

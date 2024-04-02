@@ -2,8 +2,8 @@
 #'
 #' @param results_table results table with analysis key
 #' @param analysis_key analysis key following this description
-#' "analysis_type @/@ dependent_variable  ~/~ dependent_variable_value @/@
-#' independent_variable ~/~ independent_variable_value "
+#' "analysis_type @/@ dependent_variable  %/% dependent_variable_value @/@
+#' independent_variable %/% independent_variable_value "
 #' @param value_columns string containing the names of the columns with the
 #' stats to export
 #' @param list_for_excel Default is FALSE, the function will return a dataframe.
@@ -24,81 +24,14 @@ create_table_variable_x_group <-
            analysis_key = "analysis_key",
            value_columns = c("stat", "stat_low", "stat_upp"),
            list_for_excel = FALSE) {
-    if (results_table %>%
-      dplyr::pull(!!rlang::sym(analysis_key)) %>%
-      stringr::str_split(" @/@ ", simplify = TRUE) %>%
-      dim() %>%
-      `[[`(2) != 3) {
-      stop("Analysis keys does not seem to follow the correct format")
-    }
+    analysistools::verify_analysis_key(results_table[[analysis_key]])
 
-    results_table <- results_table %>%
-      dplyr::select(dplyr::all_of(c(analysis_key, value_columns))) %>%
-      tidyr::separate(
-        analysis_key,
-        c("analysis_type", "analysis_var", "group_var"),
-        sep = " @/@ ",
-        remove = FALSE
-      ) %>%
-      dplyr::mutate(
-        nb_analysis_var = ceiling(stringr::str_count(analysis_var, "~/~") / 2),
-        nb_group_var = ceiling(stringr::str_count(group_var, "~/~") / 2)
-      )
+    analysis_key_table <- results_table |>
+      analysistools::create_analysis_key_table(analysis_key_column = analysis_key) |>
+      analysistools::unite_variables()
 
-    analysis_var_split <-
-      paste0(rep(
-        c("analysis_var_", "analysis_var_value_"),
-        max(results_table$nb_analysis_var)
-      ), rep(c(1:max(
-        results_table$nb_analysis_var
-      )), each = 2))
-    group_var_split <-
-      paste0(rep(
-        c("group_var_", "group_var_value_"),
-        max(results_table$nb_group_var)
-      ), rep(c(1:max(
-        results_table$nb_group_var
-      )), each = 2))
-
-    results_table <- results_table %>%
-      tidyr::separate(analysis_var,
-        analysis_var_split,
-        sep = " ~/~ "
-      ) %>%
-      tidyr::separate(group_var,
-        group_var_split,
-        sep = " ~/~ "
-      )
-
-    results_table <- results_table %>%
-      tidyr::unite(analysis_var,
-        c(
-          dplyr::starts_with("analysis_var") &
-            !dplyr::contains("value")
-        ),
-        sep = " ~/~ "
-      ) %>%
-      tidyr::unite(analysis_var_value,
-        c(dplyr::starts_with("analysis_var_value_")),
-        sep = " ~/~ "
-      ) %>%
-      tidyr::unite(group_var, c(
-        dplyr::starts_with("group_var_") &
-          !dplyr::contains("value")
-      ), sep = " ~/~ ") %>%
-      tidyr::unite(group_var_value,
-        c(dplyr::starts_with("group_var_value_")),
-        sep = " ~/~ "
-      ) %>%
-      dplyr::mutate(dplyr::across(
-        c(
-          analysis_var,
-          analysis_var_value,
-          group_var,
-          group_var_value
-        ),
-        ~ stringr::str_remove_all(.x, "( ~/~ NA)*$")
-      ))
+    results_table <- results_table[, c(analysis_key, value_columns)] |>
+      dplyr::left_join(analysis_key_table, by = analysis_key)
 
 
     if (list_for_excel == TRUE) {
@@ -119,7 +52,7 @@ create_table_variable_x_group <-
         dplyr::group_keys() %>%
         dplyr::mutate(
           group_var = stringr::str_replace_na(group_var),
-          group_var = stringr::str_replace_all(group_var, "/~", "")
+          group_var = stringr::str_replace_all(group_var, "/%", "")
         ) %>%
         dplyr::pull(group_var)
       table_to_return <-

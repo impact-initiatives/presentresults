@@ -21,8 +21,34 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/impact-initiatives/presentresults/branch/main/graph/badge.svg)](https://app.codecov.io/gh/impact-initiatives/presentresults?branch=main)
 <!-- badges: end -->
 
-The goal of presentresults is to present the results from a results table (long format with 
+The goal of presentresults is to create outputs from a results table (long format with 
 analysis key).
+
+The analysis key is the unique identifier of the analysis. The format is the following:
+
+- analysis type @/@ analysis variable %/% analysis variable value @/@ grouping variable %/% grouping variable value
+
+- analysis type @/@ dependent variable %/% dependent variable value @/@ independent variable %/% independent variable value
+
+If there are two or more grouping variables it would look like that
+
+- analysis type @/@ analysis variable %/% analysis variable value @/@ grouping variable 1 %/% grouping variable value 1 -/- grouping variable 2 %/% grouping variable value 2
+
+There are 3 types of separators:
+
+- @/@ will separate the top level information: analysis type, the analysis (dependent) variable information and the grouping (independent) variable
+
+- %/% will separate the analysis and grouping information: it will separate the variable name and the variable value
+
+- -/- will separate 2 variables in case there are multiple variable in either the analysis or grouping sets.
+
+The current analysis types available are :
+
+- mean
+- median
+- prop_select_one: proportion for select one
+- prop_select_multiple: proportion for select multiple
+- ratio
 
 ## Installation
 

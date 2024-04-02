@@ -1,5 +1,5 @@
 test_that("that the results are correctly displayed", {
-  all_vars_expected_output <- readRDS(testthat::test_path("fixtures", "export_fewsnet.RDS"))
+  all_vars_expected_output <- readRDS(testthat::test_path("fixtures/create_X_group_x_variable", "table_group_x_variable_export_fewsnet.RDS"))
 
   # removing non-core indicators
   with_fewsnet_matrix_output <- all_vars_expected_output
@@ -115,14 +115,14 @@ test_that("that the results are correctly displayed", {
 
 test_that("that if there is one missiong option, the variable still show in the table,
           for example, 0% of fcls_cat phase 1, and it does not appear in the results", {
-  all_vars_expected_output <- readRDS(testthat::test_path("fixtures", "export_fewsnet.RDS"))
+  all_vars_expected_output <- readRDS(testthat::test_path("fixtures/create_X_group_x_variable", "table_group_x_variable_export_fewsnet.RDS"))
 
   # removing non-core indicators
   with_fewsnet_matrix_output <- all_vars_expected_output
   with_fewsnet_matrix_output$ipctwg_table <- all_vars_expected_output$ipctwg_table %>%
     dplyr::select(-dplyr::contains(c("income_v2_sum", "expenditure_food")))
 
-  with_fewsnet_matrix_output$ipctwg_table[["fcls_cat ~/~ phase_1 ~/~ prop_select_one"]] <- c("fcls_cat", "phase_1", "prop_select_one", rep(NA, 6))
+  with_fewsnet_matrix_output$ipctwg_table[["fcls_cat %/% phase_1 %/% prop_select_one"]] <- c("fcls_cat", "phase_1", "prop_select_one", rep(NA, 6))
 
   # removing all phase_1 in fcls_cat
   presentresults_resultstable_trimed <- presentresults_resultstable %>%
