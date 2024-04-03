@@ -1,6 +1,6 @@
 Package: presentresults
 Title: Helpers to present results into table or graphs
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
   person("Mehedi", "Khan", email= "mh.khan@reach-initiative.org", role = "aut",
            comment = c(ORCID = "0000-0002-4276-4485")),
