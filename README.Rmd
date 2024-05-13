@@ -170,4 +170,3 @@ create_group_clusters(
 ## Code of Conduct
 
 Please note that the presentresults project is released with a [Contributor Code of Conduct](https://impact-initiatives.github.io/presentresults/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
-
