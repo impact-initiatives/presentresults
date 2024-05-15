@@ -1,6 +1,6 @@
 Package: presentresults
 Title: Helpers to present results into table or graphs
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: c(
   person("Mehedi", "Khan", email= "mh.khan@reach-initiative.org", role = "aut",
            comment = c(ORCID = "0000-0002-4276-4485")),
@@ -14,7 +14,7 @@ Description: The package provides wrappers to turn results from a long format in
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     covr,
     testthat (>= 3.0.0),

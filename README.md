@@ -214,10 +214,10 @@ presentresults_resultstable %>%
   create_xlsx_group_x_variable(file_path = "mytable.xlsx")
 ```
 
-### Example for the IPC TWG table
+### Example for the IPC table
 
 ``` r
-example_ipc <- create_ipctwg_table(
+example_ipc <- create_ipc_table(
   results_table = presentresults_resultstable,
   dataset = presentresults_MSNA_template_data,
   cluster_name = "cluster_id",
@@ -244,12 +244,13 @@ example_ipc <- create_ipctwg_table(
     "liv_emerg_lcsi_2",
     "liv_emerg_lcsi_3"
   ),
+  with_hdds = FALSE,
   other_variables = c("income_v2_sum", "expenditure_food")
 )
 #> Joining with `by = join_by(analysis_key)`
 #> Joining with `by = join_by(group_var_value)`
 
-example_ipc[["ipctwg_table"]][1:6, 1:10]
+example_ipc[["ipc_table"]][1:6, 1:10]
 #>                                       group_var_value number_of_cluster
 #> header_analysis_var                   group_var_value number_of_cluster
 #> header_analysis_var_value             group_var_value              <NA>
@@ -310,7 +311,7 @@ example_ipc[["ipctwg_table"]][1:6, 1:10]
 
 ``` r
 example_ipc %>%
-  create_xlsx_group_x_variable(example_ipc, table_name = "ipctwg_table", file_path = "ipc_table.xlsx")
+  create_xlsx_group_x_variable(example_ipc, table_name = "ipc_table", file_path = "ipc_table.xlsx")
 ```
 
 ## `create_group_clusters()`

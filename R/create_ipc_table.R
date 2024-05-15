@@ -1,6 +1,6 @@
-#' Helper to check the results for the IPCTWG table
+#' Helper to check the results for the IPC table
 #'
-#' Helper to make sure the results contains all the IPCTWG information
+#' Helper to make sure the results contains all the IPC information
 #'
 #' @param results_table results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
@@ -14,17 +14,17 @@
 #'  c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")
 #' @param with_fclc TRUE or FALSE, whether to include the FCLC and FC values.
 #' Default is set to FALSE.
-#' @param fcs_cat_var The string with the name of the Food Consumption Score. Default is "fcs_cat"
+#' @param fcs_cat_var String with the name of the Food Consumption Score. Default is "fcs_cat"
 #' @param fcs_cat_values String with the options of the Food Consumption Score. Default is
 #' c("Poor", "Borderline", "Acceptable")
-#' @param rcsi_cat_var The string with the name of the reduced Coping Strategy Index. Default is "rcsi_cat"
+#' @param rcsi_cat_var String with the name of the reduced Coping Strategy Index. Default is "rcsi_cat"
 #' @param rcsi_cat_values String with the options of the reduced Coping Strategy Index. Default is
 #' c("No to Low", "Medium", "High")
-#' @param lcsi_cat_var The string with the name of the Livelihood Coping Strategy Index. Default is
+#' @param lcsi_cat_var String with the name of the Livelihood Coping Strategy Index. Default is
 #' "lcsi_cat"
 #' @param lcsi_cat_values String with the options of the Livelihood Coping Strategy Index. Default
 #' is c("None", "Stress", "Crisis", "Emergency")
-#' @param hhs_cat_var The string with the name of the Household Hunger Scale. Default is "hhs_cat_ipc"
+#' @param hhs_cat_var String with the name of the Household Hunger Scale. Default is "hhs_cat_ipc"
 #' @param hhs_cat_values String with the options of the Household Hunger Scale. Default is
 #' c("None", "Little", "Moderate", "Severe", "Very Severe")
 #' @param fcs_set String for the Food Consumption Score questions set. Default is
@@ -43,6 +43,16 @@
 #' @param proportion_name String how a proportion is called in the analysis key. Default is
 #' "prop_select_one"
 #' @param mean_name String how a mean is called in the analysis key. Default is "mean"
+#' @param with_hdds TRUE or FALSE, whether to include the FCLC and FC values.
+#' @param hdds_cat String with the name of the Household Dietary Diversity Score. Default is "fsl_hdds_cat"
+#' @param hdds_cat_values String with the options of the Household Dietary Diversity Score. Default is
+#' c("Low", "Medium", "High")
+#' @param hdds_set String for the Household Dietary Diversity Score. Default is
+#' c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+#' "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+#' "fsl_hdds_sugar", "fsl_hdds_condiments")
+#' @param hdds_value_set String for the values of the Household Dietary Diversity Score questions
+#' set. Default is c("yes", "no")
 #'
 #' @return a list for 3 objects:
 #' - dictionary: list of all the variables and their values.
@@ -52,7 +62,7 @@
 #' @export
 #'
 #' @examples
-#' check_ipctwg_results(
+#' check_ipc_results(
 #'   results_table = presentresults_resultstable,
 #'   fclc_matrix_var = "fcls_cat",
 #'   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
@@ -76,10 +86,11 @@
 #'     "liv_emerg_lcsi_1",
 #'     "liv_emerg_lcsi_2",
 #'     "liv_emerg_lcsi_3"
-#'   )
+#'   ),
+#'   with_hdds = FALSE
 #' )
 #'
-check_ipctwg_results <- function(results_table,
+check_ipc_results <- function(results_table,
                                  analysis_key = "analysis_key",
                                  fclc_matrix_var = "fclc_phase",
                                  fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
@@ -108,6 +119,13 @@ check_ipctwg_results <- function(results_table,
                                  rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
                                  lcsi_set,
                                  lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+                                 with_hdds = TRUE,
+                                 hdds_cat = "fsl_hdds_cat",
+                                 hdds_cat_values = c("Low", "Medium", "High"),
+                                 hdds_set = c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+                                              "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+                                              "fsl_hdds_sugar", "fsl_hdds_condiments"),
+                                 hdds_value_set = c("yes", "no"),
                                  other_variables = NULL,
                                  stat_col = "stat",
                                  proportion_name = "prop_select_one",
@@ -120,7 +138,6 @@ check_ipctwg_results <- function(results_table,
   verify_numbers_values("lcsi_set", lcsi_set, 10)
   verify_numbers_values("lcsi_value_set", lcsi_value_set, 4)
 
-
   # create a dictionary for each set
   dictionary <- list(
     fcs = list(var_name = fcs_cat_var, values_set = fcs_cat_values, analysis_type = proportion_name),
@@ -132,6 +149,16 @@ check_ipctwg_results <- function(results_table,
     rcsi_set_prop = list(var_name = rcsi_set, values_set = c(0:7), analysis_type = proportion_name),
     lcsi_set_prop = list(var_name = lcsi_set, values_set = lcsi_value_set, analysis_type = proportion_name)
   )
+  if (with_hdds) {
+    verify_numbers_values("hdds_cat_values", hdds_cat_values, 3)
+
+    hdds <- list(hdds = list(var_name = hdds_cat, values_set = hdds_cat_values, analysis_type = proportion_name))
+    hdds_set_prop <- list(hdds_set_prop = list(var_name = hdds_set, values_set = hdds_value_set, analysis_type = proportion_name))
+
+    dictionary <- append(dictionary, hdds, after = 4)
+    dictionary <- append(dictionary, hdds_set_prop)
+  }
+
   if (with_fclc) {
     verify_numbers_values("fclc_matrix_values", fclc_matrix_values, 5)
     verify_numbers_values("fc_matrix_values", fc_matrix_values, 5)
@@ -203,7 +230,7 @@ check_ipctwg_results <- function(results_table,
   ))
 }
 
-#' Helper to order the ipctwg results
+#' Helper to order the ipc results
 #'
 #' @param results_table results table with analysis key
 #' @param analysis_key String with the name of the analysis key. Default is "analysis_key"
@@ -246,12 +273,22 @@ check_ipctwg_results <- function(results_table,
 #' @param proportion_name String how a proportion is called in the analysis key. Default is
 #' "prop_select_one"
 #' @param mean_name String how a mean is called in the analysis key. Default is "mean"
+#' @param with_hdds TRUE or FALSE, whether to include the FCLC and FC values.
+#' @param hdds_cat String with the name of the Household Dietary Diversity Score. Default is "fsl_hdds_cat"
+#' @param hdds_cat_values String with the options of the Household Dietary Diversity Score. Default is
+#' c("Low", "Medium", "High")
+#' @param hdds_set String for the Household Dietary Diversity Score. Default is
+#' c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+#' "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+#' "fsl_hdds_sugar", "fsl_hdds_condiments")
+#' @param hdds_value_set String for the values of the Household Dietary Diversity Score questions
+#' set. Default is c("yes", "no")
 #'
 #' @return one ordered group x variable table
 #' @export
 #'
 #' @examples
-#' create_ordered_ipctwg_table(
+#' create_ordered_ipc_table(
 #'   results_table = presentresults_resultstable,
 #'   fclc_matrix_var = "fcls_cat",
 #'   fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
@@ -276,9 +313,10 @@ check_ipctwg_results <- function(results_table,
 #'     "liv_emerg_lcsi_2",
 #'     "liv_emerg_lcsi_3"
 #'   ),
+#'   with_hdds = FALSE,
 #'   other_variables = c("income_v2_sum", "expenditure_food")
 #' )
-create_ordered_ipctwg_table <- function(results_table,
+create_ordered_ipc_table <- function(results_table,
                                         analysis_key = "analysis_key",
                                         fclc_matrix_var = "fclc_phase",
                                         fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC"),
@@ -307,12 +345,19 @@ create_ordered_ipctwg_table <- function(results_table,
                                         rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
                                         lcsi_set,
                                         lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+                                        with_hdds = TRUE,
+                                        hdds_cat = "fsl_hdds_cat",
+                                        hdds_cat_values = c("Low", "Medium", "High"),
+                                        hdds_set = c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+                                                     "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+                                                     "fsl_hdds_sugar", "fsl_hdds_condiments"),
+                                        hdds_value_set =c("yes", "no"),
                                         other_variables = NULL,
                                         stat_col = "stat",
                                         proportion_name = "prop_select_one",
                                         mean_name = "mean") {
   # Checks the results table
-  checks_results <- check_ipctwg_results(
+  checks_results <- check_ipc_results(
     results_table = results_table,
     analysis_key = analysis_key,
     fclc_matrix_var = fclc_matrix_var,
@@ -332,6 +377,11 @@ create_ordered_ipctwg_table <- function(results_table,
     rcsi_set = rcsi_set,
     lcsi_set = lcsi_set,
     lcsi_value_set = lcsi_value_set,
+    with_hdds = with_hdds,
+    hdds_cat = hdds_cat,
+    hdds_cat_values = hdds_cat_values,
+    hdds_set = hdds_set,
+    hdds_value_set = hdds_value_set,
     other_variables = other_variables,
     stat_col = stat_col,
     proportion_name = proportion_name,
@@ -339,10 +389,14 @@ create_ordered_ipctwg_table <- function(results_table,
   )
 
   # rearrange results in the order I want
+
+  set_to_reoder <- c("rcsi_set_prop", "lcsi_set_prop")
+  if(with_hdds) {set_to_reoder <- c(set_to_reoder, "hdds_set_prop")}
+
   all_options_in_order <- checks_results[["dictionary"]] %>%
     purrr::map(expand.grid) %>%
     purrr::modify_at(
-      .at = dplyr::all_of(c("rcsi_set_prop", "lcsi_set_prop")),
+      .at = dplyr::all_of(set_to_reoder),
       .f = ~ dplyr::arrange(., var_name, values_set)
     ) %>%
     purrr::map(
@@ -451,7 +505,7 @@ create_ordered_ipctwg_table <- function(results_table,
 }
 
 
-#' Creates a table for the IPCTWG
+#' Creates a table for the IPC
 #'
 #' Create a table from a results table with a key analysis in a format to be shared with the
 #' IPC TWG.
@@ -504,6 +558,16 @@ create_ordered_ipctwg_table <- function(results_table,
 #' @param proportion_name String how a proportion is called in the analysis key. Default is
 #' "prop_select_one"
 #' @param mean_name String how a mean is called in the analysis key. Default is "mean"
+#' @param with_hdds TRUE or FALSE, whether to include the FCLC and FC values.
+#' @param hdds_cat String with the name of the Household Dietary Diversity Score. Default is "fsl_hdds_cat"
+#' @param hdds_cat_values String with the options of the Household Dietary Diversity Score. Default is
+#' c("Low", "Medium", "High")
+#' @param hdds_set String for the Household Dietary Diversity Score. Default is
+#' c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+#' "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+#' "fsl_hdds_sugar", "fsl_hdds_condiments")
+#' @param hdds_value_set String for the values of the Household Dietary Diversity Score questions
+#' set. Default is c("yes", "no")
 #'
 #' @return a list with:
 #' - a wide table with groups of interest in the rows, and the variables in the columns in a
@@ -514,7 +578,7 @@ create_ordered_ipctwg_table <- function(results_table,
 #' @export
 #'
 #' @examples
-#' create_ipctwg_table(
+#' create_ipc_table(
 #'   results_table = presentresults_resultstable,
 #'   dataset = presentresults_MSNA_template_data,
 #'   cluster_name = "cluster_id",
@@ -541,10 +605,11 @@ create_ordered_ipctwg_table <- function(results_table,
 #'     "liv_emerg_lcsi_2",
 #'     "liv_emerg_lcsi_3"
 #'   ),
+#'   with_hdds = FALSE,
 #'   other_variables = c("income_v2_sum", "expenditure_food")
 #' )
 #'
-create_ipctwg_table <- function(results_table,
+create_ipc_table <- function(results_table,
                                 analysis_key = "analysis_key",
                                 dataset,
                                 cluster_name = NULL,
@@ -575,12 +640,47 @@ create_ipctwg_table <- function(results_table,
                                 rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
                                 lcsi_set,
                                 lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+                                with_hdds = TRUE,
+                                hdds_cat = "fsl_hdds_cat",
+                                hdds_cat_values = c("Low", "Medium", "High"),
+                                hdds_set = c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+                                             "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+                                             "fsl_hdds_sugar", "fsl_hdds_condiments"),
+                                hdds_value_set =c("yes", "no"),
                                 other_variables = NULL,
                                 stat_col = "stat",
                                 proportion_name = "prop_select_one",
                                 mean_name = "mean") {
+  #Verifications
+  if(fcs_cat_var %in% fcs_set) {
+    msg <- glue::glue(
+      fcs_cat_var, " is in the fcs_set, it should only contains the fcs initial variables."
+    )
+    stop(msg)
+  }
+
+  if(rcsi_cat_var %in% rcsi_set) {
+    msg <- glue::glue(
+      rcsi_cat_var, " is in the rcsi_set, it should only contains the rcsi initial variables."
+    )
+    stop(msg)
+  }
+
+  if(lcsi_cat_var %in% lcsi_set) {
+    msg <- glue::glue(
+      lcsi_cat_var, " is in the lcsi_set, it should only contains the lcsi initial variables."
+    )
+    stop(msg)
+  }
+
+  if(with_hdds & hdds_cat %in% hdds_set) {
+    msg <- glue::glue(
+      hdds_cat, " is in the hdds_set, it should only contains the hdds initial variables."
+    )
+    stop(msg)
+  }
   # create group x variable
-  analysis_info <- create_ordered_ipctwg_table(
+  analysis_info <- create_ordered_ipc_table(
     results_table = results_table,
     analysis_key = analysis_key,
     fclc_matrix_var = fclc_matrix_var,
@@ -600,6 +700,11 @@ create_ipctwg_table <- function(results_table,
     rcsi_set = rcsi_set,
     lcsi_set = lcsi_set,
     lcsi_value_set = lcsi_value_set,
+    with_hdds = with_hdds,
+    hdds_cat = hdds_cat,
+    hdds_cat_values = hdds_cat_values,
+    hdds_set = hdds_set,
+    hdds_value_set = hdds_value_set,
     other_variables = other_variables,
     stat_col = stat_col,
     proportion_name = proportion_name,
@@ -615,16 +720,16 @@ create_ipctwg_table <- function(results_table,
   )
 
   # add the cluster numbers to the analysis information
-  ipctwg_table <- analysis_info %>%
+  ipc_table <- analysis_info %>%
     dplyr::left_join(cluster_groups_info) %>%
     dplyr::select(group_var_value, names(cluster_groups_info), names(analysis_info)) %>%
     magrittr::set_rownames(row.names(analysis_info))
 
   # add the names in the first rows, name of the table will be removed in the xlsx.
-  ipctwg_table[1, names(cluster_groups_info)] <- names(cluster_groups_info)
+  ipc_table[1, names(cluster_groups_info)] <- names(cluster_groups_info)
 
   return(list(
-    ipctwg_table = ipctwg_table,
+    ipc_table = ipc_table,
     dataset = dataset
   ))
 }
