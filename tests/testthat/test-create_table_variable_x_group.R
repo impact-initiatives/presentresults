@@ -1,7 +1,7 @@
 test_that("returns the correct results", {
-  results <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "results.rds"))
+  results <- readRDS(testthat::test_path("fixtures/variable_x_group", "results.rds"))
 
-  expected_wide_table <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3groups.rds"))
+  expected_wide_table <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3groups.rds"))
 
   expect_equal(
     create_table_variable_x_group(results, analysis_key = "key_index", "stat"),
@@ -11,7 +11,7 @@ test_that("returns the correct results", {
 })
 
 test_that("returns correct error message if index column is not correct.", {
-  results <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "results.rds"))
+  results <- readRDS(testthat::test_path("fixtures/variable_x_group", "results.rds"))
   results <- results %>%
     dplyr::mutate(
       key_index = stringr::str_replace(key_index,
@@ -26,9 +26,9 @@ test_that("returns correct error message if index column is not correct.", {
 })
 
 test_that("returns the correct results with 3 stats", {
-  results <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "results.rds"))
+  results <- readRDS(testthat::test_path("fixtures/variable_x_group", "results.rds"))
   expected_wide_table <-
-    readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats_3groups.rds"))
+    readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats_3groups.rds"))
 
 
   actual <- create_table_variable_x_group(
@@ -44,9 +44,9 @@ test_that("returns the correct results with 3 stats", {
 })
 
 test_that("returns a list per grouping variables", {
-  results <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "results.rds"))
+  results <- readRDS(testthat::test_path("fixtures/variable_x_group", "results.rds"))
   expected_wide_table <-
-    readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_list_excel.rds"))
+    readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_list_excel.rds"))
 
 
   actual <- create_table_variable_x_group(results,

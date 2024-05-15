@@ -1,9 +1,9 @@
 test_that("Test that outputs have not changed", {
   temp_dir_to_test <- withr::local_tempdir(fileext = "test")
 
-  expected_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/create_X_group_x_variable", "ipc_table.xlsx"))
+  expected_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/group_x_variable", "ipc_table.xlsx"))
 
-  export_fewsnet <- readRDS(testthat::test_path("fixtures/create_X_group_x_variable", "table_group_x_variable_export_fewsnet.RDS"))
+  export_fewsnet <- readRDS(testthat::test_path("fixtures/group_x_variable", "table_group_x_variable_export_fewsnet.RDS"))
   export_fewsnet %>%
     create_xlsx_group_x_variable(
       table_name = "ipc_table",

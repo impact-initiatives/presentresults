@@ -7,28 +7,22 @@
 create_ordered_ipc_table(
   results_table,
   analysis_key = "analysis_key",
-  fclc_matrix_var = "fclc_phase",
-  fclc_matrix_values = c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC",
-    "Phase 4 - FCLC", "Phase 5 - FCLC"),
-  fc_matrix_var = "fc_phase",
-  fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC",
-    "Phase 5 FC"),
-  with_fclc = FALSE,
-  fcs_cat_var = "fcs_cat",
+  fcs_cat_var = "fsl_fcs_cat",
   fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
-  rcsi_cat_var = "rcsi_cat",
+  fcs_set = c("fcs_cereal", "fcs_pulses", "fcs_milk", "fcs_meat", "fcs_veg", "fcs_fruit",
+    "fcs_oil", "fcs_sugar", "fcs_spices"),
+  rcsi_cat_var = "fsl_rcsi_cat",
   rcsi_cat_values = c("No to Low", "Medium", "High"),
-  lcsi_cat_var = "lcsi_cat",
+  rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize",
+    "fsl_rcsi_mealadult", "fsl_rcsi_mealnb"),
+  lcsi_cat_var = "fsl_lcsi_cat",
   lcsi_cat_values = c("None", "Stress", "Crisis", "Emergency"),
-  hhs_cat_var = "hhs_cat_ipc",
-  hhs_cat_values = c("None", "Little", "Moderate", "Severe", "Very Severe"),
-  fcs_set = c("fs_fcs_cereals_grains_roots_tubers", "fs_fcs_beans_nuts", "fs_fcs_dairy",
-    "fs_fcs_meat_fish_eggs", "fs_fcs_vegetables_leaves", "fs_fcs_fruit",
-    "fs_fcs_oil_fat_butter", "fs_fcs_sugar", "fs_fcs_condiment"),
-  rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult",
-    "rCSIMealNb"),
-  lcsi_set,
+  lcsi_set = c("fsl_lcsi_stress1", "fsl_lcsi_stress2", "fsl_lcsi_stress3",
+    "fsl_lcsi_stress4", "fsl_lcsi_crisis1", "fsl_lcsi_crisis2", "fsl_lcsi_crisis3",
+    "fsl_lcsi_emergency1", "fsl_lcsi_emergency2", "fsl_lcsi_emergency3"),
   lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+  hhs_cat_var = "fsl_hhs_cat_ipc",
+  hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
   with_hdds = TRUE,
   hdds_cat = "fsl_hdds_cat",
   hdds_cat_values = c("Low", "Medium", "High"),
@@ -36,6 +30,13 @@ create_ordered_ipc_table(
     "fsl_hdds_meat", "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes",
     "fsl_hdds_dairy", "fsl_hdds_oil", "fsl_hdds_sugar", "fsl_hdds_condiments"),
   hdds_value_set = c("yes", "no"),
+  with_fclc = FALSE,
+  fclc_matrix_var = "fclcm_phase",
+  fclc_matrix_values = c("Phase 1 FCLC", "Phase 2 FCLC", "Phase 3 FCLC", "Phase 4 FCLC",
+    "Phase 5 FCLC"),
+  fc_matrix_var = "fsl_fc_phase",
+  fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC",
+    "Phase 5 FC"),
   other_variables = NULL,
   stat_col = "stat",
   proportion_name = "prop_select_one",
@@ -47,55 +48,42 @@ create_ordered_ipc_table(
 
 \item{analysis_key}{String with the name of the analysis key. Default is "analysis_key"}
 
-\item{fclc_matrix_var}{String with the name of the food consumption livelihood matrix from FEWSNET.
-Default is "fclc_phase"}
-
-\item{fclc_matrix_values}{String with the options of the food consumption livelihood matrix
-Default is c("Phase 1 - FCLC", "Phase 2 - FCLC", "Phase 3 - FCLC", "Phase 4 - FCLC", "Phase 5 - FCLC")}
-
-\item{fc_matrix_var}{String with the name of the food consumption matrix from FEWSNET.
-Default is "fc_phase"}
-
-\item{fc_matrix_values}{String with the options of the food consumption matrix. Default is
-c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")}
-
-\item{with_fclc}{TRUE or FALSE, whether to include the FCLC and FC values.
-Default is set to FALSE.}
-
-\item{fcs_cat_var}{The string with the name of the Food Consumption Score. Default is "fcs_cat"}
+\item{fcs_cat_var}{The string with the name of the Food Consumption Score. Default is "fsl_fcs_cat"}
 
 \item{fcs_cat_values}{String with the options of the Food Consumption Score. Default is
 c("Poor", "Borderline", "Acceptable")}
 
-\item{rcsi_cat_var}{The string with the name of the reduced Coping Strategy Index. Default is "rcsi_cat"}
+\item{fcs_set}{String for the Food Consumption Score questions set. Default is
+c("fcs_cereal", "fcs_pulses", "fcs_milk",
+"fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
+"fcs_sugar", "fcs_spices")}
+
+\item{rcsi_cat_var}{The string with the name of the reduced Coping Strategy Index. Default is "fsl_rcsi_cat"}
 
 \item{rcsi_cat_values}{String with the options of the reduced Coping Strategy Index. Default is
 c("No to Low", "Medium", "High")}
 
+\item{rcsi_set}{String for the reduced Coping Strategy Index questions set. Default is
+c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize", "fsl_rcsi_mealadult", "fsl_rcsi_mealnb")}
+
 \item{lcsi_cat_var}{The string with the name of the Livelihood Coping Strategy Index. Default is
-"lcsi_cat"}
+"fsl_lcsi_cat"}
 
 \item{lcsi_cat_values}{String with the options of the Livelihood Coping Strategy Index. Default
 is c("None", "Stress", "Crisis", "Emergency")}
 
-\item{hhs_cat_var}{The string with the name of the Household Hunger Scale. Default is "hhs_cat_ipc"}
-
-\item{hhs_cat_values}{String with the options of the Household Hunger Scale. Default is
-c("None", "Little", "Moderate", "Severe", "Very Severe")}
-
-\item{fcs_set}{String for the Food Consumption Score questions set. Default is
-c("fs_fcs_cereals_grains_roots_tubers", "fs_fcs_beans_nuts", "fs_fcs_dairy",
-"fs_fcs_meat_fish_eggs", "fs_fcs_vegetables_leaves", "fs_fcs_fruit", "fs_fcs_oil_fat_butter",
-"fs_fcs_sugar", "fs_fcs_condiment")}
-
-\item{rcsi_set}{String for the reduced Coping Strategy Index questions set. Default is
-c("No to Low", "Medium", "High")}
-
-\item{lcsi_set}{String for the Livelihood Coping Strategy Index questions set. There is
-no default}
+\item{lcsi_set}{String for the Livelihood Coping Strategy Index questions set. Default is
+c("fsl_lcsi_stress1", "fsl_lcsi_stress2", "fsl_lcsi_stress3", "fsl_lcsi_stress4",
+"fsl_lcsi_crisis1", "fsl_lcsi_crisis2", "fsl_lcsi_crisis3", "fsl_lcsi_emergency1",
+"fsl_lcsi_emergency2", "fsl_lcsi_emergency3")}
 
 \item{lcsi_value_set}{String for the values of the Livelihood Coping Strategy Index questions
 set. Default is c("yes", "no_had_no_need", "no_exhausted", "not_applicable")}
+
+\item{hhs_cat_var}{The string with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"}
+
+\item{hhs_cat_values}{String with the options of the Household Hunger Scale. Default is
+c("None", "No or Little", "Moderate", "Severe", "Very Severe")}
 
 \item{with_hdds}{TRUE or FALSE, whether to include the FCLC and FC values.}
 
@@ -111,6 +99,21 @@ c("fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_
 
 \item{hdds_value_set}{String for the values of the Household Dietary Diversity Score questions
 set. Default is c("yes", "no")}
+
+\item{with_fclc}{TRUE or FALSE, whether to include the FCLC and FC values.}
+
+\item{fclc_matrix_var}{String with the name of the food consumption livelihood matrix from FEWSNET.
+Default is "fclcm_phase"}
+
+\item{fclc_matrix_values}{String with the options of the food consumption livelihood matrix
+Default is c("Phase 1 FCLC", "Phase 2 FCLC", "Phase 3 FCLC", "Phase 4 FCLC", "Phase 5 FCLC")}
+
+\item{fc_matrix_var}{String with the name of the food consumption matrix from FEWSNET.
+Default is "fsl_fc_phase"}
+
+\item{fc_matrix_values}{String with the options of the food consumption matrix. Default is
+c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC")
+Default is set to FALSE.}
 
 \item{other_variables}{String for the names of other variables to include. Default is NULL}
 
@@ -131,17 +134,25 @@ Helper to order the ipc results
 \examples{
 create_ordered_ipc_table(
   results_table = presentresults_resultstable,
-  fclc_matrix_var = "fcls_cat",
-  fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
-  fc_matrix_var = "fcm_cat",
-  fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
-  with_fclc = TRUE,
+  fcs_cat_var = "fcs_cat",
   fcs_cat_values = c("low", "medium", "high"),
+  fcs_set = c(
+    "fs_fcs_cereals_grains_roots_tubers",
+    "fs_fcs_beans_nuts",
+    "fs_fcs_dairy",
+    "fs_fcs_meat_fish_eggs",
+    "fs_fcs_vegetables_leaves",
+    "fs_fcs_fruit",
+    "fs_fcs_oil_fat_butter",
+    "fs_fcs_sugar",
+    "fs_fcs_condiment"
+  ),
+  rcsi_cat_var = "rcsi_cat",
   rcsi_cat_values = c("low", "medium", "high"),
+  rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
   lcsi_cat_var = "lcs_cat",
   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
   hhs_cat_var = "hhs_cat",
-  hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
   lcsi_set = c(
     "liv_stress_lcsi_1",
     "liv_stress_lcsi_2",
@@ -154,7 +165,14 @@ create_ordered_ipc_table(
     "liv_emerg_lcsi_2",
     "liv_emerg_lcsi_3"
   ),
+  hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
   with_hdds = FALSE,
+  with_fclc = TRUE,
+  fclc_matrix_var = "fcls_cat",
+  fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
+  fc_matrix_var = "fcm_cat",
+  fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
   other_variables = c("income_v2_sum", "expenditure_food")
 )
 }
+\keyword{internal}

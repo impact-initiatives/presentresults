@@ -118,34 +118,42 @@ presentresults_resultstable %>%
 
 ```{r}
 example_ipc <- create_ipc_table(
-  results_table = presentresults_resultstable,
-  dataset = presentresults_MSNA_template_data,
-  cluster_name = "cluster_id",
-  fclc_matrix_var = "fcls_cat",
-  fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
-  fc_matrix_var = "fcm_cat",
-  fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
-  with_fclc = TRUE,
-  fcs_cat_values = c("low", "medium", "high"),
-  rcsi_cat_values = c("low", "medium", "high"),
-  lcsi_cat_var = "lcs_cat",
-  lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-  hhs_cat_var = "hhs_cat",
-  hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
-  lcsi_set = c(
-    "liv_stress_lcsi_1",
-    "liv_stress_lcsi_2",
-    "liv_stress_lcsi_3",
-    "liv_stress_lcsi_4",
-    "liv_crisis_lcsi_1",
-    "liv_crisis_lcsi_2",
-    "liv_crisis_lcsi_3",
-    "liv_emerg_lcsi_1",
-    "liv_emerg_lcsi_2",
-    "liv_emerg_lcsi_3"
-  ),
-  with_hdds = FALSE,
-  other_variables = c("income_v2_sum", "expenditure_food")
+ results_table = presentresults_resultstable,
+ dataset = presentresults_MSNA_template_data,
+ cluster_name = "cluster_id",
+ fcs_cat_var = "fcs_cat",
+ fcs_cat_values = c("low", "medium", "high"),
+ fcs_set = c(
+   "fs_fcs_cereals_grains_roots_tubers",
+   "fs_fcs_beans_nuts",
+   "fs_fcs_dairy",
+   "fs_fcs_meat_fish_eggs",
+   "fs_fcs_vegetables_leaves",
+   "fs_fcs_fruit",
+   "fs_fcs_oil_fat_butter",
+   "fs_fcs_sugar",
+   "fs_fcs_condiment"
+ ),
+ rcsi_cat_var = "rcsi_cat",
+ rcsi_cat_values = c("low", "medium", "high"),
+ rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
+ lcsi_cat_var = "lcs_cat",
+ lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+ hhs_cat_var = "hhs_cat",
+ lcsi_set = c(
+   "liv_stress_lcsi_1",
+   "liv_stress_lcsi_2",
+   "liv_stress_lcsi_3",
+   "liv_stress_lcsi_4",
+   "liv_crisis_lcsi_1",
+   "liv_crisis_lcsi_2",
+   "liv_crisis_lcsi_3",
+   "liv_emerg_lcsi_1",
+   "liv_emerg_lcsi_2",
+   "liv_emerg_lcsi_3"
+ ),
+ hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+ with_hdds = FALSE
 )
 
 example_ipc[["ipc_table"]][1:6, 1:10]

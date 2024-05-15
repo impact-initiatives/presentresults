@@ -1,5 +1,5 @@
 test_that("results are showned correclty", {
-  expected_results <- readRDS(testthat::test_path("fixtures/create_X_group_x_variable", "table_group_x_variable_3stats.RDS"))
+  expected_results <- readRDS(testthat::test_path("fixtures/group_x_variable", "table_group_x_variable_3stats.RDS"))
 
   actual_output <- create_table_group_x_variable(presentresults_resultstable,
     value_columns = "stat"

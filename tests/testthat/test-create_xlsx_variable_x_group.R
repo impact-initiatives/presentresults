@@ -2,7 +2,7 @@ test_that("Test that outputs have not changed", {
   temp_dir_to_test <- withr::local_tempdir(fileext = "test")
 
   # 3 stats
-  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.RDS"))
+  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.RDS"))
   results_variable_x_group_3stats %>%
     create_xlsx_variable_x_group(
       file_path = paste0(temp_dir_to_test, "\\testing_table_variable_x_group_3stats.xlsx"),
@@ -10,7 +10,7 @@ test_that("Test that outputs have not changed", {
     )
 
   ## readme
-  expected_readme_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.xlsx"),
+  expected_readme_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.xlsx"),
     sheet = "readme"
   ) %>%
     suppressWarnings()
@@ -23,7 +23,7 @@ test_that("Test that outputs have not changed", {
   expect_equal(actual_readme_output, expected_readme_output)
 
   ## table
-  expected_table_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.xlsx"),
+  expected_table_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.xlsx"),
     sheet = "variable_x_group_table"
   ) %>%
     suppressWarnings()
@@ -36,7 +36,7 @@ test_that("Test that outputs have not changed", {
   expect_equal(actual_table_output, expected_table_output)
 
   # 1 stat
-  results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_1stat.RDS"))
+  results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stat.RDS"))
   results_variable_x_group_1stat %>%
     create_xlsx_variable_x_group(
       file_path = paste0(temp_dir_to_test, "\\results_variable_x_group_1stats.xlsx"),
@@ -46,7 +46,7 @@ test_that("Test that outputs have not changed", {
     suppressWarnings()
 
   ## table
-  expected_table_1stat_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_1stats.xlsx"),
+  expected_table_1stat_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stats.xlsx"),
     sheet = "variable_x_group_table"
   ) %>%
     suppressWarnings()
@@ -60,13 +60,13 @@ test_that("Test that outputs have not changed", {
 })
 
 test_that("if file path is null, it returns a wb object", {
-  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.RDS"))
+  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.RDS"))
   actual_output <- create_xlsx_variable_x_group(results_variable_x_group_3stats)
   expect_true(class(actual_output) == "Workbook")
 })
 
 test_that("if file path is not null, the file path should have the correct format", {
-  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.RDS"))
+  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.RDS"))
 
   expect_error(
     create_xlsx_variable_x_group(results_variable_x_group_3stats,
@@ -77,7 +77,7 @@ test_that("if file path is not null, the file path should have the correct forma
 })
 
 test_that("test that value_columns throw errors when not matching", {
-  results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_1stat.RDS"))
+  results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stat.RDS"))
 
   expect_error(
     create_xlsx_variable_x_group(results_variable_x_group_1stat),
@@ -88,7 +88,7 @@ test_that("test that value_columns throw errors when not matching", {
 test_that("test that value_columns length is one, the warning say it cannot be verified.", {
   temp_dir_to_test <- withr::local_tempdir(fileext = "test")
 
-  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.RDS"))
+  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.RDS"))
 
   expect_warning(
     create_xlsx_variable_x_group(results_variable_x_group_3stats,
@@ -107,10 +107,10 @@ test_that("Test that outputs have not changed", {
   temp_dir_to_test <- withr::local_tempdir(fileext = "test")
 
   # 3 stats
-  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_3stats.RDS"))
+  results_variable_x_group_3stats <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_3stats.RDS"))
 
   ## wb object
-  expected_wb_output <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "wb_variable_x_group_3stats.RDS"))
+  expected_wb_output <- readRDS(testthat::test_path("fixtures/variable_x_group", "wb_variable_x_group_3stats.RDS"))
   actual_wb_output <- results_variable_x_group_3stats %>%
     create_xlsx_variable_x_group()
 
@@ -121,12 +121,12 @@ test_that("Test that outputs have not changed", {
   expect_equal(actual_wb_output, expected_wb_output)
 
   # 1 stat
-  results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_1stat.RDS"))
+  results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stat.RDS"))
 
   ## wb object
-  expected_1stat_wb_output <- readRDS(testthat::test_path("fixtures/create_X_variable_x_group", "wb_variable_x_group_1stat.RDS"))
+  expected_1stat_wb_output <- readRDS(testthat::test_path("fixtures/variable_x_group", "wb_variable_x_group_1stat.RDS"))
 
-  expected_table_1stat_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/create_X_variable_x_group", "table_variable_x_group_1stats.xlsx"),
+  expected_table_1stat_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stats.xlsx"),
                                                      sheet = "variable_x_group_table"
   ) %>%
     suppressWarnings()
