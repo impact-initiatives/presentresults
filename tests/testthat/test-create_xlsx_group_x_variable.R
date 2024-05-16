@@ -1,4 +1,7 @@
 test_that("Test that outputs have not changed", {
+  skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
+  # comment the skip and to be run manually with devtools::test()
+
   temp_dir_to_test <- withr::local_tempdir(fileext = "test")
 
   expected_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/group_x_variable", "ipc_table.xlsx"))
