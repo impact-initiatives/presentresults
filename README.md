@@ -214,42 +214,57 @@ presentresults_resultstable %>%
   create_xlsx_group_x_variable(file_path = "mytable.xlsx")
 ```
 
-### Example for the IPC TWG table
+### Example for the IPC table
 
 ``` r
-example_ipc <- create_ipctwg_table(
-  results_table = presentresults_resultstable,
-  dataset = presentresults_MSNA_template_data,
-  cluster_name = "cluster_id",
-  fclc_matrix_var = "fcls_cat",
-  fclc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
-  fc_matrix_var = "fcm_cat",
-  fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
-  with_fclc = TRUE,
-  fcs_cat_values = c("low", "medium", "high"),
-  rcsi_cat_values = c("low", "medium", "high"),
-  lcsi_cat_var = "lcs_cat",
-  lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-  hhs_cat_var = "hhs_cat",
-  hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
-  lcsi_set = c(
-    "liv_stress_lcsi_1",
-    "liv_stress_lcsi_2",
-    "liv_stress_lcsi_3",
-    "liv_stress_lcsi_4",
-    "liv_crisis_lcsi_1",
-    "liv_crisis_lcsi_2",
-    "liv_crisis_lcsi_3",
-    "liv_emerg_lcsi_1",
-    "liv_emerg_lcsi_2",
-    "liv_emerg_lcsi_3"
-  ),
-  other_variables = c("income_v2_sum", "expenditure_food")
+no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+  dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+
+example_ipc <- create_ipc_table(
+ results_table = no_nas_presentresults_resultstable,
+ dataset = presentresults_MSNA_template_data,
+ cluster_name = "cluster_id",
+ fcs_cat_var = "fcs_cat",
+ fcs_cat_values = c("low", "medium", "high"),
+ fcs_set = c(
+   "fs_fcs_cereals_grains_roots_tubers",
+   "fs_fcs_beans_nuts",
+   "fs_fcs_dairy",
+   "fs_fcs_meat_fish_eggs",
+   "fs_fcs_vegetables_leaves",
+   "fs_fcs_fruit",
+   "fs_fcs_oil_fat_butter",
+   "fs_fcs_sugar",
+   "fs_fcs_condiment"
+ ),
+ hhs_cat_var = "hhs_cat",
+ hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+ hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+ hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+ hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
+ rcsi_cat_var = "rcsi_cat",
+ rcsi_cat_values = c("low", "medium", "high"),
+ rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
+ lcsi_cat_var = "lcs_cat",
+ lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+ lcsi_set = c(
+   "liv_stress_lcsi_1",
+   "liv_stress_lcsi_2",
+   "liv_stress_lcsi_3",
+   "liv_stress_lcsi_4",
+   "liv_crisis_lcsi_1",
+   "liv_crisis_lcsi_2",
+   "liv_crisis_lcsi_3",
+   "liv_emerg_lcsi_1",
+   "liv_emerg_lcsi_2",
+   "liv_emerg_lcsi_3"
+ ),
+ with_hdds = FALSE
 )
 #> Joining with `by = join_by(analysis_key)`
 #> Joining with `by = join_by(group_var_value)`
 
-example_ipc[["ipctwg_table"]][1:6, 1:10]
+example_ipc[["ipc_table"]][1:6, 1:10]
 #>                                       group_var_value number_of_cluster
 #> header_analysis_var                   group_var_value number_of_cluster
 #> header_analysis_var_value             group_var_value              <NA>
@@ -257,60 +272,60 @@ example_ipc[["ipctwg_table"]][1:6, 1:10]
 #> 1                             locationA %/% displaced                 2
 #> 2                         locationA %/% non-displaced                 2
 #> 3                             locationB %/% displaced                 2
-#>                           number_of_hh fcls_cat %/% phase_1 %/% prop_select_one
-#> header_analysis_var       number_of_hh                                 fcls_cat
-#> header_analysis_var_value         <NA>                                  phase_1
-#> header_analysis_type              <NA>                          prop_select_one
-#> 1                                   31                        0.161290322580645
-#> 2                                   24                       0.0833333333333333
-#> 3                                   27                        0.111111111111111
-#>                           fcls_cat %/% phase_2 %/% prop_select_one
-#> header_analysis_var                                       fcls_cat
-#> header_analysis_var_value                                  phase_2
+#>                           number_of_hh fcs_cat %/% low %/% prop_select_one
+#> header_analysis_var       number_of_hh                             fcs_cat
+#> header_analysis_var_value         <NA>                                 low
+#> header_analysis_type              <NA>                     prop_select_one
+#> 1                                   31                   0.258064516129032
+#> 2                                   24                                0.25
+#> 3                                   27                    0.37037037037037
+#>                           fcs_cat %/% medium %/% prop_select_one
+#> header_analysis_var                                      fcs_cat
+#> header_analysis_var_value                                 medium
+#> header_analysis_type                             prop_select_one
+#> 1                                               0.32258064516129
+#> 2                                                          0.375
+#> 3                                              0.407407407407407
+#>                           fcs_cat %/% high %/% prop_select_one
+#> header_analysis_var                                    fcs_cat
+#> header_analysis_var_value                                 high
+#> header_analysis_type                           prop_select_one
+#> 1                                            0.419354838709677
+#> 2                                                        0.375
+#> 3                                            0.222222222222222
+#>                           hhs_cat %/% none %/% prop_select_one
+#> header_analysis_var                                    hhs_cat
+#> header_analysis_var_value                                 none
+#> header_analysis_type                           prop_select_one
+#> 1                                            0.225806451612903
+#> 2                                            0.208333333333333
+#> 3                                            0.222222222222222
+#>                           hhs_cat %/% slight %/% prop_select_one
+#> header_analysis_var                                      hhs_cat
+#> header_analysis_var_value                                 slight
+#> header_analysis_type                             prop_select_one
+#> 1                                              0.258064516129032
+#> 2                                              0.291666666666667
+#> 3                                              0.222222222222222
+#>                           hhs_cat %/% moderate %/% prop_select_one
+#> header_analysis_var                                        hhs_cat
+#> header_analysis_var_value                                 moderate
 #> header_analysis_type                               prop_select_one
 #> 1                                                0.225806451612903
 #> 2                                               0.0833333333333333
-#> 3                                                0.333333333333333
-#>                           fcls_cat %/% phase_3 %/% prop_select_one
-#> header_analysis_var                                       fcls_cat
-#> header_analysis_var_value                                  phase_3
-#> header_analysis_type                               prop_select_one
-#> 1                                                0.258064516129032
-#> 2                                                0.291666666666667
-#> 3                                                0.185185185185185
-#>                           fcls_cat %/% phase_4 %/% prop_select_one
-#> header_analysis_var                                       fcls_cat
-#> header_analysis_var_value                                  phase_4
-#> header_analysis_type                               prop_select_one
-#> 1                                                0.193548387096774
-#> 2                                                0.208333333333333
-#> 3                                                0.185185185185185
-#>                           fcls_cat %/% phase_5 %/% prop_select_one
-#> header_analysis_var                                       fcls_cat
-#> header_analysis_var_value                                  phase_5
-#> header_analysis_type                               prop_select_one
-#> 1                                                0.161290322580645
-#> 2                                                0.333333333333333
-#> 3                                                0.185185185185185
-#>                           fcm_cat %/% phase_1 %/% prop_select_one
-#> header_analysis_var                                       fcm_cat
-#> header_analysis_var_value                                 phase_1
-#> header_analysis_type                              prop_select_one
-#> 1                                               0.290322580645161
-#> 2                                                            0.25
-#> 3                                               0.222222222222222
-#>                           fcm_cat %/% phase_2 %/% prop_select_one
-#> header_analysis_var                                       fcm_cat
-#> header_analysis_var_value                                 phase_2
-#> header_analysis_type                              prop_select_one
-#> 1                                              0.0967741935483871
-#> 2                                              0.0833333333333333
-#> 3                                               0.185185185185185
+#> 3                                                0.222222222222222
+#>                           hhs_cat %/% severe %/% prop_select_one
+#> header_analysis_var                                      hhs_cat
+#> header_analysis_var_value                                 severe
+#> header_analysis_type                             prop_select_one
+#> 1                                             0.0967741935483871
+#> 2                                                           0.25
+#> 3                                              0.222222222222222
 ```
 
 ``` r
 example_ipc %>%
-  create_xlsx_group_x_variable(example_ipc, table_name = "ipctwg_table", file_path = "ipc_table.xlsx")
+  create_xlsx_group_x_variable(example_ipc, table_name = "ipc_table", file_path = "ipc_table.xlsx")
 ```
 
 ## `create_group_clusters()`

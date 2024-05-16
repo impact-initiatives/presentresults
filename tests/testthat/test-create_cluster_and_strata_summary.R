@@ -117,7 +117,7 @@ testthat::test_that("With no grouping", {
     number_of_cluster = c(2L, 2L, 2L, 2L, 2L),
     number_of_hh = c(100L, 31L, 24L, 27L, 18L),
     group_var_value = c(
-      "Overall", "locationA %/% displaced",
+      "NA", "locationA %/% displaced",
       "locationA %/% non-displaced", "locationB %/% displaced",
       "locationB %/% non-displaced"
     )
