@@ -337,7 +337,7 @@ test_that("that if there is one missiong option, the variable still show in the 
             ) %>%
               suppressWarnings()
 
-            skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
+            skip_on_os(os ="mac")
             # comment the skip and to be run manually with devtools::test()
             expect_equal(
               with_hdds_actual_output,
