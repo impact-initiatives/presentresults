@@ -215,7 +215,7 @@ test_that("that the results are correctly displayed", {
   ) %>%
     suppressWarnings()
 
-  skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
+  skip_on_os(os ="mac")
   # comment the skip and to be run manually with devtools::test()
   expect_equal(with_hdds_actual_output, with_hdds_expected_output)
 
