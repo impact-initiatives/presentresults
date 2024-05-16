@@ -171,9 +171,6 @@ test_that("that the results are correctly displayed", {
   )
 
   # tests output with hdds
-  skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
-  # comment the skip and to be run manually with devtools::test()
-
   with_hdds_expected_output <- readRDS(testthat::test_path("fixtures/create_ipc_table", "example_ipc_with_hdds.rds"))
 
   with_hdds_results_list <- readRDS(testthat::test_path("fixtures/create_ipc_table", "ipc_table_results_with_hdds.RDS"))
@@ -218,6 +215,8 @@ test_that("that the results are correctly displayed", {
   ) %>%
     suppressWarnings()
 
+  skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
+  # comment the skip and to be run manually with devtools::test()
   expect_equal(with_hdds_actual_output, with_hdds_expected_output)
 
 })
@@ -290,9 +289,6 @@ test_that("that if there is one missiong option, the variable still show in the 
             )
 
             # test with hdds cat missing
-            skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
-            # comment the skip and to be run manually with devtools::test()
-
             with_hdds_expected_output <- readRDS(testthat::test_path("fixtures/create_ipc_table", "example_ipc_with_hdds.rds"))
             with_hdds_expected_output$ipc_table[["fsl_hdds_cat %/% High %/% prop_select_one"]] <- c("fsl_hdds_cat", "High", "prop_select_one", NA)
 
@@ -341,6 +337,8 @@ test_that("that if there is one missiong option, the variable still show in the 
             ) %>%
               suppressWarnings()
 
+            skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
+            # comment the skip and to be run manually with devtools::test()
             expect_equal(
               with_hdds_actual_output,
               with_hdds_expected_output

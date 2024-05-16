@@ -36,8 +36,6 @@ test_that("Test that outputs have not changed", {
   expect_equal(actual_table_output, expected_table_output)
 
   # 1 stat
-  skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
-  # comment the skip and to be run manually with devtools::test()
   results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stat.RDS"))
   results_variable_x_group_1stat %>%
     create_xlsx_variable_x_group(
@@ -80,6 +78,9 @@ test_that("if file path is not null, the file path should have the correct forma
 
 test_that("test that value_columns throw errors when not matching", {
   results_variable_x_group_1stat <- readRDS(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stat.RDS"))
+
+  skip_on_os(os ="mac","Skip as workbook object seems to behave differently on github virtual machines, rounding is different")
+  # comment the skip and to be run manually with devtools::test()
 
   expect_error(
     create_xlsx_variable_x_group(results_variable_x_group_1stat),
