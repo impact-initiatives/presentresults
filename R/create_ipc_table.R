@@ -121,62 +121,62 @@
 #'   fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5")
 #' )
 review_ipc_results <- function(results_table,
-                              analysis_key = "analysis_key",
-                              fcs_cat_var = "fsl_fcs_cat",
-                              fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
-                              fcs_set = c(
-                                "fcs_cereal",
-                                "fcs_pulses",
-                                "fcs_milk",
-                                "fcs_meat",
-                                "fcs_veg",
-                                "fcs_fruit",
-                                "fcs_oil",
-                                "fcs_sugar",
-                                "fcs_spices"
-                              ),
-                              hhs_cat_var = "fsl_hhs_cat_ipc",
-                              hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
-                              hhs_cat_yesno_set = c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight"),
-                              hhs_value_yesno_set = c("yes", "no"),
-                              hhs_cat_freq_set = c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq"),
-                              hhs_value_freq_set = c("rarely", "sometimes", "often"),
-                              rcsi_cat_var = "fsl_rcsi_cat",
-                              rcsi_cat_values = c("No to Low", "Medium", "High"),
-                              rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize", "fsl_rcsi_mealadult", "fsl_rcsi_mealnb"),
-                              lcsi_cat_var = "fsl_lcsi_cat",
-                              lcsi_cat_values = c("None", "Stress", "Crisis", "Emergency"),
-                              lcsi_set = c(
-                                "fsl_lcsi_stress1",
-                                "fsl_lcsi_stress2",
-                                "fsl_lcsi_stress3",
-                                "fsl_lcsi_stress4",
-                                "fsl_lcsi_crisis1",
-                                "fsl_lcsi_crisis2",
-                                "fsl_lcsi_crisis3",
-                                "fsl_lcsi_emergency1",
-                                "fsl_lcsi_emergency2",
-                                "fsl_lcsi_emergency3"
-                              ),
-                              lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
-                              with_hdds = TRUE,
-                              hdds_cat = "fsl_hdds_cat",
-                              hdds_cat_values = c("Low", "Medium", "High"),
-                              hdds_set = c(
-                                "fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
-                                "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
-                                "fsl_hdds_sugar", "fsl_hdds_condiments"
-                              ),
-                              hdds_value_set = c("yes", "no"),
-                              with_fclc = FALSE,
-                              fclc_matrix_var = "fclcm_phase",
-                              fclc_matrix_values = c("Phase 1 FCLC", "Phase 2 FCLC", "Phase 3 FCLC", "Phase 4 FCLC", "Phase 5 FCLC"),
-                              fc_matrix_var = "fsl_fc_phase",
-                              fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC"),
-                              other_variables = NULL,
-                              stat_col = "stat",
-                              proportion_name = "prop_select_one",
-                              mean_name = "mean") {
+                               analysis_key = "analysis_key",
+                               fcs_cat_var = "fsl_fcs_cat",
+                               fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
+                               fcs_set = c(
+                                 "fcs_cereal",
+                                 "fcs_pulses",
+                                 "fcs_milk",
+                                 "fcs_meat",
+                                 "fcs_veg",
+                                 "fcs_fruit",
+                                 "fcs_oil",
+                                 "fcs_sugar",
+                                 "fcs_spices"
+                               ),
+                               hhs_cat_var = "fsl_hhs_cat_ipc",
+                               hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
+                               hhs_cat_yesno_set = c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight"),
+                               hhs_value_yesno_set = c("yes", "no"),
+                               hhs_cat_freq_set = c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq"),
+                               hhs_value_freq_set = c("rarely", "sometimes", "often"),
+                               rcsi_cat_var = "fsl_rcsi_cat",
+                               rcsi_cat_values = c("No to Low", "Medium", "High"),
+                               rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize", "fsl_rcsi_mealadult", "fsl_rcsi_mealnb"),
+                               lcsi_cat_var = "fsl_lcsi_cat",
+                               lcsi_cat_values = c("None", "Stress", "Crisis", "Emergency"),
+                               lcsi_set = c(
+                                 "fsl_lcsi_stress1",
+                                 "fsl_lcsi_stress2",
+                                 "fsl_lcsi_stress3",
+                                 "fsl_lcsi_stress4",
+                                 "fsl_lcsi_crisis1",
+                                 "fsl_lcsi_crisis2",
+                                 "fsl_lcsi_crisis3",
+                                 "fsl_lcsi_emergency1",
+                                 "fsl_lcsi_emergency2",
+                                 "fsl_lcsi_emergency3"
+                               ),
+                               lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
+                               with_hdds = TRUE,
+                               hdds_cat = "fsl_hdds_cat",
+                               hdds_cat_values = c("Low", "Medium", "High"),
+                               hdds_set = c(
+                                 "fsl_hdds_cereals", "fsl_hdds_tubers", "fsl_hdds_veg", "fsl_hdds_fruit", "fsl_hdds_meat",
+                                 "fsl_hdds_eggs", "fsl_hdds_fish", "fsl_hdds_legumes", "fsl_hdds_dairy", "fsl_hdds_oil",
+                                 "fsl_hdds_sugar", "fsl_hdds_condiments"
+                               ),
+                               hdds_value_set = c("yes", "no"),
+                               with_fclc = FALSE,
+                               fclc_matrix_var = "fclcm_phase",
+                               fclc_matrix_values = c("Phase 1 FCLC", "Phase 2 FCLC", "Phase 3 FCLC", "Phase 4 FCLC", "Phase 5 FCLC"),
+                               fc_matrix_var = "fsl_fc_phase",
+                               fc_matrix_values = c("Phase 1 FC", "Phase 2 FC", "Phase 3 FC", "Phase 4 FC", "Phase 5 FC"),
+                               other_variables = NULL,
+                               stat_col = "stat",
+                               proportion_name = "prop_select_one",
+                               mean_name = "mean") {
   # verify number of values.
   verify_numbers_values("fcs_cat_values", fcs_cat_values, 3)
   verify_numbers_values("hhs_cat_values", hhs_cat_values, 5)
@@ -400,7 +400,6 @@ review_ipc_results <- function(results_table,
 #'   fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5"),
 #'   other_variables = c("income_v2_sum", "expenditure_food")
 #' )
-
 create_ordered_ipc_table <- function(results_table,
                                      analysis_key = "analysis_key",
                                      fcs_cat_var = "fsl_fcs_cat",
@@ -497,11 +496,11 @@ create_ordered_ipc_table <- function(results_table,
   # rearrange results in the order I want
   ## hhs set has to be by the order of the questions set (yes-no;freq;yes-no;freq;yes-no;freq)
   hhs_set <- results_review[["dictionary"]][c("hhs_yesno_set_prop", "hhs_freq_set_prop")] %>%
-    purrr::map(~expand.grid(.x, stringsAsFactors = F)) %>%
-    purrr::map(~dplyr::group_by(.x,var_name)) %>%
-    purrr::map(~dplyr::group_split(.x)) %>%
+    purrr::map(~ expand.grid(.x, stringsAsFactors = F)) %>%
+    purrr::map(~ dplyr::group_by(.x, var_name)) %>%
+    purrr::map(~ dplyr::group_split(.x)) %>%
     purrr::list_transpose() %>%
-    do.call(c,.) %>%
+    do.call(c, .) %>%
     purrr::list_rbind()
 
   ## rcsi, lcsi, and hdds has to be reorder with the options
