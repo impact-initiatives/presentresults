@@ -73,12 +73,12 @@ create_group_clusters <- function(results_table,
       }
 
       if (i == "NA") {
-        final_df[["Overall"]] <- dataset |>
+        final_df[["NA"]] <- dataset |>
           dplyr::summarise(
             number_of_cluster = dplyr::n_distinct(!!rlang::sym(cluster_name)),
             number_of_hh = dplyr::n()
           ) |>
-          dplyr::mutate(group_var_value = "Overall")
+          dplyr::mutate(group_var_value = "NA")
       }
     }
   }
@@ -98,12 +98,12 @@ create_group_clusters <- function(results_table,
       }
 
       if (i == "NA") {
-        final_df[["Overall"]] <- dataset |>
+        final_df[["NA"]] <- dataset |>
           dplyr::summarise(
             number_of_cluster = NA,
             number_of_hh = dplyr::n()
           ) |>
-          dplyr::mutate(group_var_value = "Overall")
+          dplyr::mutate(group_var_value = "NA")
       }
     }
   }
