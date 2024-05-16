@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">presentresults</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -228,42 +228,57 @@
 <span>  <span class="fu"><a href="reference/create_table_group_x_variable.html">create_table_group_x_variable</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/create_xlsx_group_x_variable.html">create_xlsx_group_x_variable</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"mytable.xlsx"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="example-for-the-ipc-twg-table">Example for the IPC TWG table<a class="anchor" aria-label="anchor" href="#example-for-the-ipc-twg-table"></a>
+<h3 id="example-for-the-ipc-table">Example for the IPC table<a class="anchor" aria-label="anchor" href="#example-for-the-ipc-table"></a>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_ipc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_ipctwg_table.html">create_ipctwg_table</a></span><span class="op">(</span></span>
-<span>  results_table <span class="op">=</span> <span class="va">presentresults_resultstable</span>,</span>
-<span>  dataset <span class="op">=</span> <span class="va">presentresults_MSNA_template_data</span>,</span>
-<span>  cluster_name <span class="op">=</span> <span class="st">"cluster_id"</span>,</span>
-<span>  fclc_matrix_var <span class="op">=</span> <span class="st">"fcls_cat"</span>,</span>
-<span>  fclc_matrix_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phase_1"</span>, <span class="st">"phase_2"</span>, <span class="st">"phase_3"</span>, <span class="st">"phase_4"</span>, <span class="st">"phase_5"</span><span class="op">)</span>,</span>
-<span>  fc_matrix_var <span class="op">=</span> <span class="st">"fcm_cat"</span>,</span>
-<span>  fc_matrix_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phase_1"</span>, <span class="st">"phase_2"</span>, <span class="st">"phase_3"</span>, <span class="st">"phase_4"</span>, <span class="st">"phase_5"</span><span class="op">)</span>,</span>
-<span>  with_fclc <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  fcs_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span><span class="op">)</span>,</span>
-<span>  rcsi_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span><span class="op">)</span>,</span>
-<span>  lcsi_cat_var <span class="op">=</span> <span class="st">"lcs_cat"</span>,</span>
-<span>  lcsi_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"stress"</span>, <span class="st">"emergency"</span>, <span class="st">"crisis"</span><span class="op">)</span>,</span>
-<span>  hhs_cat_var <span class="op">=</span> <span class="st">"hhs_cat"</span>,</span>
-<span>  hhs_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"slight"</span>, <span class="st">"moderate"</span>, <span class="st">"severe"</span>, <span class="st">"very_severe"</span><span class="op">)</span>,</span>
-<span>  lcsi_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"liv_stress_lcsi_1"</span>,</span>
-<span>    <span class="st">"liv_stress_lcsi_2"</span>,</span>
-<span>    <span class="st">"liv_stress_lcsi_3"</span>,</span>
-<span>    <span class="st">"liv_stress_lcsi_4"</span>,</span>
-<span>    <span class="st">"liv_crisis_lcsi_1"</span>,</span>
-<span>    <span class="st">"liv_crisis_lcsi_2"</span>,</span>
-<span>    <span class="st">"liv_crisis_lcsi_3"</span>,</span>
-<span>    <span class="st">"liv_emerg_lcsi_1"</span>,</span>
-<span>    <span class="st">"liv_emerg_lcsi_2"</span>,</span>
-<span>    <span class="st">"liv_emerg_lcsi_3"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  other_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"income_v2_sum"</span>, <span class="st">"expenditure_food"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">no_nas_presentresults_resultstable</span> <span class="op">&lt;-</span> <span class="va">presentresults_resultstable</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">analysis_type</span> <span class="op">==</span> <span class="st">"prop_select_one"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">analysis_var_value</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">example_ipc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_ipc_table.html">create_ipc_table</a></span><span class="op">(</span></span>
+<span> results_table <span class="op">=</span> <span class="va">no_nas_presentresults_resultstable</span>,</span>
+<span> dataset <span class="op">=</span> <span class="va">presentresults_MSNA_template_data</span>,</span>
+<span> cluster_name <span class="op">=</span> <span class="st">"cluster_id"</span>,</span>
+<span> fcs_cat_var <span class="op">=</span> <span class="st">"fcs_cat"</span>,</span>
+<span> fcs_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span><span class="op">)</span>,</span>
+<span> fcs_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>   <span class="st">"fs_fcs_cereals_grains_roots_tubers"</span>,</span>
+<span>   <span class="st">"fs_fcs_beans_nuts"</span>,</span>
+<span>   <span class="st">"fs_fcs_dairy"</span>,</span>
+<span>   <span class="st">"fs_fcs_meat_fish_eggs"</span>,</span>
+<span>   <span class="st">"fs_fcs_vegetables_leaves"</span>,</span>
+<span>   <span class="st">"fs_fcs_fruit"</span>,</span>
+<span>   <span class="st">"fs_fcs_oil_fat_butter"</span>,</span>
+<span>   <span class="st">"fs_fcs_sugar"</span>,</span>
+<span>   <span class="st">"fs_fcs_condiment"</span></span>
+<span> <span class="op">)</span>,</span>
+<span> hhs_cat_var <span class="op">=</span> <span class="st">"hhs_cat"</span>,</span>
+<span> hhs_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"slight"</span>, <span class="st">"moderate"</span>, <span class="st">"severe"</span>, <span class="st">"very_severe"</span><span class="op">)</span>,</span>
+<span> hhs_cat_yesno_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fs_hhs_nofood_yn"</span>, <span class="st">"fs_hhs_sleephungry_yn"</span>, <span class="st">"fs_hhs_daynoteating_yn"</span><span class="op">)</span>,</span>
+<span> hhs_cat_freq_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fs_hhs_nofood_freq"</span>, <span class="st">"fs_hhs_sleephungry_freq"</span>, <span class="st">"fs_hhs_daynoteating_freq"</span><span class="op">)</span>,</span>
+<span> hhs_value_freq_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rarely_1_2"</span>, <span class="st">"sometimes_3_10"</span>, <span class="st">"often_10_times"</span><span class="op">)</span>,</span>
+<span> rcsi_cat_var <span class="op">=</span> <span class="st">"rcsi_cat"</span>,</span>
+<span> rcsi_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span><span class="op">)</span>,</span>
+<span> rcsi_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rCSILessQlty"</span>, <span class="st">"rCSIBorrow"</span>, <span class="st">"rCSIMealSize"</span>, <span class="st">"rCSIMealAdult"</span>, <span class="st">"rCSIMealNb"</span><span class="op">)</span>,</span>
+<span> lcsi_cat_var <span class="op">=</span> <span class="st">"lcs_cat"</span>,</span>
+<span> lcsi_cat_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"stress"</span>, <span class="st">"emergency"</span>, <span class="st">"crisis"</span><span class="op">)</span>,</span>
+<span> lcsi_set <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>   <span class="st">"liv_stress_lcsi_1"</span>,</span>
+<span>   <span class="st">"liv_stress_lcsi_2"</span>,</span>
+<span>   <span class="st">"liv_stress_lcsi_3"</span>,</span>
+<span>   <span class="st">"liv_stress_lcsi_4"</span>,</span>
+<span>   <span class="st">"liv_crisis_lcsi_1"</span>,</span>
+<span>   <span class="st">"liv_crisis_lcsi_2"</span>,</span>
+<span>   <span class="st">"liv_crisis_lcsi_3"</span>,</span>
+<span>   <span class="st">"liv_emerg_lcsi_1"</span>,</span>
+<span>   <span class="st">"liv_emerg_lcsi_2"</span>,</span>
+<span>   <span class="st">"liv_emerg_lcsi_3"</span></span>
+<span> <span class="op">)</span>,</span>
+<span> with_hdds <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(analysis_key)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(group_var_value)`</span></span>
 <span></span>
-<span><span class="va">example_ipc</span><span class="op">[[</span><span class="st">"ipctwg_table"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span><span class="va">example_ipc</span><span class="op">[[</span><span class="st">"ipc_table"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                       group_var_value number_of_cluster</span></span>
 <span><span class="co">#&gt; header_analysis_var                   group_var_value number_of_cluster</span></span>
 <span><span class="co">#&gt; header_analysis_var_value             group_var_value              &lt;NA&gt;</span></span>
@@ -271,58 +286,58 @@
 <span><span class="co">#&gt; 1                             locationA %/% displaced                 2</span></span>
 <span><span class="co">#&gt; 2                         locationA %/% non-displaced                 2</span></span>
 <span><span class="co">#&gt; 3                             locationB %/% displaced                 2</span></span>
-<span><span class="co">#&gt;                           number_of_hh fcls_cat %/% phase_1 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var       number_of_hh                                 fcls_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value         &lt;NA&gt;                                  phase_1</span></span>
-<span><span class="co">#&gt; header_analysis_type              &lt;NA&gt;                          prop_select_one</span></span>
-<span><span class="co">#&gt; 1                                   31                        0.161290322580645</span></span>
-<span><span class="co">#&gt; 2                                   24                       0.0833333333333333</span></span>
-<span><span class="co">#&gt; 3                                   27                        0.111111111111111</span></span>
-<span><span class="co">#&gt;                           fcls_cat %/% phase_2 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var                                       fcls_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value                                  phase_2</span></span>
+<span><span class="co">#&gt;                           number_of_hh fcs_cat %/% low %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var       number_of_hh                             fcs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value         &lt;NA&gt;                                 low</span></span>
+<span><span class="co">#&gt; header_analysis_type              &lt;NA&gt;                     prop_select_one</span></span>
+<span><span class="co">#&gt; 1                                   31                   0.258064516129032</span></span>
+<span><span class="co">#&gt; 2                                   24                                0.25</span></span>
+<span><span class="co">#&gt; 3                                   27                    0.37037037037037</span></span>
+<span><span class="co">#&gt;                           fcs_cat %/% medium %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var                                      fcs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value                                 medium</span></span>
+<span><span class="co">#&gt; header_analysis_type                             prop_select_one</span></span>
+<span><span class="co">#&gt; 1                                               0.32258064516129</span></span>
+<span><span class="co">#&gt; 2                                                          0.375</span></span>
+<span><span class="co">#&gt; 3                                              0.407407407407407</span></span>
+<span><span class="co">#&gt;                           fcs_cat %/% high %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var                                    fcs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value                                 high</span></span>
+<span><span class="co">#&gt; header_analysis_type                           prop_select_one</span></span>
+<span><span class="co">#&gt; 1                                            0.419354838709677</span></span>
+<span><span class="co">#&gt; 2                                                        0.375</span></span>
+<span><span class="co">#&gt; 3                                            0.222222222222222</span></span>
+<span><span class="co">#&gt;                           hhs_cat %/% none %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var                                    hhs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value                                 none</span></span>
+<span><span class="co">#&gt; header_analysis_type                           prop_select_one</span></span>
+<span><span class="co">#&gt; 1                                            0.225806451612903</span></span>
+<span><span class="co">#&gt; 2                                            0.208333333333333</span></span>
+<span><span class="co">#&gt; 3                                            0.222222222222222</span></span>
+<span><span class="co">#&gt;                           hhs_cat %/% slight %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var                                      hhs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value                                 slight</span></span>
+<span><span class="co">#&gt; header_analysis_type                             prop_select_one</span></span>
+<span><span class="co">#&gt; 1                                              0.258064516129032</span></span>
+<span><span class="co">#&gt; 2                                              0.291666666666667</span></span>
+<span><span class="co">#&gt; 3                                              0.222222222222222</span></span>
+<span><span class="co">#&gt;                           hhs_cat %/% moderate %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var                                        hhs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value                                 moderate</span></span>
 <span><span class="co">#&gt; header_analysis_type                               prop_select_one</span></span>
 <span><span class="co">#&gt; 1                                                0.225806451612903</span></span>
 <span><span class="co">#&gt; 2                                               0.0833333333333333</span></span>
-<span><span class="co">#&gt; 3                                                0.333333333333333</span></span>
-<span><span class="co">#&gt;                           fcls_cat %/% phase_3 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var                                       fcls_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value                                  phase_3</span></span>
-<span><span class="co">#&gt; header_analysis_type                               prop_select_one</span></span>
-<span><span class="co">#&gt; 1                                                0.258064516129032</span></span>
-<span><span class="co">#&gt; 2                                                0.291666666666667</span></span>
-<span><span class="co">#&gt; 3                                                0.185185185185185</span></span>
-<span><span class="co">#&gt;                           fcls_cat %/% phase_4 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var                                       fcls_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value                                  phase_4</span></span>
-<span><span class="co">#&gt; header_analysis_type                               prop_select_one</span></span>
-<span><span class="co">#&gt; 1                                                0.193548387096774</span></span>
-<span><span class="co">#&gt; 2                                                0.208333333333333</span></span>
-<span><span class="co">#&gt; 3                                                0.185185185185185</span></span>
-<span><span class="co">#&gt;                           fcls_cat %/% phase_5 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var                                       fcls_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value                                  phase_5</span></span>
-<span><span class="co">#&gt; header_analysis_type                               prop_select_one</span></span>
-<span><span class="co">#&gt; 1                                                0.161290322580645</span></span>
-<span><span class="co">#&gt; 2                                                0.333333333333333</span></span>
-<span><span class="co">#&gt; 3                                                0.185185185185185</span></span>
-<span><span class="co">#&gt;                           fcm_cat %/% phase_1 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var                                       fcm_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value                                 phase_1</span></span>
-<span><span class="co">#&gt; header_analysis_type                              prop_select_one</span></span>
-<span><span class="co">#&gt; 1                                               0.290322580645161</span></span>
-<span><span class="co">#&gt; 2                                                            0.25</span></span>
-<span><span class="co">#&gt; 3                                               0.222222222222222</span></span>
-<span><span class="co">#&gt;                           fcm_cat %/% phase_2 %/% prop_select_one</span></span>
-<span><span class="co">#&gt; header_analysis_var                                       fcm_cat</span></span>
-<span><span class="co">#&gt; header_analysis_var_value                                 phase_2</span></span>
-<span><span class="co">#&gt; header_analysis_type                              prop_select_one</span></span>
-<span><span class="co">#&gt; 1                                              0.0967741935483871</span></span>
-<span><span class="co">#&gt; 2                                              0.0833333333333333</span></span>
-<span><span class="co">#&gt; 3                                               0.185185185185185</span></span></code></pre></div>
+<span><span class="co">#&gt; 3                                                0.222222222222222</span></span>
+<span><span class="co">#&gt;                           hhs_cat %/% severe %/% prop_select_one</span></span>
+<span><span class="co">#&gt; header_analysis_var                                      hhs_cat</span></span>
+<span><span class="co">#&gt; header_analysis_var_value                                 severe</span></span>
+<span><span class="co">#&gt; header_analysis_type                             prop_select_one</span></span>
+<span><span class="co">#&gt; 1                                             0.0967741935483871</span></span>
+<span><span class="co">#&gt; 2                                                           0.25</span></span>
+<span><span class="co">#&gt; 3                                              0.222222222222222</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_ipc</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/create_xlsx_group_x_variable.html">create_xlsx_group_x_variable</a></span><span class="op">(</span><span class="va">example_ipc</span>, table_name <span class="op">=</span> <span class="st">"ipctwg_table"</span>, file_path <span class="op">=</span> <span class="st">"ipc_table.xlsx"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="reference/create_xlsx_group_x_variable.html">create_xlsx_group_x_variable</a></span><span class="op">(</span><span class="va">example_ipc</span>, table_name <span class="op">=</span> <span class="st">"ipc_table"</span>, file_path <span class="op">=</span> <span class="st">"ipc_table.xlsx"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

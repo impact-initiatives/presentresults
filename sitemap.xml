@@ -19,16 +19,13 @@
     <loc>https://impact-initiatives.github.io/presentresults/index.html</loc>
   </url>
   <url>
-    <loc>https://impact-initiatives.github.io/presentresults/reference/check_ipctwg_results.html</loc>
-  </url>
-  <url>
     <loc>https://impact-initiatives.github.io/presentresults/reference/create_group_clusters.html</loc>
   </url>
   <url>
-    <loc>https://impact-initiatives.github.io/presentresults/reference/create_ipctwg_table.html</loc>
+    <loc>https://impact-initiatives.github.io/presentresults/reference/create_ipc_table.html</loc>
   </url>
   <url>
-    <loc>https://impact-initiatives.github.io/presentresults/reference/create_ordered_ipctwg_table.html</loc>
+    <loc>https://impact-initiatives.github.io/presentresults/reference/create_ordered_ipc_table.html</loc>
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/presentresults/reference/create_table_group_x_variable.html</loc>
@@ -56,6 +53,9 @@
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/presentresults/reference/presentresults_resultstable.html</loc>
+  </url>
+  <url>
+    <loc>https://impact-initiatives.github.io/presentresults/reference/review_ipc_results.html</loc>
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/presentresults/reference/verify_grep_AinB.html</loc>
