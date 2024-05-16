@@ -1,4 +1,8 @@
 test_that("that the results are correctly displayed", {
+
+  no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+    dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+
   all_vars_expected_output <- readRDS(testthat::test_path("fixtures/group_x_variable", "table_group_x_variable_export_fewsnet.RDS"))
 
   # removing non-core indicators
@@ -8,7 +12,7 @@ test_that("that the results are correctly displayed", {
 
   # tests output with the fewsnet matrix without hdds
   actual_output <- create_ipc_table(
-    results_table = presentresults_resultstable,
+    results_table = no_nas_presentresults_resultstable,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fcs_cat_var = "fcs_cat",
@@ -24,13 +28,16 @@ test_that("that the results are correctly displayed", {
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
     lcsi_cat_var = "lcs_cat",
     lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     lcsi_set = c(
       "liv_stress_lcsi_1",
       "liv_stress_lcsi_2",
@@ -63,7 +70,7 @@ test_that("that the results are correctly displayed", {
     dplyr::select(-dplyr::contains(c("fcls_cat", "fcm_cat")))
 
   no_fewsnet_phase_actual_output <- create_ipc_table(
-    results_table = presentresults_resultstable,
+    results_table = no_nas_presentresults_resultstable,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fcs_cat_var = "fcs_cat",
@@ -79,6 +86,11 @@ test_that("that the results are correctly displayed", {
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
@@ -96,8 +108,6 @@ test_that("that the results are correctly displayed", {
       "liv_emerg_lcsi_2",
       "liv_emerg_lcsi_3"
     ),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     with_hdds = FALSE
   ) %>%
     suppressWarnings()
@@ -108,7 +118,7 @@ test_that("that the results are correctly displayed", {
 
   # tests output with the fewsnet  with others variables (one cat, one number, one select multiple)  without hdds
   all_vars_actual_output <- create_ipc_table(
-    results_table = presentresults_resultstable,
+    results_table = no_nas_presentresults_resultstable,
     dataset = presentresults_MSNA_template_data,
     cluster_name = "cluster_id",
     fcs_cat_var = "fcs_cat",
@@ -124,6 +134,11 @@ test_that("that the results are correctly displayed", {
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
@@ -141,8 +156,6 @@ test_that("that the results are correctly displayed", {
       "liv_emerg_lcsi_2",
       "liv_emerg_lcsi_3"
     ),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     with_hdds = FALSE,
     with_fclc = TRUE,
     fclc_matrix_var = "fcls_cat",
@@ -162,7 +175,8 @@ test_that("that the results are correctly displayed", {
 
   with_hdds_results_list <- readRDS(testthat::test_path("fixtures/create_ipc_table", "ipc_table_results_with_hdds.RDS"))
 
-  no_na_rows <- with_hdds_results_list$results_table %>% dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+  no_na_rows <- with_hdds_results_list$results_table %>%
+    dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
   with_hdds_actual_output <-  create_ipc_table(
     results_table = no_na_rows,
     dataset = with_hdds_results_list$dataset,
@@ -175,6 +189,8 @@ test_that("that the results are correctly displayed", {
                 "fcs_oil",
                 "fcs_sugar",
                 "fcs_spices"),
+    hhs_cat_yesno_set = c("hhs_1", "hhs_3", "hhs_5"),
+    hhs_cat_freq_set = c("hhs_2", "hhs_4", "hhs_6"),
     rcsi_set = c("rcsi_lessquality",
                  "rcsi_borrow",
                  "rcsi_mealsize",
@@ -209,8 +225,11 @@ test_that("that if there is one missiong option, the variable still show in the 
 
   all_vars_expected_output$ipc_table[["fcls_cat %/% phase_1 %/% prop_select_one"]] <- c("fcls_cat", "phase_1", "prop_select_one", rep(NA, 6))
 
+  no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+    dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+
   # removing all phase_1 in fcls_cat
-  presentresults_resultstable_trimed <- presentresults_resultstable %>%
+  presentresults_resultstable_trimed <- no_nas_presentresults_resultstable %>%
     dplyr::filter(!(analysis_var == "fcls_cat" & analysis_var_value == "phase_1"))
   # with fewsnet matrix
   actual_output <- create_ipc_table(
@@ -230,13 +249,16 @@ test_that("that if there is one missiong option, the variable still show in the 
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
     lcsi_cat_var = "lcs_cat",
     lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     lcsi_set = c(
       "liv_stress_lcsi_1",
       "liv_stress_lcsi_2",
@@ -287,6 +309,8 @@ test_that("that if there is one missiong option, the variable still show in the 
                 "fcs_oil",
                 "fcs_sugar",
                 "fcs_spices"),
+    hhs_cat_yesno_set = c("hhs_1", "hhs_3", "hhs_5"),
+    hhs_cat_freq_set = c("hhs_2", "hhs_4", "hhs_6"),
     rcsi_set = c("rcsi_lessquality",
                  "rcsi_borrow",
                  "rcsi_mealsize",
@@ -319,7 +343,7 @@ test_that("that if there is one missiong option, the variable still show in the 
 
 test_that("If at least one variable is not present, there should be an error", {
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = presentresults_resultstable,
       fcs_cat_var = "fcs_cat",
       fcs_cat_values = c("low", "medium", "high"),
@@ -334,24 +358,27 @@ test_that("If at least one variable is not present, there should be an error", {
         "fs_fcs_sugar",
         "fs_fcs_condiment"
       ),
+      hhs_cat_var = "hhs_cat",
+      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+      hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+      hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+      hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
       rcsi_cat_var = "rcsi_cat",
       rcsi_cat_values = c("low", "medium", "high"),
       rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
       lcsi_cat_var = "lcsi_cat",
       lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-      hhs_cat_var = "hhs_cat_ipc",
-      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
       lcsi_set = c(
         "xx"
       ),
       with_hdds = FALSE
     ) %>%
       suppressWarnings(),
-    "Following variables: lcsi_cat, hhs_cat_ipc, xx cannot be found in the results table"
+    "Following variables: lcsi_cat, xx cannot be found in the results table"
   )
 
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = presentresults_resultstable,
       fcs_cat_var = "fcs_cat",
       fcs_cat_values = c("low", "medium", "high"),
@@ -366,13 +393,16 @@ test_that("If at least one variable is not present, there should be an error", {
         "fs_fcs_sugar",
         "fs_fcs_condiment"
       ),
+      hhs_cat_var = "hhs_cat",
+      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+      hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+      hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+      hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
       rcsi_cat_var = "rcsi_cat",
       rcsi_cat_values = c("low", "medium", "high"),
       rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
       lcsi_cat_var = "lcsi_cat",
       lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-      hhs_cat_var = "hhs_cat_ipc",
-      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
       lcsi_set = c("liv_stress_lcsi_1", "liv_stress_lcsi_2"),
       with_fclc = TRUE,
       fclc_matrix_var = "fclc_phase",
@@ -380,11 +410,11 @@ test_that("If at least one variable is not present, there should be an error", {
       with_hdds = FALSE
     ) %>%
       suppressWarnings(),
-    "Following variables: fclc_phase, fc_phase, lcsi_cat, hhs_cat_ipc cannot be found in the results table"
+    "Following variables: fclc_phase, fc_phase, lcsi_cat cannot be found in the results table"
   )
 
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = presentresults_resultstable,
       fcs_cat_var = "fcs_cat",
       fcs_cat_values = c("low", "medium", "high"),
@@ -399,13 +429,16 @@ test_that("If at least one variable is not present, there should be an error", {
         "fs_fcs_sugar",
         "fs_fcs_condiment"
       ),
+      hhs_cat_var = "hhs_cat",
+      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+      hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+      hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+      hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
       rcsi_cat_var = "rcsi_cat",
       rcsi_cat_values = c("low", "medium", "high"),
       rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
       lcsi_cat_var = "lcsi_cat",
       lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-      hhs_cat_var = "hhs_cat_ipc",
-      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
       lcsi_set = c(
         "liv_stress_lcsi_1",
         "liv_stress_lcsi_2",
@@ -422,13 +455,13 @@ test_that("If at least one variable is not present, there should be an error", {
       with_hdds = FALSE
     ) %>%
       suppressWarnings(),
-    "Following variables: lcsi_cat, hhs_cat_ipc, number_lunch, expenses cannot be found in the results table"
+    "Following variables: lcsi_cat, number_lunch, expenses cannot be found in the results table"
   )
 
   with_hdds_results_list <- readRDS(testthat::test_path("fixtures/create_ipc_table", "ipc_table_results_with_hdds.RDS"))
 
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = with_hdds_results_list$results_table,
       fcs_set = c("fcs_cereal",
                   "fcs_pulses",
@@ -439,6 +472,8 @@ test_that("If at least one variable is not present, there should be an error", {
                   "fcs_oil",
                   "fcs_sugar",
                   "fcs_spices"),
+      hhs_cat_yesno_set = c("hhs_1", "hhs_3", "hhs_5"),
+      hhs_cat_freq_set = c("hhs_2", "hhs_4", "hhs_6"),
       rcsi_set = c("rcsi_lessquality",
                    "rcsi_borrow",
                    "rcsi_mealsize",
@@ -470,7 +505,7 @@ test_that("If at least one variable is not present, there should be an error", {
 test_that("If one options present in the dataset is not part of the one in the table,
           there should be an error.", {
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = presentresults_resultstable,
       fcs_cat_var = "fcs_cat",
       fcs_set = c(
@@ -484,6 +519,11 @@ test_that("If one options present in the dataset is not part of the one in the t
         "fs_fcs_sugar",
         "fs_fcs_condiment"
       ),
+      hhs_cat_var = "hhs_cat",
+      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+      hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+      hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+      hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
       rcsi_cat_var = "rcsi_cat",
       rcsi_cat_values = c("low", "medium", "high"),
       rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
@@ -501,8 +541,6 @@ test_that("If one options present in the dataset is not part of the one in the t
         "liv_emerg_lcsi_2",
         "liv_emerg_lcsi_3"
       ),
-      hhs_cat_var = "hhs_cat",
-      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
       with_fclc = FALSE,
       with_hdds = FALSE
     ) %>% suppressWarnings(),
@@ -510,7 +548,7 @@ test_that("If one options present in the dataset is not part of the one in the t
   )
 
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = presentresults_resultstable,
       fcs_cat_var = "fcs_cat",
       fcs_cat_values = c("low", "medium", "high"),
@@ -525,13 +563,16 @@ test_that("If one options present in the dataset is not part of the one in the t
         "fs_fcs_sugar",
         "fs_fcs_condiment"
       ),
+      hhs_cat_var = "hhs_cat",
+      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+      hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+      hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+      hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
       rcsi_cat_var = "rcsi_cat",
       rcsi_cat_values = c("low", "medium", "high"),
       rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
       lcsi_cat_var = "lcs_cat",
       lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-      hhs_cat_var = "hhs_cat",
-      hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
       lcsi_set = c(
         "liv_stress_lcsi_1",
         "liv_stress_lcsi_2",
@@ -557,7 +598,7 @@ test_that("If one options present in the dataset is not part of the one in the t
   no_na_rows <- with_hdds_results_list$results_table %>%
     dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
   expect_error(
-    check_ipc_results(
+    review_ipc_results(
       results_table = no_na_rows,
       fcs_set = c("fcs_cereal",
                   "fcs_pulses",
@@ -568,6 +609,8 @@ test_that("If one options present in the dataset is not part of the one in the t
                   "fcs_oil",
                   "fcs_sugar",
                   "fcs_spices"),
+      hhs_cat_yesno_set = c("hhs_1", "hhs_3", "hhs_5"),
+      hhs_cat_freq_set = c("hhs_2", "hhs_4", "hhs_6"),
       rcsi_set = c("rcsi_lessquality",
                    "rcsi_borrow",
                    "rcsi_mealsize",
@@ -597,9 +640,11 @@ test_that("If one options present in the dataset is not part of the one in the t
 })
 
 test_that("if number of expected values is different it will show a warning", {
+  no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+    dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
   # Adding None to fclc_matrix_values
-  check_ipc_results(
-    results_table = presentresults_resultstable,
+  review_ipc_results(
+    results_table = no_nas_presentresults_resultstable,
     fcs_cat_var = "fcs_cat",
     fcs_cat_values = c("low", "medium", "high"),
     fcs_set = c(
@@ -613,13 +658,16 @@ test_that("if number of expected values is different it will show a warning", {
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
     lcsi_cat_var = "lcs_cat",
     lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     lcsi_set = c(
       "liv_stress_lcsi_1",
       "liv_stress_lcsi_2",
@@ -642,9 +690,9 @@ test_that("if number of expected values is different it will show a warning", {
     expect_warning("Expecting 5 of values in fclc_matrix_values but got 6 unique values.")
 
   # removing high in fcs.
-  no_high_results <- presentresults_resultstable %>%
+  no_high_results <- no_nas_presentresults_resultstable %>%
     dplyr::filter(!(analysis_var_value == "high" & analysis_var == "fcs_cat"))
-  check_ipc_results(
+  review_ipc_results(
     results_table = no_high_results,
     fcs_cat_var = "fcs_cat",
     fcs_cat_values = c("low", "medium"),
@@ -659,13 +707,16 @@ test_that("if number of expected values is different it will show a warning", {
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
     lcsi_cat_var = "lcs_cat",
     lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     lcsi_set = c(
       "liv_stress_lcsi_1",
       "liv_stress_lcsi_2",
@@ -683,8 +734,8 @@ test_that("if number of expected values is different it will show a warning", {
     expect_warning("Expecting 3 of values in fcs_cat_values but got 2 unique values.")
 
   # removing some LCSI variables
-  check_ipc_results(
-    results_table = presentresults_resultstable,
+  review_ipc_results(
+    results_table = no_nas_presentresults_resultstable,
     fcs_cat_var = "fcs_cat",
     fcs_cat_values = c("low", "medium", "high"),
     fcs_set = c(
@@ -698,13 +749,16 @@ test_that("if number of expected values is different it will show a warning", {
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
     lcsi_cat_var = "lcs_cat",
     lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     lcsi_set = c(
       "liv_stress_lcsi_1",
       "liv_stress_lcsi_2",
@@ -724,7 +778,7 @@ test_that("if number of expected values is different it will show a warning", {
     dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)),
                   !(analysis_var == "fsl_hdds_cat" & analysis_var_value == "High"))
 
-  check_ipc_results(
+  review_ipc_results(
     results_table = no_na_rows,
     fcs_set = c("fcs_cereal",
                 "fcs_pulses",
@@ -735,6 +789,8 @@ test_that("if number of expected values is different it will show a warning", {
                 "fcs_oil",
                 "fcs_sugar",
                 "fcs_spices"),
+    hhs_cat_yesno_set = c("hhs_1", "hhs_3", "hhs_5"),
+    hhs_cat_freq_set = c("hhs_2", "hhs_4", "hhs_6"),
     rcsi_set = c("rcsi_lessquality",
                  "rcsi_borrow",
                  "rcsi_mealsize",
@@ -781,6 +837,11 @@ test_that("When the category of variable is provided in a set, it throws an erro
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
@@ -798,8 +859,6 @@ test_that("When the category of variable is provided in a set, it throws an erro
       "liv_emerg_lcsi_2",
       "liv_emerg_lcsi_3"
     ),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     with_hdds = FALSE
   ),
   "fcs_cat is in the fcs_set, it should only contains the fcs initial variables.")
@@ -821,6 +880,97 @@ test_that("When the category of variable is provided in a set, it throws an erro
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("hhs_cat", "fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
+    rcsi_cat_var = "rcsi_cat",
+    rcsi_cat_values = c("low", "medium", "high"),
+    rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
+    lcsi_cat_var = "lcs_cat",
+    lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+    lcsi_set = c(
+      "liv_stress_lcsi_1",
+      "liv_stress_lcsi_2",
+      "liv_stress_lcsi_3",
+      "liv_stress_lcsi_4",
+      "liv_crisis_lcsi_1",
+      "liv_crisis_lcsi_2",
+      "liv_crisis_lcsi_3",
+      "liv_emerg_lcsi_1",
+      "liv_emerg_lcsi_2",
+      "liv_emerg_lcsi_3"
+    ),
+    with_hdds = FALSE
+  ),
+  "hhs_cat is in the hhs_cat_yesno_set, it should only contains the hhs initial variables.")
+
+  expect_error(create_ipc_table(
+    results_table = presentresults_resultstable,
+    dataset = presentresults_MSNA_template_data,
+    cluster_name = "cluster_id",
+    fcs_cat_var = "fcs_cat",
+    fcs_cat_values = c("low", "medium", "high"),
+    fcs_set = c(
+      "fs_fcs_cereals_grains_roots_tubers",
+      "fs_fcs_beans_nuts",
+      "fs_fcs_dairy",
+      "fs_fcs_meat_fish_eggs",
+      "fs_fcs_vegetables_leaves",
+      "fs_fcs_fruit",
+      "fs_fcs_oil_fat_butter",
+      "fs_fcs_sugar",
+      "fs_fcs_condiment"
+    ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("hhs_cat", "fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
+    rcsi_cat_var = "rcsi_cat",
+    rcsi_cat_values = c("low", "medium", "high"),
+    rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
+    lcsi_cat_var = "lcs_cat",
+    lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
+    lcsi_set = c(
+      "liv_stress_lcsi_1",
+      "liv_stress_lcsi_2",
+      "liv_stress_lcsi_3",
+      "liv_stress_lcsi_4",
+      "liv_crisis_lcsi_1",
+      "liv_crisis_lcsi_2",
+      "liv_crisis_lcsi_3",
+      "liv_emerg_lcsi_1",
+      "liv_emerg_lcsi_2",
+      "liv_emerg_lcsi_3"
+    ),
+    with_hdds = FALSE
+  ),
+  "hhs_cat is in the hhs_cat_freq_set, it should only contains the hhs initial variables.")
+
+  expect_error(create_ipc_table(
+    results_table = presentresults_resultstable,
+    dataset = presentresults_MSNA_template_data,
+    cluster_name = "cluster_id",
+    fcs_cat_var = "fcs_cat",
+    fcs_cat_values = c("low", "medium", "high"),
+    fcs_set = c(
+      "fs_fcs_cereals_grains_roots_tubers",
+      "fs_fcs_beans_nuts",
+      "fs_fcs_dairy",
+      "fs_fcs_meat_fish_eggs",
+      "fs_fcs_vegetables_leaves",
+      "fs_fcs_fruit",
+      "fs_fcs_oil_fat_butter",
+      "fs_fcs_sugar",
+      "fs_fcs_condiment"
+    ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rcsi_cat", "rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
@@ -838,8 +988,6 @@ test_that("When the category of variable is provided in a set, it throws an erro
       "liv_emerg_lcsi_2",
       "liv_emerg_lcsi_3"
     ),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     with_hdds = FALSE
   ),
   "rcsi_cat is in the rcsi_set, it should only contains the rcsi initial variables.")
@@ -861,6 +1009,11 @@ test_that("When the category of variable is provided in a set, it throws an erro
       "fs_fcs_sugar",
       "fs_fcs_condiment"
     ),
+    hhs_cat_var = "hhs_cat",
+    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+    hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+    hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+    hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
     rcsi_cat_var = "rcsi_cat",
     rcsi_cat_values = c("low", "medium", "high"),
     rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
@@ -879,8 +1032,6 @@ test_that("When the category of variable is provided in a set, it throws an erro
       "liv_emerg_lcsi_2",
       "liv_emerg_lcsi_3"
     ),
-    hhs_cat_var = "hhs_cat",
-    hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
     with_hdds = FALSE
   ),
   "lcs_cat is in the lcsi_set, it should only contains the lcsi initial variables.")
@@ -902,6 +1053,8 @@ test_that("When the category of variable is provided in a set, it throws an erro
                   "fcs_oil",
                   "fcs_sugar",
                   "fcs_spices"),
+      hhs_cat_yesno_set = c("hhs_1", "hhs_3", "hhs_5"),
+      hhs_cat_freq_set = c("hhs_2", "hhs_4", "hhs_6"),
       rcsi_set = c("rcsi_lessquality",
                    "rcsi_borrow",
                    "rcsi_mealsize",

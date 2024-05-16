@@ -8,8 +8,7 @@
 #' @param fcs_cat_values String with the options of the Food Consumption Score. Default is
 #' c("Poor", "Borderline", "Acceptable")
 #' @param fcs_set String for the Food Consumption Score questions set. Default is
-#' c("fcs_cereal", "fcs_pulses", "fcs_milk",
-#' "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
+#' c("fcs_cereal", "fcs_pulses", "fcs_milk", "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
 #' "fcs_sugar", "fcs_spices")
 #' @param rcsi_cat_var String with the name of the reduced Coping Strategy Index. Default is "fsl_rcsi_cat"
 #' @param rcsi_cat_values String with the options of the reduced Coping Strategy Index. Default is
@@ -29,6 +28,14 @@
 #' @param hhs_cat_var String with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"
 #' @param hhs_cat_values String with the options of the Household Hunger Scale. Default is
 #' c("None", "No or Little", "Moderate", "Severe", "Very Severe")
+#' @param hhs_cat_yesno_set String for the Household Hunger Scale yes-no questions set. Default is
+#' c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight")
+#' @param hhs_value_yesno_set String for the values of the Household Hunger Scale yes-no questions
+#' set. Default is c("yes", "no")
+#' @param hhs_cat_freq_set String for the Household Hunger Scale frequency questions set. Default is
+#' c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq")
+#' @param hhs_value_freq_set String for the values of the Household Hunger Scale frequency questions
+#' set. Default is c("rarely", "sometimes", "often")
 #' @param with_hdds TRUE or FALSE, whether to include the FCLC and FC values.
 #' @param hdds_cat String with the name of the Household Dietary Diversity Score. Default is "fsl_hdds_cat"
 #' @param hdds_cat_values String with the options of the Household Dietary Diversity Score. Default is
@@ -66,8 +73,11 @@
 #' @export
 #'
 #' @examples
-#' check_ipc_results(
-#'   results_table = presentresults_resultstable,
+#' no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+#'   dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+#'
+#' review_ipc_results(
+#'   results_table = no_nas_presentresults_resultstable,
 #'   fcs_cat_var = "fcs_cat",
 #'   fcs_cat_values = c("low", "medium", "high"),
 #'   fcs_set = c(
@@ -81,12 +91,16 @@
 #'     "fs_fcs_sugar",
 #'     "fs_fcs_condiment"
 #'   ),
+#'   hhs_cat_var = "hhs_cat",
+#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+#'   hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+#'   hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+#'   hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
 #'   rcsi_cat_var = "rcsi_cat",
 #'   rcsi_cat_values = c("low", "medium", "high"),
 #'   rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
 #'   lcsi_cat_var = "lcs_cat",
 #'   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-#'   hhs_cat_var = "hhs_cat",
 #'   lcsi_set = c(
 #'     "liv_stress_lcsi_1",
 #'     "liv_stress_lcsi_2",
@@ -99,7 +113,6 @@
 #'     "liv_emerg_lcsi_2",
 #'     "liv_emerg_lcsi_3"
 #'   ),
-#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
 #'   with_hdds = FALSE,
 #'   with_fclc = TRUE,
 #'   fclc_matrix_var = "fcls_cat",
@@ -107,8 +120,7 @@
 #'   fc_matrix_var = "fcm_cat",
 #'   fc_matrix_values = c("phase_1", "phase_2", "phase_3", "phase_4", "phase_5")
 #' )
-#'
-check_ipc_results <- function(results_table,
+review_ipc_results <- function(results_table,
                               analysis_key = "analysis_key",
                               fcs_cat_var = "fsl_fcs_cat",
                               fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
@@ -123,6 +135,12 @@ check_ipc_results <- function(results_table,
                                 "fcs_sugar",
                                 "fcs_spices"
                               ),
+                              hhs_cat_var = "fsl_hhs_cat_ipc",
+                              hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
+                              hhs_cat_yesno_set = c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight"),
+                              hhs_value_yesno_set = c("yes", "no"),
+                              hhs_cat_freq_set = c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq"),
+                              hhs_value_freq_set = c("rarely", "sometimes", "often"),
                               rcsi_cat_var = "fsl_rcsi_cat",
                               rcsi_cat_values = c("No to Low", "Medium", "High"),
                               rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize", "fsl_rcsi_mealadult", "fsl_rcsi_mealnb"),
@@ -141,8 +159,6 @@ check_ipc_results <- function(results_table,
                                 "fsl_lcsi_emergency3"
                               ),
                               lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
-                              hhs_cat_var = "fsl_hhs_cat_ipc",
-                              hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
                               with_hdds = TRUE,
                               hdds_cat = "fsl_hdds_cat",
                               hdds_cat_values = c("Low", "Medium", "High"),
@@ -163,19 +179,25 @@ check_ipc_results <- function(results_table,
                               mean_name = "mean") {
   # verify number of values.
   verify_numbers_values("fcs_cat_values", fcs_cat_values, 3)
+  verify_numbers_values("hhs_cat_values", hhs_cat_values, 5)
   verify_numbers_values("rcsi_cat_values", rcsi_cat_values, 3)
   verify_numbers_values("lcsi_cat_values", lcsi_cat_values, 4)
-  verify_numbers_values("hhs_cat_values", hhs_cat_values, 5)
+  verify_numbers_values("hhs_cat_yesno_set", hhs_cat_yesno_set, 3)
+  verify_numbers_values("hhs_value_yesno_set", hhs_value_yesno_set, 2)
+  verify_numbers_values("hhs_cat_freq_set", hhs_cat_freq_set, 3)
+  verify_numbers_values("hhs_value_freq_set", hhs_value_freq_set, 3)
   verify_numbers_values("lcsi_set", lcsi_set, 10)
   verify_numbers_values("lcsi_value_set", lcsi_value_set, 4)
 
   # create a dictionary for each set
   dictionary <- list(
     fcs = list(var_name = fcs_cat_var, values_set = fcs_cat_values, analysis_type = proportion_name),
+    hhs = list(var_name = hhs_cat_var, values_set = hhs_cat_values, analysis_type = proportion_name),
     rcsi = list(var_name = rcsi_cat_var, values_set = rcsi_cat_values, analysis_type = proportion_name),
     lcsi = list(var_name = lcsi_cat_var, values_set = lcsi_cat_values, analysis_type = proportion_name),
-    hhs = list(var_name = hhs_cat_var, values_set = hhs_cat_values, analysis_type = proportion_name),
     fcs_set_mean = list(var_name = fcs_set, values_set = NA, analysis_type = mean_name),
+    hhs_yesno_set_prop = list(var_name = hhs_cat_yesno_set, values_set = hhs_value_yesno_set, analysis_type = proportion_name),
+    hhs_freq_set_prop = list(var_name = hhs_cat_freq_set, values_set = hhs_value_freq_set, analysis_type = proportion_name),
     rcsi_set_mean = list(var_name = rcsi_set, values_set = NA, analysis_type = mean_name),
     rcsi_set_prop = list(var_name = rcsi_set, values_set = c(0:7), analysis_type = proportion_name),
     lcsi_set_prop = list(var_name = lcsi_set, values_set = lcsi_value_set, analysis_type = proportion_name)
@@ -269,8 +291,7 @@ check_ipc_results <- function(results_table,
 #' @param fcs_cat_values String with the options of the Food Consumption Score. Default is
 #' c("Poor", "Borderline", "Acceptable")
 #' @param fcs_set String for the Food Consumption Score questions set. Default is
-#' c("fcs_cereal", "fcs_pulses", "fcs_milk",
-#' "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
+#' c("fcs_cereal", "fcs_pulses", "fcs_milk", "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
 #' "fcs_sugar", "fcs_spices")
 #' @param rcsi_cat_var The string with the name of the reduced Coping Strategy Index. Default is "fsl_rcsi_cat"
 #' @param rcsi_cat_values String with the options of the reduced Coping Strategy Index. Default is
@@ -290,6 +311,14 @@ check_ipc_results <- function(results_table,
 #' @param hhs_cat_var The string with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"
 #' @param hhs_cat_values String with the options of the Household Hunger Scale. Default is
 #' c("None", "No or Little", "Moderate", "Severe", "Very Severe")
+#' @param hhs_cat_yesno_set String for the Household Hunger Scale yes-no questions set. Default is
+#' c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight")
+#' @param hhs_value_yesno_set String for the values of the Household Hunger Scale yes-no questions
+#' set. Default is c("yes", "no")
+#' @param hhs_cat_freq_set String for the Household Hunger Scale frequency questions set. Default is
+#' c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq")
+#' @param hhs_value_freq_set String for the values of the Household Hunger Scale frequency questions
+#' set. Default is c("rarely", "sometimes", "often")
 #' @param with_hdds TRUE or FALSE, whether to include the FCLC and FC values.
 #' @param hdds_cat String with the name of the Household Dietary Diversity Score. Default is "fsl_hdds_cat"
 #' @param hdds_cat_values String with the options of the Household Dietary Diversity Score. Default is
@@ -323,8 +352,11 @@ check_ipc_results <- function(results_table,
 #' @keywords internal
 #'
 #' @examples
+#'
+#' no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+#'   dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
 #' create_ordered_ipc_table(
-#'   results_table = presentresults_resultstable,
+#'   results_table = no_nas_presentresults_resultstable,
 #'   fcs_cat_var = "fcs_cat",
 #'   fcs_cat_values = c("low", "medium", "high"),
 #'   fcs_set = c(
@@ -338,12 +370,16 @@ check_ipc_results <- function(results_table,
 #'     "fs_fcs_sugar",
 #'     "fs_fcs_condiment"
 #'   ),
+#'   hhs_cat_var = "hhs_cat",
+#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+#'   hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+#'   hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+#'   hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
 #'   rcsi_cat_var = "rcsi_cat",
 #'   rcsi_cat_values = c("low", "medium", "high"),
 #'   rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
 #'   lcsi_cat_var = "lcs_cat",
 #'   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-#'   hhs_cat_var = "hhs_cat",
 #'   lcsi_set = c(
 #'     "liv_stress_lcsi_1",
 #'     "liv_stress_lcsi_2",
@@ -356,7 +392,6 @@ check_ipc_results <- function(results_table,
 #'     "liv_emerg_lcsi_2",
 #'     "liv_emerg_lcsi_3"
 #'   ),
-#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
 #'   with_hdds = FALSE,
 #'   with_fclc = TRUE,
 #'   fclc_matrix_var = "fcls_cat",
@@ -381,6 +416,12 @@ create_ordered_ipc_table <- function(results_table,
                                        "fcs_sugar",
                                        "fcs_spices"
                                      ),
+                                     hhs_cat_var = "fsl_hhs_cat_ipc",
+                                     hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
+                                     hhs_cat_yesno_set = c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight"),
+                                     hhs_value_yesno_set = c("yes", "no"),
+                                     hhs_cat_freq_set = c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq"),
+                                     hhs_value_freq_set = c("rarely", "sometimes", "often"),
                                      rcsi_cat_var = "fsl_rcsi_cat",
                                      rcsi_cat_values = c("No to Low", "Medium", "High"),
                                      rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize", "fsl_rcsi_mealadult", "fsl_rcsi_mealnb"),
@@ -399,8 +440,6 @@ create_ordered_ipc_table <- function(results_table,
                                        "fsl_lcsi_emergency3"
                                      ),
                                      lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
-                                     hhs_cat_var = "fsl_hhs_cat_ipc",
-                                     hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
                                      with_hdds = TRUE,
                                      hdds_cat = "fsl_hdds_cat",
                                      hdds_cat_values = c("Low", "Medium", "High"),
@@ -420,24 +459,23 @@ create_ordered_ipc_table <- function(results_table,
                                      proportion_name = "prop_select_one",
                                      mean_name = "mean") {
   # Checks the results table
-  checks_results <- check_ipc_results(
+  results_review <- review_ipc_results(
     results_table = results_table,
     analysis_key = analysis_key,
-    fclc_matrix_var = fclc_matrix_var,
-    fclc_matrix_values = fclc_matrix_values,
-    fc_matrix_var = fc_matrix_var,
-    fc_matrix_values = fc_matrix_values,
-    with_fclc = with_fclc,
     fcs_cat_var = fcs_cat_var,
     fcs_cat_values = fcs_cat_values,
-    rcsi_cat_var = rcsi_cat_var,
-    rcsi_cat_values = rcsi_cat_values,
-    lcsi_cat_var = lcsi_cat_var,
-    lcsi_cat_values = lcsi_cat_values,
+    fcs_set = fcs_set,
     hhs_cat_var = hhs_cat_var,
     hhs_cat_values = hhs_cat_values,
-    fcs_set = fcs_set,
+    hhs_cat_yesno_set = hhs_cat_yesno_set,
+    hhs_value_yesno_set = hhs_value_yesno_set,
+    hhs_cat_freq_set = hhs_cat_freq_set,
+    hhs_value_freq_set = hhs_value_freq_set,
+    rcsi_cat_var = rcsi_cat_var,
+    rcsi_cat_values = rcsi_cat_values,
     rcsi_set = rcsi_set,
+    lcsi_cat_var = lcsi_cat_var,
+    lcsi_cat_values = lcsi_cat_values,
     lcsi_set = lcsi_set,
     lcsi_value_set = lcsi_value_set,
     with_hdds = with_hdds,
@@ -445,6 +483,11 @@ create_ordered_ipc_table <- function(results_table,
     hdds_cat_values = hdds_cat_values,
     hdds_set = hdds_set,
     hdds_value_set = hdds_value_set,
+    with_fclc = with_fclc,
+    fclc_matrix_var = fclc_matrix_var,
+    fclc_matrix_values = fclc_matrix_values,
+    fc_matrix_var = fc_matrix_var,
+    fc_matrix_values = fc_matrix_values,
     other_variables = other_variables,
     stat_col = stat_col,
     proportion_name = proportion_name,
@@ -452,18 +495,34 @@ create_ordered_ipc_table <- function(results_table,
   )
 
   # rearrange results in the order I want
+  ## hhs set has to be by the order of the questions set (yes-no;freq;yes-no;freq;yes-no;freq)
+  hhs_set <- results_review[["dictionary"]][c("hhs_yesno_set_prop", "hhs_freq_set_prop")] %>%
+    purrr::map(~expand.grid(.x, stringsAsFactors = F)) %>%
+    purrr::map(~dplyr::group_by(.x,var_name)) %>%
+    purrr::map(~dplyr::group_split(.x)) %>%
+    purrr::list_transpose() %>%
+    do.call(c,.) %>%
+    purrr::list_rbind()
 
+  ## rcsi, lcsi, and hdds has to be reorder with the options
   set_to_reoder <- c("rcsi_set_prop", "lcsi_set_prop")
   if (with_hdds) {
     set_to_reoder <- c(set_to_reoder, "hdds_set_prop")
   }
 
-  all_options_in_order <- checks_results[["dictionary"]] %>%
+  all_options_in_order <- results_review[["dictionary"]] %>%
     purrr::map(expand.grid) %>%
     purrr::modify_at(
       .at = dplyr::all_of(set_to_reoder),
       .f = ~ dplyr::arrange(., var_name, values_set)
-    ) %>%
+    )
+
+  ## removing duplications of the hhs variables sets
+  all_options_in_order[["hhs_yesno_set_prop"]] <- hhs_set
+  all_options_in_order[["hhs_freq_set_prop"]] <- NULL
+  names(all_options_in_order)[names(all_options_in_order) == "hhs_yesno_set_prop"] <- "hhs_set"
+
+  all_options_in_order <- all_options_in_order %>%
     purrr::map(
       ~ dplyr::mutate(
         .,
@@ -481,7 +540,7 @@ create_ordered_ipc_table <- function(results_table,
       )
     )
 
-  value_checked_ipc_df <- checks_results[["value_checked_ipc_key_table"]] %>%
+  value_checked_ipc_df <- results_review[["value_checked_ipc_key_table"]] %>%
     do.call(rbind, .) %>%
     dplyr::mutate(
       dplyr::across(
@@ -552,7 +611,7 @@ create_ordered_ipc_table <- function(results_table,
 
   # adding the other variables
   if (!is.null(other_variables)) {
-    other_variables_key_table <- checks_results[["ipc_key_table"]] %>%
+    other_variables_key_table <- results_review[["ipc_key_table"]] %>%
       dplyr::filter(analysis_var %in% other_variables)
 
     orderered_ipc_table <- rbind(orderered_ipc_table, other_variables_key_table)
@@ -568,7 +627,6 @@ create_ordered_ipc_table <- function(results_table,
     value_columns = stat_col
   )
 }
-
 
 #' Creates a table for the IPC
 #'
@@ -588,9 +646,19 @@ create_ordered_ipc_table <- function(results_table,
 #' @param fcs_cat_values String with the options of the Food Consumption Score. Default is
 #' c("Poor", "Borderline", "Acceptable")
 #' @param fcs_set String for the Food Consumption Score questions set. Default is
-#' c("fcs_cereal", "fcs_pulses", "fcs_milk",
-#' "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
+#' c("fcs_cereal", "fcs_pulses", "fcs_milk", "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
 #' "fcs_sugar", "fcs_spices")
+#' @param hhs_cat_var The string with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"
+#' @param hhs_cat_values String with the options of the Household Hunger Scale. Default is
+#' c("None", "No or Little", "Moderate", "Severe", "Very Severe")
+#' @param hhs_cat_yesno_set String for the Household Hunger Scale yes-no questions set. Default is
+#' c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight")
+#' @param hhs_value_yesno_set String for the values of the Household Hunger Scale yes-no questions
+#' set. Default is c("yes", "no")
+#' @param hhs_cat_freq_set String for the Household Hunger Scale frequency questions set. Default is
+#' c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq")
+#' @param hhs_value_freq_set String for the values of the Household Hunger Scale frequency questions
+#' set. Default is c("rarely", "sometimes", "often")
 #' @param rcsi_cat_var The string with the name of the reduced Coping Strategy Index. Default is "fsl_rcsi_cat"
 #' @param rcsi_cat_values String with the options of the reduced Coping Strategy Index. Default is
 #' c("No to Low", "Medium", "High")
@@ -606,9 +674,6 @@ create_ordered_ipc_table <- function(results_table,
 #' "fsl_lcsi_emergency2", "fsl_lcsi_emergency3")
 #' @param lcsi_value_set String for the values of the Livelihood Coping Strategy Index questions
 #' set. Default is c("yes", "no_had_no_need", "no_exhausted", "not_applicable")
-#' @param hhs_cat_var The string with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"
-#' @param hhs_cat_values String with the options of the Household Hunger Scale. Default is
-#' c("None", "No or Little", "Moderate", "Severe", "Very Severe")
 #' @param with_hdds TRUE or FALSE, whether to include the FCLC and FC values.
 #' @param hdds_cat String with the name of the Household Dietary Diversity Score. Default is "fsl_hdds_cat"
 #' @param hdds_cat_values String with the options of the Household Dietary Diversity Score. Default is
@@ -645,8 +710,11 @@ create_ordered_ipc_table <- function(results_table,
 #' @export
 #'
 #' @examples
+#' no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+#'   dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+#'
 #' create_ipc_table(
-#'   results_table = presentresults_resultstable,
+#'   results_table = no_nas_presentresults_resultstable,
 #'   dataset = presentresults_MSNA_template_data,
 #'   cluster_name = "cluster_id",
 #'   fcs_cat_var = "fcs_cat",
@@ -662,12 +730,16 @@ create_ordered_ipc_table <- function(results_table,
 #'     "fs_fcs_sugar",
 #'     "fs_fcs_condiment"
 #'   ),
+#'   hhs_cat_var = "hhs_cat",
+#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+#'   hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+#'   hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+#'   hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
 #'   rcsi_cat_var = "rcsi_cat",
 #'   rcsi_cat_values = c("low", "medium", "high"),
 #'   rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
 #'   lcsi_cat_var = "lcs_cat",
 #'   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-#'   hhs_cat_var = "hhs_cat",
 #'   lcsi_set = c(
 #'     "liv_stress_lcsi_1",
 #'     "liv_stress_lcsi_2",
@@ -680,7 +752,6 @@ create_ordered_ipc_table <- function(results_table,
 #'     "liv_emerg_lcsi_2",
 #'     "liv_emerg_lcsi_3"
 #'   ),
-#'   hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
 #'   with_hdds = FALSE
 #' )
 #'
@@ -700,6 +771,12 @@ create_ipc_table <- function(results_table,
                                "fsl_fcs_sugar",
                                "fsl_fcs_oil"
                              ),
+                             hhs_cat_var = "fsl_hhs_cat_ipc",
+                             hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
+                             hhs_cat_yesno_set = c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight"),
+                             hhs_value_yesno_set = c("yes", "no"),
+                             hhs_cat_freq_set = c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq"),
+                             hhs_value_freq_set = c("rarely", "sometimes", "often"),
                              rcsi_cat_var = "fsl_rcsi_cat",
                              rcsi_cat_values = c("No to Low", "Medium", "High"),
                              rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize", "fsl_rcsi_mealadult", "fsl_rcsi_mealnb"),
@@ -718,8 +795,6 @@ create_ipc_table <- function(results_table,
                                "fsl_lcsi_emergency3"
                              ),
                              lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
-                             hhs_cat_var = "fsl_hhs_cat_ipc",
-                             hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
                              with_hdds = TRUE,
                              hdds_cat = "fsl_hdds_cat",
                              hdds_cat_values = c("Low", "Medium", "High"),
@@ -742,6 +817,20 @@ create_ipc_table <- function(results_table,
   if (fcs_cat_var %in% fcs_set) {
     msg <- glue::glue(
       fcs_cat_var, " is in the fcs_set, it should only contains the fcs initial variables."
+    )
+    stop(msg)
+  }
+
+  if (hhs_cat_var %in% hhs_cat_yesno_set) {
+    msg <- glue::glue(
+      hhs_cat_var, " is in the hhs_cat_yesno_set, it should only contains the hhs initial variables."
+    )
+    stop(msg)
+  }
+
+  if (hhs_cat_var %in% hhs_cat_freq_set) {
+    msg <- glue::glue(
+      hhs_cat_var, " is in the hhs_cat_freq_set, it should only contains the hhs initial variables."
     )
     stop(msg)
   }
@@ -770,21 +859,20 @@ create_ipc_table <- function(results_table,
   analysis_info <- create_ordered_ipc_table(
     results_table = results_table,
     analysis_key = analysis_key,
-    fclc_matrix_var = fclc_matrix_var,
-    fclc_matrix_values = fclc_matrix_values,
-    fc_matrix_var = fc_matrix_var,
-    fc_matrix_values = fc_matrix_values,
-    with_fclc = with_fclc,
     fcs_cat_var = fcs_cat_var,
     fcs_cat_values = fcs_cat_values,
-    rcsi_cat_var = rcsi_cat_var,
-    rcsi_cat_values = rcsi_cat_values,
-    lcsi_cat_var = lcsi_cat_var,
-    lcsi_cat_values = lcsi_cat_values,
+    fcs_set = fcs_set,
     hhs_cat_var = hhs_cat_var,
     hhs_cat_values = hhs_cat_values,
-    fcs_set = fcs_set,
+    hhs_cat_yesno_set = hhs_cat_yesno_set,
+    hhs_value_yesno_set = hhs_value_yesno_set,
+    hhs_cat_freq_set = hhs_cat_freq_set,
+    hhs_value_freq_set = hhs_value_freq_set,
+    rcsi_cat_var = rcsi_cat_var,
+    rcsi_cat_values = rcsi_cat_values,
     rcsi_set = rcsi_set,
+    lcsi_cat_var = lcsi_cat_var,
+    lcsi_cat_values = lcsi_cat_values,
     lcsi_set = lcsi_set,
     lcsi_value_set = lcsi_value_set,
     with_hdds = with_hdds,
@@ -792,6 +880,11 @@ create_ipc_table <- function(results_table,
     hdds_cat_values = hdds_cat_values,
     hdds_set = hdds_set,
     hdds_value_set = hdds_value_set,
+    with_fclc = with_fclc,
+    fclc_matrix_var = fclc_matrix_var,
+    fclc_matrix_values = fclc_matrix_values,
+    fc_matrix_var = fc_matrix_var,
+    fc_matrix_values = fc_matrix_values,
     other_variables = other_variables,
     stat_col = stat_col,
     proportion_name = proportion_name,

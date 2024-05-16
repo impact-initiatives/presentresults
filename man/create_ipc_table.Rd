@@ -13,6 +13,13 @@ create_ipc_table(
   fcs_cat_values = c("Poor", "Borderline", "Acceptable"),
   fcs_set = c("fsl_fcs_cereal", "fsl_fcs_legumes", "fsl_fcs_veg", "fsl_fcs_fruit",
     "fsl_fcs_meat", "fsl_fcs_dairy", "fsl_fcs_sugar", "fsl_fcs_oil"),
+  hhs_cat_var = "fsl_hhs_cat_ipc",
+  hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
+  hhs_cat_yesno_set = c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight"),
+  hhs_value_yesno_set = c("yes", "no"),
+  hhs_cat_freq_set = c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq",
+    "fsl_hhs_alldaynight_freq"),
+  hhs_value_freq_set = c("rarely", "sometimes", "often"),
   rcsi_cat_var = "fsl_rcsi_cat",
   rcsi_cat_values = c("No to Low", "Medium", "High"),
   rcsi_set = c("fsl_rcsi_lessquality", "fsl_rcsi_borrow", "fsl_rcsi_mealsize",
@@ -23,8 +30,6 @@ create_ipc_table(
     "fsl_lcsi_stress4", "fsl_lcsi_crisis1", "fsl_lcsi_crisis2", "fsl_lcsi_crisis3",
     "fsl_lcsi_emergency1", "fsl_lcsi_emergency2", "fsl_lcsi_emergency3"),
   lcsi_value_set = c("yes", "no_had_no_need", "no_exhausted", "not_applicable"),
-  hhs_cat_var = "fsl_hhs_cat_ipc",
-  hhs_cat_values = c("None", "No or Little", "Moderate", "Severe", "Very Severe"),
   with_hdds = TRUE,
   hdds_cat = "fsl_hdds_cat",
   hdds_cat_values = c("Low", "Medium", "High"),
@@ -62,9 +67,25 @@ it will calculate the number of interviews only.}
 c("Poor", "Borderline", "Acceptable")}
 
 \item{fcs_set}{String for the Food Consumption Score questions set. Default is
-c("fcs_cereal", "fcs_pulses", "fcs_milk",
-"fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
+c("fcs_cereal", "fcs_pulses", "fcs_milk", "fcs_meat", "fcs_veg", "fcs_fruit", "fcs_oil",
 "fcs_sugar", "fcs_spices")}
+
+\item{hhs_cat_var}{The string with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"}
+
+\item{hhs_cat_values}{String with the options of the Household Hunger Scale. Default is
+c("None", "No or Little", "Moderate", "Severe", "Very Severe")}
+
+\item{hhs_cat_yesno_set}{String for the Household Hunger Scale yes-no questions set. Default is
+c("fsl_hhs_nofoodhh", "fsl_hhs_sleephungry", "fsl_hhs_alldaynight")}
+
+\item{hhs_value_yesno_set}{String for the values of the Household Hunger Scale yes-no questions
+set. Default is c("yes", "no")}
+
+\item{hhs_cat_freq_set}{String for the Household Hunger Scale frequency questions set. Default is
+c("fsl_hhs_nofoodhh_freq", "fsl_hhs_sleephungry_freq", "fsl_hhs_alldaynight_freq")}
+
+\item{hhs_value_freq_set}{String for the values of the Household Hunger Scale frequency questions
+set. Default is c("rarely", "sometimes", "often")}
 
 \item{rcsi_cat_var}{The string with the name of the reduced Coping Strategy Index. Default is "fsl_rcsi_cat"}
 
@@ -87,11 +108,6 @@ c("fsl_lcsi_stress1", "fsl_lcsi_stress2", "fsl_lcsi_stress3", "fsl_lcsi_stress4"
 
 \item{lcsi_value_set}{String for the values of the Livelihood Coping Strategy Index questions
 set. Default is c("yes", "no_had_no_need", "no_exhausted", "not_applicable")}
-
-\item{hhs_cat_var}{The string with the name of the Household Hunger Scale. Default is "fsl_hhs_cat_ipc"}
-
-\item{hhs_cat_values}{String with the options of the Household Hunger Scale. Default is
-c("None", "No or Little", "Moderate", "Severe", "Very Severe")}
 
 \item{with_hdds}{TRUE or FALSE, whether to include the FCLC and FC values.}
 
@@ -151,8 +167,11 @@ For arguments that are *_values or *_set, and other_variables, the order of appe
 the order in the table.
 }
 \examples{
+no_nas_presentresults_resultstable <- presentresults_resultstable \%>\%
+  dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+
 create_ipc_table(
-  results_table = presentresults_resultstable,
+  results_table = no_nas_presentresults_resultstable,
   dataset = presentresults_MSNA_template_data,
   cluster_name = "cluster_id",
   fcs_cat_var = "fcs_cat",
@@ -168,12 +187,16 @@ create_ipc_table(
     "fs_fcs_sugar",
     "fs_fcs_condiment"
   ),
+  hhs_cat_var = "hhs_cat",
+  hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+  hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+  hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+  hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
   rcsi_cat_var = "rcsi_cat",
   rcsi_cat_values = c("low", "medium", "high"),
   rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
   lcsi_cat_var = "lcs_cat",
   lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
-  hhs_cat_var = "hhs_cat",
   lcsi_set = c(
     "liv_stress_lcsi_1",
     "liv_stress_lcsi_2",
@@ -186,7 +209,6 @@ create_ipc_table(
     "liv_emerg_lcsi_2",
     "liv_emerg_lcsi_3"
   ),
-  hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
   with_hdds = FALSE
 )
 

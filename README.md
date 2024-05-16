@@ -217,8 +217,11 @@ presentresults_resultstable %>%
 ### Example for the IPC table
 
 ``` r
+no_nas_presentresults_resultstable <- presentresults_resultstable %>%
+  dplyr::filter(!(analysis_type == "prop_select_one" & is.na(analysis_var_value)))
+
 example_ipc <- create_ipc_table(
- results_table = presentresults_resultstable,
+ results_table = no_nas_presentresults_resultstable,
  dataset = presentresults_MSNA_template_data,
  cluster_name = "cluster_id",
  fcs_cat_var = "fcs_cat",
@@ -234,12 +237,16 @@ example_ipc <- create_ipc_table(
    "fs_fcs_sugar",
    "fs_fcs_condiment"
  ),
+ hhs_cat_var = "hhs_cat",
+ hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
+ hhs_cat_yesno_set = c("fs_hhs_nofood_yn", "fs_hhs_sleephungry_yn", "fs_hhs_daynoteating_yn"),
+ hhs_cat_freq_set = c("fs_hhs_nofood_freq", "fs_hhs_sleephungry_freq", "fs_hhs_daynoteating_freq"),
+ hhs_value_freq_set = c("rarely_1_2", "sometimes_3_10", "often_10_times"),
  rcsi_cat_var = "rcsi_cat",
  rcsi_cat_values = c("low", "medium", "high"),
  rcsi_set = c("rCSILessQlty", "rCSIBorrow", "rCSIMealSize", "rCSIMealAdult", "rCSIMealNb"),
  lcsi_cat_var = "lcs_cat",
  lcsi_cat_values = c("none", "stress", "emergency", "crisis"),
- hhs_cat_var = "hhs_cat",
  lcsi_set = c(
    "liv_stress_lcsi_1",
    "liv_stress_lcsi_2",
@@ -252,7 +259,6 @@ example_ipc <- create_ipc_table(
    "liv_emerg_lcsi_2",
    "liv_emerg_lcsi_3"
  ),
- hhs_cat_values = c("none", "slight", "moderate", "severe", "very_severe"),
  with_hdds = FALSE
 )
 #> Joining with `by = join_by(analysis_key)`
@@ -287,34 +293,34 @@ example_ipc[["ipc_table"]][1:6, 1:10]
 #> 1                                            0.419354838709677
 #> 2                                                        0.375
 #> 3                                            0.222222222222222
-#>                           rcsi_cat %/% low %/% prop_select_one
-#> header_analysis_var                                   rcsi_cat
-#> header_analysis_var_value                                  low
-#> header_analysis_type                           prop_select_one
-#> 1                                            0.290322580645161
-#> 2                                                        0.375
-#> 3                                            0.259259259259259
-#>                           rcsi_cat %/% medium %/% prop_select_one
-#> header_analysis_var                                      rcsi_cat
-#> header_analysis_var_value                                  medium
-#> header_analysis_type                              prop_select_one
-#> 1                                               0.258064516129032
-#> 2                                               0.458333333333333
-#> 3                                               0.518518518518518
-#>                           rcsi_cat %/% high %/% prop_select_one
-#> header_analysis_var                                    rcsi_cat
-#> header_analysis_var_value                                  high
-#> header_analysis_type                            prop_select_one
-#> 1                                             0.451612903225806
-#> 2                                             0.166666666666667
-#> 3                                             0.222222222222222
-#>                           lcs_cat %/% none %/% prop_select_one
-#> header_analysis_var                                    lcs_cat
+#>                           hhs_cat %/% none %/% prop_select_one
+#> header_analysis_var                                    hhs_cat
 #> header_analysis_var_value                                 none
 #> header_analysis_type                           prop_select_one
-#> 1                                            0.193548387096774
-#> 2                                           0.0416666666666667
-#> 3                                            0.296296296296296
+#> 1                                            0.225806451612903
+#> 2                                            0.208333333333333
+#> 3                                            0.222222222222222
+#>                           hhs_cat %/% slight %/% prop_select_one
+#> header_analysis_var                                      hhs_cat
+#> header_analysis_var_value                                 slight
+#> header_analysis_type                             prop_select_one
+#> 1                                              0.258064516129032
+#> 2                                              0.291666666666667
+#> 3                                              0.222222222222222
+#>                           hhs_cat %/% moderate %/% prop_select_one
+#> header_analysis_var                                        hhs_cat
+#> header_analysis_var_value                                 moderate
+#> header_analysis_type                               prop_select_one
+#> 1                                                0.225806451612903
+#> 2                                               0.0833333333333333
+#> 3                                                0.222222222222222
+#>                           hhs_cat %/% severe %/% prop_select_one
+#> header_analysis_var                                      hhs_cat
+#> header_analysis_var_value                                 severe
+#> header_analysis_type                             prop_select_one
+#> 1                                             0.0967741935483871
+#> 2                                                           0.25
+#> 3                                              0.222222222222222
 ```
 
 ``` r
