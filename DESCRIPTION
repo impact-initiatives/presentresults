@@ -33,6 +33,6 @@ Imports:
 Remotes:
     impact-initiatives/analysistools
 Depends: 
-    R (>= 4.4.0)
+    R (>= 4.3.0)
 LazyData: true
 URL: https://impact-initiatives.github.io/presentresults/
