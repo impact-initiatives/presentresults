@@ -135,33 +135,33 @@ create_xlsx_variable_x_group <- function(table_group_x_variable,
   # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "before.xlsx",".xlsx" ), overwrite = overwrite)
 
   openxlsx::addStyle(wb,
-                     sheet = table_sheet_name,
-                     style = proportion_number_style,
-                     rows = c(1:(nrow(results_table_group_x_variable) + 1))[proportion_lines],
-                     cols = c(1:stat_max_cols_index)[value_columns_index],
-                     gridExpand = TRUE,
-                     stack = TRUE
+    sheet = table_sheet_name,
+    style = proportion_number_style,
+    rows = c(1:(nrow(results_table_group_x_variable) + 1))[proportion_lines],
+    cols = c(1:stat_max_cols_index)[value_columns_index],
+    gridExpand = TRUE,
+    stack = TRUE
   )
   # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "1.xlsx",".xlsx" ), overwrite = overwrite)
 
   openxlsx::addStyle(wb,
-                     sheet = table_sheet_name,
-                     style = number_2digits_style,
-                     rows = c(1:(nrow(results_table_group_x_variable) + 1))[!proportion_lines],
-                     cols = c(1:stat_max_cols_index)[value_columns_index],
-                     gridExpand = TRUE,
-                     stack = TRUE
+    sheet = table_sheet_name,
+    style = number_2digits_style,
+    rows = c(1:(nrow(results_table_group_x_variable) + 1))[!proportion_lines],
+    cols = c(1:stat_max_cols_index)[value_columns_index],
+    gridExpand = TRUE,
+    stack = TRUE
   )
 
-  if(!is.null(total_columns)) {
+  if (!is.null(total_columns)) {
     total_columns_index <- stringr::str_starts(names(results_table_group_x_variable), stringr::str_c(total_columns, collapse = "|"))
     openxlsx::addStyle(wb,
-                       sheet = table_sheet_name,
-                       style = number_style,
-                       rows = c(1:(nrow(results_table_group_x_variable) + 1)),
-                       cols = c(1:stat_max_cols_index)[total_columns_index],
-                       gridExpand = TRUE,
-                       stack = TRUE
+      sheet = table_sheet_name,
+      style = number_style,
+      rows = c(1:(nrow(results_table_group_x_variable) + 1)),
+      cols = c(1:stat_max_cols_index)[total_columns_index],
+      gridExpand = TRUE,
+      stack = TRUE
     )
   }
   # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "2.xlsx",".xlsx" ), overwrite = overwrite)
