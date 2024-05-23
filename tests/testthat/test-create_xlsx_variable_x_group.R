@@ -103,7 +103,7 @@ test_that("test that value_columns length is one, the warning say it cannot be v
   )
 })
 
-test_that("Test that outputs have not changed", {
+test_that("Test that workbooks have not changed", {
   skip("Skip as workbook object seems to behave differently on github virtual machines")
   # comment the skip and to be run manually with devtools::test()
 
@@ -129,11 +129,7 @@ test_that("Test that outputs have not changed", {
   ## wb object
   expected_1stat_wb_output <- readRDS(testthat::test_path("fixtures/variable_x_group", "wb_variable_x_group_1stat.RDS"))
 
-  expected_table_1stat_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_1stats.xlsx"),
-                                                     sheet = "variable_x_group_table"
-  ) %>%
-    suppressWarnings()
-  actual_1stat_wb_output <- expected_table_1stat_output %>%
+  actual_1stat_wb_output <- results_variable_x_group_1stat %>%
     create_xlsx_variable_x_group(value_columns = "stat") %>%
     suppressWarnings()
 
@@ -142,4 +138,42 @@ test_that("Test that outputs have not changed", {
   actual_1stat_wb_output$core <- ""
 
   expect_equal(actual_1stat_wb_output, expected_1stat_wb_output)
+})
+
+test_that("Totals are correclty shown", {
+  temp_dir_to_test <- withr::local_tempdir(fileext = "test")
+
+  # 3 stats
+  presentresults_resultstable %>%
+    create_table_variable_x_group(value_columns = c("stat", "n_total")) %>%
+    create_xlsx_variable_x_group(
+      value_columns = c("stat"),
+      total_columns = c("n_total"),
+      file_path = paste0(temp_dir_to_test, "\\testing_table_variable_x_group_totals.xlsx"),
+      overwrite = TRUE
+    )
+
+  ## table
+  expected_table_output <- openxlsx::read.xlsx(testthat::test_path("fixtures/variable_x_group", "table_variable_x_group_totals.xlsx"),
+                                               sheet = "variable_x_group_table"
+  ) %>%
+    suppressWarnings()
+
+  actual_table_output <- openxlsx::read.xlsx(paste0(temp_dir_to_test, "\\testing_table_variable_x_group_totals.xlsx"),
+                                             sheet = "variable_x_group_table"
+  ) %>%
+    suppressWarnings()
+
+  expect_equal(actual_table_output, expected_table_output)
+
+  ## all stats and totals
+  presentresults_resultstable %>%
+    create_table_variable_x_group(value_columns = c("stat", "stat_low", "stat_upp", "n", "n_total",
+                                                    "n_w" ,"n_w_total")) %>%
+    create_xlsx_variable_x_group(
+      total_columns = c("n", "n_total","n_w" , "n_w_total"),
+      file_path = paste0(temp_dir_to_test, "\\testing_table_variable_x_group_all_stats.xlsx"),
+      overwrite = TRUE
+    )
+
 })

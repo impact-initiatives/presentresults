@@ -1,17 +1,18 @@
 #' Write a table variable by group into Excel
 #'
-#' @param table_name string with the name of table to write. It will only be used if it is part of a list.
-#' Default is "variable_x_group_table".
+#' @param table_group_x_variable a table create by create_table_variable_x_group
 #' @param file_path File names and path. Default is NULL which will return a workbook instead of an
 #' excel file.
+#' @param table_name string with the name of table to write. It will only be used if it is part of a list.
+#' Default is "variable_x_group_table".
+#' @param value_columns string containing the names of the columns with the stats to export
+#' @param total_columns string containing the names of the columns with the totals
+#' (n, n_total, n_weighted, n_total_weighted, etc.) to export
+#' @param readme_sheet_name string with the name of the sheet to write the read me page,
+#' default is "readme"
 #' @param table_sheet_name string with the name of the sheet to write the table,
 #' default is "variable_x_group_table"
 #' @param overwrite Default is FALSE, it will overwrite the file if set to TRUE.
-#' @param table_group_x_variable a table create by create_table_variable_x_group
-#' @param value_columns string containing the names of the columns with the
-#' stats to export
-#' @param readme_sheet_name string with the name of the sheet to write the read me page,
-#' default is "readme"
 #'
 #' @return An excel file formatted.
 #' @export
@@ -26,6 +27,7 @@ create_xlsx_variable_x_group <- function(table_group_x_variable,
                                          file_path = NULL,
                                          table_name = "variable_x_group_table",
                                          value_columns = c("stat", "stat_low", "stat_upp"),
+                                         total_columns = NULL,
                                          readme_sheet_name = "readme",
                                          table_sheet_name = "variable_x_group_table",
                                          overwrite = FALSE) {
@@ -108,7 +110,7 @@ create_xlsx_variable_x_group <- function(table_group_x_variable,
   stat_min_cols_index <- variable_max_cols_index + 1
   stat_max_cols_index <- ncol(results_table_group_x_variable)
 
-  stat_length <- length(value_columns)
+  stat_length <- length(c(value_columns, total_columns))
   stat_total_cols <- stat_max_cols_index - variable_max_cols_index
   stat_sets_number <- stat_total_cols / stat_length
 
@@ -127,23 +129,62 @@ create_xlsx_variable_x_group <- function(table_group_x_variable,
   }
 
   ### formatting the numbers
+  value_columns_index <- stringr::str_starts(names(results_table_group_x_variable), stringr::str_c(value_columns, collapse = "|"))
+
   proportion_lines <- grepl("prop_select", c("title", results_table_group_x_variable$analysis_type))
+  # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "before.xlsx",".xlsx" ), overwrite = overwrite)
+
   openxlsx::addStyle(wb,
     sheet = table_sheet_name,
     style = proportion_number_style,
     rows = c(1:(nrow(results_table_group_x_variable) + 1))[proportion_lines],
-    cols = c(stat_min_cols_index:stat_max_cols_index),
+    cols = c(1:stat_max_cols_index)[value_columns_index],
     gridExpand = TRUE,
     stack = TRUE
   )
+  # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "1.xlsx",".xlsx" ), overwrite = overwrite)
+
   openxlsx::addStyle(wb,
     sheet = table_sheet_name,
     style = number_2digits_style,
-    rows = c(1:(ncol(results_table_group_x_variable) + 1))[!proportion_lines],
-    cols = c(stat_min_cols_index:stat_max_cols_index),
+    rows = c(1:(nrow(results_table_group_x_variable) + 1))[!proportion_lines],
+    cols = c(1:stat_max_cols_index)[value_columns_index],
     gridExpand = TRUE,
     stack = TRUE
   )
+
+  if (!is.null(total_columns)) {
+    total_columns_index <- stringr::str_starts(names(results_table_group_x_variable), stringr::str_c(total_columns, collapse = "|"))
+    openxlsx::addStyle(wb,
+      sheet = table_sheet_name,
+      style = number_style,
+      rows = c(1:(nrow(results_table_group_x_variable) + 1)),
+      cols = c(1:stat_max_cols_index)[total_columns_index],
+      gridExpand = TRUE,
+      stack = TRUE
+    )
+  }
+  # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "2.xlsx",".xlsx" ), overwrite = overwrite)
+
+
+  # openxlsx::saveWorkbook(wb, gsub(x=file_path,replacement = "3.xlsx",".xlsx" ), overwrite = overwrite)
+
+  # openxlsx::addStyle(wb,
+  #   sheet = table_sheet_name,
+  #   style = proportion_number_style,
+  #   rows = c(1:(nrow(results_table_group_x_variable) + 1))[proportion_lines],
+  #   cols = c(stat_min_cols_index:stat_max_cols_index),
+  #   gridExpand = TRUE,
+  #   stack = TRUE
+  # )
+  # openxlsx::addStyle(wb,
+  #   sheet = table_sheet_name,
+  #   style = number_2digits_style,
+  #   rows = c(1:(ncol(results_table_group_x_variable) + 1))[!proportion_lines],
+  #   cols = c(stat_min_cols_index:stat_max_cols_index),
+  #   gridExpand = TRUE,
+  #   stack = TRUE
+  # )
 
   ### formatting the background
   for (i in 1:nrow(helper_table)) {
