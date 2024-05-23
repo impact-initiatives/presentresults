@@ -47,6 +47,7 @@
 <span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  table_name <span class="op">=</span> <span class="st">"variable_x_group_table"</span>,</span>
 <span>  value_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat"</span>, <span class="st">"stat_low"</span>, <span class="st">"stat_upp"</span><span class="op">)</span>,</span>
+<span>  total_columns <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  readme_sheet_name <span class="op">=</span> <span class="st">"readme"</span>,</span>
 <span>  table_sheet_name <span class="op">=</span> <span class="st">"variable_x_group_table"</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -70,8 +71,12 @@ Default is "variable_x_group_table".</p></dd>
 
 
 <dt>value_columns</dt>
-<dd><p>string containing the names of the columns with the
-stats to export</p></dd>
+<dd><p>string containing the names of the columns with the stats to export</p></dd>
+
+
+<dt>total_columns</dt>
+<dd><p>string containing the names of the columns with the totals
+(n, n_total, n_weighted, n_total_weighted, etc.) to export</p></dd>
 
 
 <dt>readme_sheet_name</dt>
