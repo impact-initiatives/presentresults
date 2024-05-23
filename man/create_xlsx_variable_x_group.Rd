@@ -9,6 +9,7 @@ create_xlsx_variable_x_group(
   file_path = NULL,
   table_name = "variable_x_group_table",
   value_columns = c("stat", "stat_low", "stat_upp"),
+  total_columns = NULL,
   readme_sheet_name = "readme",
   table_sheet_name = "variable_x_group_table",
   overwrite = FALSE
@@ -23,8 +24,10 @@ excel file.}
 \item{table_name}{string with the name of table to write. It will only be used if it is part of a list.
 Default is "variable_x_group_table".}
 
-\item{value_columns}{string containing the names of the columns with the
-stats to export}
+\item{value_columns}{string containing the names of the columns with the stats to export}
+
+\item{total_columns}{string containing the names of the columns with the totals
+(n, n_total, n_weighted, n_total_weighted, etc.) to export}
 
 \item{readme_sheet_name}{string with the name of the sheet to write the read me page,
 default is "readme"}
