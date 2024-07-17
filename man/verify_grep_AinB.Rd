@@ -13,7 +13,7 @@ verify_grep_AinB(.A, .B)
 }
 \value{
 a vector of the length of values_to_check with TRUE or FALSE if the value appears
-at least once in vector_to_check
+at least once in .B
 }
 \description{
 Verify that which value of a vector is present in another vector

@@ -18,3 +18,44 @@
 #' @rdname presentresults_resultstable
 #' @format NULL
 "presentresults_resultstable"
+
+#' KOBO Template 2024 V10
+#'
+#' KOBO template 2024 with composite indicators information
+#'
+#' @title KOBO template for MSNA 2024 with composite indicators information
+#' @name presentresults_MSNA2024_kobotool_template
+#' @rdname presentresults_MSNA2024_kobotool_template
+#' @format NULL
+"presentresults_MSNA2024_kobotool_template"
+
+#' KOBO Template 2024 V10 without duplicated labels and names.
+#'
+#' KOBO template 2024 with composite indicators information without duplicated labels and names.
+#'
+#' @title results table example
+#' @name presentresults_MSNA2024_kobotool_fixed
+#' @rdname presentresults_MSNA2024_kobotool_fixed
+#' @format NULL
+"presentresults_MSNA2024_kobotool_fixed"
+
+#' Results table from MSNA2024 template
+#'
+#' @title results table example for MSNA 2024 tools
+#' @name presentresults_MSNA2024_results_table
+#' @rdname presentresults_MSNA2024_results_table
+#' @format NULL
+"presentresults_MSNA2024_results_table"
+
+#' Dictionary to be used to label results
+#'
+#' An example of dictionary to be used in add_label_columns_to_results_table()
+#' create_label_dictionary(kobo_survey_sheet = presentresults_MSNA2024_kobotool_fixed$kobo_survey,
+#'                         kobo_choices_sheet = presentresults_MSNA2024_kobotool_fixed$kobo_choices,
+#'                         results_table = presentresults_MSNA2024_results_table)
+#'
+#' @title MSNA2024 dictionary
+#' @name presentresults_MSNA2024_dictionary
+#' @rdname presentresults_MSNA2024_dictionary
+#' @format NULL
+"presentresults_MSNA2024_dictionary"

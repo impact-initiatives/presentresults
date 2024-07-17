@@ -4,7 +4,7 @@
 #' @param .B Vector of string to check
 #'
 #' @return a vector of the length of values_to_check with TRUE or FALSE if the value appears
-#' at least once in vector_to_check
+#' at least once in .B
 #' @export
 #'
 #' @examples

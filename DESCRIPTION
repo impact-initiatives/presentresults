@@ -14,8 +14,10 @@ Description: The package provides wrappers to turn results from a long format in
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
     withr
 Config/testthat/edition: 3
@@ -36,3 +38,4 @@ Depends:
     R (>= 4.3.0)
 LazyData: true
 URL: https://impact-initiatives.github.io/presentresults/
+VignetteBuilder: knitr

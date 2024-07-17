@@ -17,5 +17,16 @@ globalVariables(unique(c(
   # create_xlsx_group_x_variable:
   "cols_index", "header_analysis_type", "header_analysis_var", "max_cols_index", "min_cols_index",
   # create_xlsx_variable_x_group:
-  "dataset_name"
+  "dataset_name",
+  # add_label_analysis_key:
+  "label_analysis_type",
+  # add_label_columns_to_results_table:
+  "analysis_key",
+  # create_label_dictionary:
+  "name", "name_choices", "name_survey", "type",
+  # review_kobo_labels:
+  "comments", "list_name", "n", "name", "type",
+  # unite_labels:
+  "label_analysis_var", "label_analysis_var_value", "label_group_var", "label_group_var_value"
 )))
+
