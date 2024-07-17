@@ -29,4 +29,3 @@ globalVariables(unique(c(
   # unite_labels:
   "label_analysis_var", "label_analysis_var_value", "label_group_var", "label_group_var_value"
 )))
-
