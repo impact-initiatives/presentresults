@@ -71,7 +71,7 @@ group.
 
 ``` r
 example_variable_x_group <- presentresults_resultstable %>%
-  create_table_variable_x_group()
+  create_table_variable_x_group(analysis_key = "analysis_key")
 
 example_variable_x_group[1:6, 1:9]
 #> # A tibble: 6 × 9
@@ -212,6 +212,28 @@ example_group_x_variable[1:6, 1:10]
 presentresults_resultstable %>%
   create_table_group_x_variable() %>%
   create_xlsx_group_x_variable(file_path = "mytable.xlsx")
+```
+
+## Adding labels to results table
+
+You can add labels to the results table.
+
+``` r
+label_results <- add_label_columns_to_results_table(
+  results_table = presentresults_MSNA2024_results_table,
+  dictionary = presentresults_MSNA2024_dictionary
+)
+#> Joining with `by = join_by(analysis_type)`
+#> Joining with `by = join_by(analysis_key)`
+```
+
+Work in progress, but the idea will be to export it after.
+
+``` r
+label_results <- label_results %>%
+  dplyr::filter(group_var != "hoh_gender")
+example_variable_x_group <- label_results %>%
+  create_table_group_x_variable(analysis_key = "label_analysis_key", value_columns = "stat")
 ```
 
 ### Example for the IPC table
