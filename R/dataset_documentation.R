@@ -59,3 +59,31 @@
 #' @rdname presentresults_MSNA2024_dictionary
 #' @format NULL
 "presentresults_MSNA2024_dictionary"
+
+#' MSNA 2024 labelled results table
+#'
+#' @title MSNA 2024 results table with labels.
+#' @name presentresults_MSNA2024_labelled_results_table
+#' @rdname presentresults_MSNA2024_labelled_results_table
+#' @format NULL
+"presentresults_MSNA2024_labelled_results_table"
+
+#' IMPACT colors hex code
+#'
+#' IMPACT colors hex code
+#'
+#' @title IMPACT colors hex code
+#' @name impact_colors
+#' @rdname impact_colors
+#' @format NULL
+"impact_colors"
+
+#' IMPACT palettes
+#'
+#' IMPACT palettes hex code
+#'
+#' @title IMPACT palettes
+#' @name impact_palettes
+#' @rdname impact_palettes
+#' @format NULL
+"impact_palettes"

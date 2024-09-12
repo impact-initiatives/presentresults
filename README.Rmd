@@ -116,13 +116,12 @@ presentresults_resultstable %>%
 
 ## Adding labels to results table
 
-You can add labels to the results table.
+You can add labels to the results table. See the vignette for more information.
 ```{r}
 label_results <- add_label_columns_to_results_table(
   results_table = presentresults_MSNA2024_results_table,
   dictionary = presentresults_MSNA2024_dictionary
 )
-
 ```
 
 Work in progress, but the idea will be to export it after.
@@ -135,7 +134,7 @@ example_variable_x_group <- label_results %>%
 ```
 
 
-### Example for the IPC table
+## Example for the IPC table
 
 ```{r}
 no_nas_presentresults_resultstable <- presentresults_resultstable %>%
@@ -192,16 +191,47 @@ example_ipc %>%
 ```
 
 
-## `create_group_clusters()`
+## ggplot2 theme
 
-The function `create_group_clusters()` creates number of cluster and number of hh surveyed per group/strata
+There are some theme and palettes available to customise the graphs.
+
 ```{r}
-create_group_clusters(
-  results_table = presentresults_resultstable,
-  dataset = presentresults_MSNA_template_data,
-  cluster_name = "cluster_id"
-) |> head()
+data_to_plot <- presentresults::presentresults_MSNA2024_labelled_results_table |>
+  dplyr::filter(
+    analysis_var == "wash_drinking_water_source_cat",
+    group_var == "hoh_gender", 
+    group_var_value %in% c("male", "female")
+  ) |> 
+  dplyr::mutate(label_analysis_var_value = factor(label_analysis_var_value,
+                                                  levels = c("Improved",
+                                                             "Unimproved",
+                                                             "Surface water",
+                                                             "Undefined")))
+
+initialplot <- data_to_plot %>%
+  ggplot2::ggplot() +
+  ggplot2::geom_col(
+    ggplot2::aes(
+      x = label_analysis_var_value,
+      y = stat,
+      fill = label_group_var_value
+    ),
+    position = "dodge"
+  ) +
+  ggplot2::labs(
+    title = stringr::str_wrap(unique(data_to_plot$indicator), 50),
+    x = stringr::str_wrap(unique(data_to_plot$label_analysis_var), 50),
+    fill = stringr::str_wrap(unique(data_to_plot$label_group_var), 20)
+  )
 ```
+
+
+```{r, fig.width=8, fig.height=4}
+initialplot + 
+  theme_barplot() +
+  theme_impact("reach")
+```
+
 
 ## Code of Conduct
 
