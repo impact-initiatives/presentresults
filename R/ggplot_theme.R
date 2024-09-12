@@ -16,14 +16,20 @@
 #'
 #' data_to_plot %>%
 #'   ggplot2::ggplot() +
-#'     ggplot2::geom_col(ggplot2::aes(x =label_analysis_var_value,
-#'                                    y = stat,
-#'                                    fill = label_group_var_value),
-#'                       position = "dodge") +
-#'     ggplot2::labs(title = stringr::str_wrap(unique(data_to_plot$indicator),50),
-#'                   x = stringr::str_wrap(unique(data_to_plot$label_analysis_var),50),
-#'                   fill = stringr::str_wrap(unique(data_to_plot$label_group_var),20)) +
-#'     theme_barplot()
+#'   ggplot2::geom_col(
+#'     ggplot2::aes(
+#'       x = label_analysis_var_value,
+#'       y = stat,
+#'       fill = label_group_var_value
+#'     ),
+#'     position = "dodge"
+#'   ) +
+#'   ggplot2::labs(
+#'     title = stringr::str_wrap(unique(data_to_plot$indicator), 50),
+#'     x = stringr::str_wrap(unique(data_to_plot$label_analysis_var), 50),
+#'     fill = stringr::str_wrap(unique(data_to_plot$label_group_var), 20)
+#'   ) +
+#'   theme_barplot()
 #'
 theme_barplot <- function(palette = impact_palettes$reach_palette) {
   list(
@@ -56,27 +62,30 @@ theme_barplot <- function(palette = impact_palettes$reach_palette) {
 #'
 #' data_to_plot %>%
 #'   ggplot2::ggplot() +
-#'     ggplot2::geom_col(ggplot2::aes(x =label_analysis_var_value,
-#'                                    y = stat,
-#'                                    fill = label_group_var_value),
-#'                       position = "dodge") +
-#'     ggplot2::labs(title = stringr::str_wrap(unique(data_to_plot$indicator),50),
-#'                   x = stringr::str_wrap(unique(data_to_plot$label_analysis_var),50),
-#'                   fill = stringr::str_wrap(unique(data_to_plot$label_group_var),20)) +
-#'     theme_impact("reach")
+#'   ggplot2::geom_col(
+#'     ggplot2::aes(
+#'       x = label_analysis_var_value,
+#'       y = stat,
+#'       fill = label_group_var_value
+#'     ),
+#'     position = "dodge"
+#'   ) +
+#'   ggplot2::labs(
+#'     title = stringr::str_wrap(unique(data_to_plot$indicator), 50),
+#'     x = stringr::str_wrap(unique(data_to_plot$label_analysis_var), 50),
+#'     fill = stringr::str_wrap(unique(data_to_plot$label_group_var), 20)
+#'   ) +
+#'   theme_impact("reach")
 theme_impact <- function(initiative = "reach") {
-
-  if(!initiative %in%c("reach", "impact", "agora")) {
+  if (!initiative %in% c("reach", "impact", "agora")) {
     stop("initiative should be one of \"reach\", \"impact\", \"agora\"")
   }
 
-  if(initiative == "reach") {
-    title_colour <-   impact_colors$red
-
-  } else if (initiative == "impact"){
-    title_colour <-  impact_colors$blue
-
-  } else if (initiative  == "agora") {
+  if (initiative == "reach") {
+    title_colour <- impact_colors$red
+  } else if (initiative == "impact") {
+    title_colour <- impact_colors$blue
+  } else if (initiative == "agora") {
     title_colour <- impact_colors$bordeaux
   }
 
@@ -87,5 +96,3 @@ theme_impact <- function(initiative = "reach") {
       plot.title = ggplot2::element_text(colour = title_colour)
     )
 }
-
-
