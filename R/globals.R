@@ -27,5 +27,11 @@ globalVariables(unique(c(
   # review_kobo_labels:
   "comments", "list_name", "n", "name", "type",
   # unite_labels:
-  "label_analysis_var", "label_analysis_var_value", "label_group_var", "label_group_var_value"
+  "label_analysis_var", "label_analysis_var_value", "label_group_var", "label_group_var_value",
+  # create_table_for_map:
+  "stat_recoded",
+  # theme_barplot:
+  "impact_palettes",
+  # theme_impact:
+  "impact_colors"
 )))

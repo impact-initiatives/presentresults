@@ -19,16 +19,19 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
+    vdiffr,
     withr
 Config/testthat/edition: 3
 Imports: 
     analysistools,
     dplyr,
+    ggplot2,
     glue,
     magrittr,
     openxlsx,
     purrr,
     rlang,
+    scales,
     stringr,
     tidyr,
     tidyselect

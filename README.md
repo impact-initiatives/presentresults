@@ -216,7 +216,8 @@ presentresults_resultstable %>%
 
 ## Adding labels to results table
 
-You can add labels to the results table.
+You can add labels to the results table. See the vignette for more
+information.
 
 ``` r
 label_results <- add_label_columns_to_results_table(
@@ -236,7 +237,7 @@ example_variable_x_group <- label_results %>%
   create_table_group_x_variable(analysis_key = "label_analysis_key", value_columns = "stat")
 ```
 
-### Example for the IPC table
+## Example for the IPC table
 
 ``` r
 no_nas_presentresults_resultstable <- presentresults_resultstable %>%
@@ -350,27 +351,47 @@ example_ipc %>%
   create_xlsx_group_x_variable(example_ipc, table_name = "ipc_table", file_path = "ipc_table.xlsx")
 ```
 
-## `create_group_clusters()`
+## ggplot2 theme
 
-The function `create_group_clusters()` creates number of cluster and
-number of hh surveyed per group/strata
+There are some theme and palettes available to customise the graphs.
 
 ``` r
-create_group_clusters(
-  results_table = presentresults_resultstable,
-  dataset = presentresults_MSNA_template_data,
-  cluster_name = "cluster_id"
-) |> head()
-#> # A tibble: 6 × 3
-#>   group_var_value             number_of_cluster number_of_hh
-#>   <chr>                                   <int>        <int>
-#> 1 locationA %/% displaced                     2           31
-#> 2 locationA %/% non-displaced                 2           24
-#> 3 locationB %/% displaced                     2           27
-#> 4 locationB %/% non-displaced                 2           18
-#> 5 locationA                                   2           55
-#> 6 locationB                                   2           45
+data_to_plot <- presentresults::presentresults_MSNA2024_labelled_results_table |>
+  dplyr::filter(
+    analysis_var == "wash_drinking_water_source_cat",
+    group_var == "hoh_gender", 
+    group_var_value %in% c("male", "female")
+  ) |> 
+  dplyr::mutate(label_analysis_var_value = factor(label_analysis_var_value,
+                                                  levels = c("Improved",
+                                                             "Unimproved",
+                                                             "Surface water",
+                                                             "Undefined")))
+
+initialplot <- data_to_plot %>%
+  ggplot2::ggplot() +
+  ggplot2::geom_col(
+    ggplot2::aes(
+      x = label_analysis_var_value,
+      y = stat,
+      fill = label_group_var_value
+    ),
+    position = "dodge"
+  ) +
+  ggplot2::labs(
+    title = stringr::str_wrap(unique(data_to_plot$indicator), 50),
+    x = stringr::str_wrap(unique(data_to_plot$label_analysis_var), 50),
+    fill = stringr::str_wrap(unique(data_to_plot$label_group_var), 20)
+  )
 ```
+
+``` r
+initialplot + 
+  theme_barplot() +
+  theme_impact("reach")
+```
+
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ## Code of Conduct
 
