@@ -37,6 +37,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/add-label-to-results-table.html">Add labels to results table</a></li>
     <li><a class="dropdown-item" href="articles/create-table-for-map.html">Create table for map</a></li>
+    <li><a class="dropdown-item" href="articles/IMPACT_ggplot2_theme.html">IMPACT ggplot2 theme</a></li>
   </ul>
 </li>
       </ul>
@@ -232,7 +233,7 @@
 <div class="section level2">
 <h2 id="adding-labels-to-results-table">Adding labels to results table<a class="anchor" aria-label="anchor" href="#adding-labels-to-results-table"></a>
 </h2>
-<p>You can add labels to the results table.</p>
+<p>You can add labels to the results table. See the vignette for more information.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_label_columns_to_results_table.html">add_label_columns_to_results_table</a></span><span class="op">(</span></span>
 <span>  results_table <span class="op">=</span> <span class="va">presentresults_MSNA2024_results_table</span>,</span>
@@ -246,9 +247,10 @@
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_var</span> <span class="op">!=</span> <span class="st">"hoh_gender"</span><span class="op">)</span></span>
 <span><span class="va">example_variable_x_group</span> <span class="op">&lt;-</span> <span class="va">label_results</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/create_table_group_x_variable.html">create_table_group_x_variable</a></span><span class="op">(</span>analysis_key <span class="op">=</span> <span class="st">"label_analysis_key"</span>, value_columns <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="example-for-the-ipc-table">Example for the IPC table<a class="anchor" aria-label="anchor" href="#example-for-the-ipc-table"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="example-for-the-ipc-table">Example for the IPC table<a class="anchor" aria-label="anchor" href="#example-for-the-ipc-table"></a>
+</h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">no_nas_presentresults_resultstable</span> <span class="op">&lt;-</span> <span class="va">presentresults_resultstable</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">analysis_type</span> <span class="op">==</span> <span class="st">"prop_select_one"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">analysis_var_value</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -358,27 +360,43 @@
 <code class="sourceCode R"><span><span class="va">example_ipc</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/create_xlsx_group_x_variable.html">create_xlsx_group_x_variable</a></span><span class="op">(</span><span class="va">example_ipc</span>, table_name <span class="op">=</span> <span class="st">"ipc_table"</span>, file_path <span class="op">=</span> <span class="st">"ipc_table.xlsx"</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
 <div class="section level2">
-<h2 id="create_group_clusters">
-<code>create_group_clusters()</code><a class="anchor" aria-label="anchor" href="#create_group_clusters"></a>
+<h2 id="ggplot2-theme">ggplot2 theme<a class="anchor" aria-label="anchor" href="#ggplot2-theme"></a>
 </h2>
-<p>The function <code><a href="reference/create_group_clusters.html">create_group_clusters()</a></code> creates number of cluster and number of hh surveyed per group/strata</p>
+<p>There are some theme and palettes available to customise the graphs.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_group_clusters.html">create_group_clusters</a></span><span class="op">(</span></span>
-<span>  results_table <span class="op">=</span> <span class="va">presentresults_resultstable</span>,</span>
-<span>  dataset <span class="op">=</span> <span class="va">presentresults_MSNA_template_data</span>,</span>
-<span>  cluster_name <span class="op">=</span> <span class="st">"cluster_id"</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   group_var_value             number_of_cluster number_of_hh</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                                   &lt;int&gt;        &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 locationA %/% displaced                     2           31</span></span>
-<span><span class="co">#&gt; 2 locationA %/% non-displaced                 2           24</span></span>
-<span><span class="co">#&gt; 3 locationB %/% displaced                     2           27</span></span>
-<span><span class="co">#&gt; 4 locationB %/% non-displaced                 2           18</span></span>
-<span><span class="co">#&gt; 5 locationA                                   2           55</span></span>
-<span><span class="co">#&gt; 6 locationB                                   2           45</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data_to_plot</span> <span class="op">&lt;-</span> <span class="fu">presentresults</span><span class="fu">::</span><span class="va"><a href="reference/presentresults_MSNA2024_labelled_results_table.html">presentresults_MSNA2024_labelled_results_table</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">analysis_var</span> <span class="op">==</span> <span class="st">"wash_drinking_water_source_cat"</span>,</span>
+<span>    <span class="va">group_var</span> <span class="op">==</span> <span class="st">"hoh_gender"</span>, </span>
+<span>    <span class="va">group_var_value</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>label_analysis_var_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">label_analysis_var_value</span>,</span>
+<span>                                                  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Improved"</span>,</span>
+<span>                                                             <span class="st">"Unimproved"</span>,</span>
+<span>                                                             <span class="st">"Surface water"</span>,</span>
+<span>                                                             <span class="st">"Undefined"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">initialplot</span> <span class="op">&lt;-</span> <span class="va">data_to_plot</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">label_analysis_var_value</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">stat</span>,</span>
+<span>      fill <span class="op">=</span> <span class="va">label_group_var_value</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    position <span class="op">=</span> <span class="st">"dodge"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_wrap.html" class="external-link">str_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data_to_plot</span><span class="op">$</span><span class="va">indicator</span><span class="op">)</span>, <span class="fl">50</span><span class="op">)</span>,</span>
+<span>    x <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_wrap.html" class="external-link">str_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data_to_plot</span><span class="op">$</span><span class="va">label_analysis_var</span><span class="op">)</span>, <span class="fl">50</span><span class="op">)</span>,</span>
+<span>    fill <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_wrap.html" class="external-link">str_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data_to_plot</span><span class="op">$</span><span class="va">label_group_var</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">initialplot</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="reference/theme_barplot.html">theme_barplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_impact.html">theme_impact</a></span><span class="op">(</span><span class="st">"reach"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>

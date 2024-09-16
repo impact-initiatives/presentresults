@@ -4,7 +4,8 @@ pkgdown_sha: ~
 articles:
   add-label-to-results-table: add-label-to-results-table.html
   create-table-for-map: create-table-for-map.html
-last_built: 2024-08-27T08:02Z
+  IMPACT_ggplot2_theme: IMPACT_ggplot2_theme.html
+last_built: 2024-09-16T07:01Z
 urls:
   reference: https://impact-initiatives.github.io/presentresults/reference
   article: https://impact-initiatives.github.io/presentresults/articles
